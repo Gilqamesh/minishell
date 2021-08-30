@@ -7,7 +7,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 
-	str = 
 	while (1)
 	{
 		str = readline("Command: ");
