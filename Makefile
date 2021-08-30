@@ -1,12 +1,14 @@
-CC = GCC
+CC = gcc
 CFLAGS =
 SDIR = sources
 ODIR = objects
 NAME = minishell
 MYLIB = mylib/libmylib.a
+RLLIB = -lreadline
+SRC = minishell.c
 
 $(NAME): $(SRC:.c=.o) $(MYLIB)
-	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB)
+	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB)
 %.o: $(SDIR)/%.c
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
