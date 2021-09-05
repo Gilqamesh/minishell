@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/22 14:29:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/08/10 16:18:10 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/05 13:35:19 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#ifndef FT_MINISHELL_H
+# define FT_MINISHELL_H
 
-void	*ft_realloc(void *src, size_t size)
+# include "../mylib/mylib.h"
+# include <readline/readline.h>
+# include <readline/history.h>
+
+typedef struct s_minishell
 {
-	void	*new;
 
-	new = ft_calloc(1, size);
-	if (!new)
-	{
-		if (src)
-			free(src);
-		return ((void *)0);
-	}
-	if (!src)
-		return (new);
-	// Wrong
-	ft_memmove(new, src, size);
-	free(src);
-	return (new);
-}
+}	t_minishell;
+
+char	*myreadline(t_minishell *mystruct, const char *promptMsg);
+char	**convertStrToTokens(char *str);
+
+#endif

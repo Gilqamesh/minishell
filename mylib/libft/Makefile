@@ -6,7 +6,7 @@
 #    By: edavid <edavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/15 10:05:25 by edavid            #+#    #+#              #
-#    Updated: 2021/08/10 16:19:06 by edavid           ###   ########.fr        #
+#    Updated: 2021/09/05 18:51:42 by edavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,14 +20,14 @@ ft_strdup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c \
 ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c
 bonus_sources = ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
-extended_sources = ft_realloc.c ft_nodbinadd_back.c ft_nodbinadd_front.c \
+extended_sources = ft_nodbinadd_back.c ft_nodbinadd_front.c \
 ft_nodbinclear.c ft_nodbindelone.c ft_nodbiniter.c ft_nodbinlast.c \
 ft_nodbinmap.c ft_nodbinnew.c ft_nodbinsize.c ft_nodbindel.c ft_nodbinprint_int.c \
 ft_lstsortedinsert_int.c ft_lstdel.c ft_lstprint_int.c ft_merge_sort_int.c \
 ft_abs_int.c ft_merge_sort_str.c ft_strcmp.c ft_intdup.c ft_printintarr.c \
 ft_intlen.c ft_minofint.c ft_putnstr_fd.c ft_maxofint.c ft_baselen.c ft_itobase.c \
 ft_n_of_words_by_delim.c ft_destroy_str_arr.c ft_nodbinstrjoin_from_back.c \
-ft_lstmallocwrapper.c ft_lstmallocfree.c
+ft_lstmallocwrapper.c ft_lstmallocfree.c ft_splitstr.c
 
 NAME = libft.a
 

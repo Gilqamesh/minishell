@@ -20,5 +20,14 @@
 // Quoting rules:
 //
 // Escape character: '\'
+// 		if not quoted, preserves the literal value of the next character
 // Single quotes: '
+//		preserves the literal value of all enclosed characters, a single quote
+//		may not occur between single quotes
 // Double quotes: "
+//		preserves the literal value of all enclosed characters, with the
+//		exception of: '$', '`', '\' and when history expansion is enabled, '!'
+
+// Environmental variables ($ followed by characters) should expand to their values
+// $? should expand to the exit status of the most recently executed foreground
+// pipeline.

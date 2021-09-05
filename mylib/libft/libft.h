@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/08/10 19:08:56 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/05 18:51:31 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,10 @@ char			*ft_strtrim(char const *s1, char const *set);
 // character 'c' as a delimeter. The array ends with a NULL pointer.
 // 200 words / sec ~
 char			**ft_split(char const *s, char c);
+// Allocates and returns an array of strings obtained by splitting 's' using the
+// any of the characters in 'set' as delimeter.
+// The array ends with a NULL pointer.
+char			**ft_splitstr(char const *s, const char *set);
 // Allocates and returns a string representing the integer received as an
 // argument.
 char			*ft_itoa(int n);
@@ -180,11 +184,6 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 // if needed.
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
-// only works when size >= size of allocated memory src point to
-// also frees src in case the malloc for the new content fails, which is
-// problematic if src was pointing to other pointers that were previously
-// malloced -> it has to do a recursive freeing for src before returning null
-void			*ft_realloc(void *src, size_t size);
 // inserts 'new' into 'lst' in a way that *(int *) 'content' is in ascending
 // order
 void			ft_lstsortedinsert_int(t_list **lst, t_list *new);

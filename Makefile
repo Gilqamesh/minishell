@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =
+CFLAGS = -Wall -Wextra -Werror
 SDIR = sources
 ODIR = objects
 NAME = minishell
@@ -7,9 +7,9 @@ MYLIB = mylib/libmylib.a
 RLLIB = -lreadline
 SRC = minishell.c
 
-$(NAME): $(SRC:.c=.o) $(MYLIB)
+$(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB)
-%.o: $(SDIR)/%.c
+$(ODIR)/%.o: $(SDIR)/%.c
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
 	$(MAKE) --directory=mylib
