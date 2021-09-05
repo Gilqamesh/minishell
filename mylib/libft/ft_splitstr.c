@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 18:50:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/05 18:51:13 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/05 18:59:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	deleteNodes(t_list *lst)
 	}
 }
 
-static void	initLst(bool *setChars, t_list *tokens, char const *s)
+static void	initLst(bool *setChars, t_list **tokens, char const *s)
 {
 	char	*prev;
 	char	*cur;
@@ -62,7 +62,7 @@ static void	initLst(bool *setChars, t_list *tokens, char const *s)
 		if (setChars[(unsigned char)*cur])
 		{
 			if (cur != prev)
-				ft_lstadd_back(&tokens, ft_lstnew(ft_substr(prev, 0,
+				ft_lstadd_back(tokens, ft_lstnew(ft_substr(prev, 0,
 							cur - prev)));
 			prev = ++cur;
 		}
@@ -70,7 +70,7 @@ static void	initLst(bool *setChars, t_list *tokens, char const *s)
 		{
 			cur++;
 			if (!*cur)
-				ft_lstadd_back(&tokens, ft_lstnew(ft_substr(prev, 0,
+				ft_lstadd_back(tokens, ft_lstnew(ft_substr(prev, 0,
 							cur - prev)));
 		}
 	}

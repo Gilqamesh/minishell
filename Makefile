@@ -4,17 +4,20 @@ SDIR = sources
 ODIR = objects
 NAME = minishell
 MYLIB = mylib/libmylib.a
+PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
-SRC = minishell.c
+SRC = readline.c minishell.c
 
-$(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB)
-	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB)
+$(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB) $(PIPEXLIB)
+	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)
 $(ODIR)/%.o: $(SDIR)/%.c
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
 	$(MAKE) --directory=mylib
+$(PIPEXLIB):
+	$(MAKE) --directory=pipex
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus fcleanall
 all:
 	make $(NAME)
 clean:
@@ -27,3 +30,6 @@ re:
 	make all
 bonus:
 	make $(NAME)
+fcleanall:
+	$(MAKE) fcleanall --directory=mylib
+	$(MAKE) fcleanall --directory=pipex

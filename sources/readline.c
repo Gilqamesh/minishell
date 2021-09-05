@@ -1,6 +1,6 @@
 #include "../headers/ft_minishell.h"
 
-char	*myreadline(t_minishell *mystruct, const char *promptMsg)
+char	*myreadline(const char *promptMsg)
 {
 	return (readline(promptMsg));
 }
@@ -13,6 +13,11 @@ void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
 	char	**tokens;
 
 	tokens = convertStrToTokens(CmdLine);
+	int i = -1;
+	while (tokens[++i])
+		ft_printf("%s\n", tokens[i]);
+	ft_destroy_str_arr(&tokens);
+	(void)mystruct;
 }
 
 /*
@@ -21,5 +26,5 @@ void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
 */
 char	**convertStrToTokens(char *str)
 {
-	
+	return (ft_splitstr(str, " \t\n|&;()<>"));
 }

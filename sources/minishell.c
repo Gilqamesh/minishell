@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_minishell.h                                     :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/05 19:28:30 by edavid           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2021/09/05 19:03:33 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_MINISHELL_H
-# define FT_MINISHELL_H
+#include "../headers/ft_minishell.h"
 
-# include "../mylib/mylib.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_minishell
+int main()
 {
+	char *str;
+	t_minishell mystruct;
 
-}	t_minishell;
-
-char	*myreadline(const char *promptMsg);
-char	**convertStrToTokens(char *str);
-void	parseCmdLine(t_minishell *mystruct, char *CmdLine);
-
-#endif
+	while(1)
+	{
+		str = myreadline("hello, please enter a command line: ");
+		parseCmdLine(&mystruct, str);
+		free(str);
+	}
+	return (0);
+}

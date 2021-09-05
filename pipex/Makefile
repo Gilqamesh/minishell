@@ -1,0 +1,31 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+SDIR = sources
+ODIR = objects
+SRC = pipex.c fork.c error.c initialize.c here_doc.c myfuncs.c
+NAME = pipex.a
+MYLIBDIR = ../mylib
+MYLIB = $(MYLIBDIR)/libmylib.a
+
+$(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB)
+	ar -rs $(NAME) $^
+$(ODIR)/%.o: $(SDIR)/%.c
+	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
+$(MYLIB):
+	$(MAKE) --directory=$(MYLIBDIR)
+
+.PHONY: clean re all fclean bonus fcleanall
+all:
+	make $(NAME)
+clean:
+	rm -f $(ODIR)/*.o
+fclean:
+	make clean
+	rm -f $(NAME)
+re:
+	make clean
+	make all
+bonus:
+	make $(NAME)
+fcleanall:
+	$(MAKE) fcleanall --directory=$(MYLIBDIR)
