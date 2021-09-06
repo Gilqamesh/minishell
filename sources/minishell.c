@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/05 19:03:33 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/06 16:39:51 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int main()
 {
-	char *str;
-	t_minishell mystruct;
+	char		 *str;
+	t_minishell	mystruct;
 
 	while(1)
 	{

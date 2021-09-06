@@ -6,7 +6,7 @@ NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
-SRC = readline.c minishell.c
+SRC = readline.c minishell.c stack_operations.c
 
 $(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)

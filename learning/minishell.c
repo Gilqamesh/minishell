@@ -19,6 +19,7 @@
 
 // Quoting rules:
 //
+// WE DONT HAVE TO TAKE CARE OF THE SPECIAL MEANING OF '\'
 // Escape character: '\'
 // 		if not quoted, preserves the literal value of the next character
 // Single quotes: '
