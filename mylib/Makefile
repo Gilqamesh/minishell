@@ -12,7 +12,7 @@ $(NAME): $(LIBFT) $(LIBPRINTF) $(LIBGNL)
 	ar -x libgnl.a
 	rm -rf *.a
 	ar -rs $(NAME) *.o
-	rm -rf *.o
+	make clean
 $(LIBFT):
 	$(MAKE) --directory=libft
 $(LIBPRINTF):

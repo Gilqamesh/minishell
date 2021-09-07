@@ -6,17 +6,21 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/06 16:45:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/07 18:10:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MINISHELL_H
 # define FT_MINISHELL_H
 
+// Library includes
 # include "../mylib/mylib.h"
 # include "../pipex/headers/pipex.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+
+// Defines
+# define METACHARACTERS " \t\n|&;()<>"
 
 // Main structure for the project
 typedef struct s_minishell
@@ -30,7 +34,6 @@ char		*myreadline(const char *promptMsg);
 char		**convertStrToTokens(char *str);
 void		parseCmdLine(t_minishell *mystruct, char *CmdLine);
 bool		isValidCmdLine(char *CmdLine);
-bool		isProperlyNested(char *str);
 
 // Stack operations
 //

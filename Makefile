@@ -6,9 +6,10 @@ NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
-SRC = readline.c minishell.c stack_operations.c
+SRC = readline.c minishell.c stack_operations.c convertStrToTokens.c \
+isValidCmdLine.c
 
-$(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB) $(PIPEXLIB)
+$(NAME): $(MYLIB) $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)
 $(ODIR)/%.o: $(SDIR)/%.c
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
@@ -31,5 +32,6 @@ re:
 bonus:
 	make $(NAME)
 fcleanall:
+	make fclean
 	$(MAKE) fcleanall --directory=mylib
 	$(MAKE) fcleanall --directory=pipex

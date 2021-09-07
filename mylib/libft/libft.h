@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/06 15:45:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/07 14:35:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,6 +299,12 @@ void			ft_destroy_str_arr(char ***str);
 // Allocates and returns a string that is the concatenation of going through
 // the list's str contents
 char			*ft_nodbinstrjoin_from_back(t_node_binary *list);
+// Allocates and returns a NULL terminated string array that is the
+// concatenation of going through the list's NULL terminated str array contents
+char			**ft_nodbinstrarrjoin_from_back(t_node_binary *list);
+// Allocates and returns a NULL terminated string array that is the
+// concatenation of going through the list's str contents
+char			**ft_nodbinstr_to_strarr(t_node_binary *list);
 // Free all addresses stored in 'lst' then clears lst and sets
 // it to NULL
 void			ft_lstmallocfree(t_list **lst);
