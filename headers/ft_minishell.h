@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/07 18:10:36 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/07 18:22:33 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ typedef struct s_minishell
 {
 	char	***CommandTable;
 	int		nOfCmnds;
+	char	*inFile;
+	char	*outFile;
+	char	*errFile;
 }	t_minishell;
 
 // readline.c

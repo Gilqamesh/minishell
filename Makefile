@@ -7,7 +7,7 @@ MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
 SRC = readline.c minishell.c stack_operations.c convertStrToTokens.c \
-isValidCmdLine.c
+isValidCmdLine.c parseTokens.c
 
 $(NAME): $(MYLIB) $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)

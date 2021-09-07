@@ -7,9 +7,9 @@
 // First order of operations
 //
 // 1.	Breaks input string into words and operators, obeying the Quoting rules.
-// 		These tokens (words/operators) are separated by metacharacters.
+// 		These tokens (words/operators) are separated by metacharacters. (Lexer)
 //		metacharacters: ' ', '\t', '\n', '|', '&', ';', '(', ')', '<', '>'
-// 2.	Parses the tokens into simple and compound commands.
+// 2.	Parses the tokens into simple and compound commands. (Parser)
 // 3.	Performs the various shell expansions, breaking the expanded tokens into
 //		lists of filenames and commands and arguments.
 // 4.	Performs any necessary redirections and removes the redirection

@@ -20,10 +20,10 @@ void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
 		printf("Not nested properly\n");
 		return ;
 	}
-	tokens = convertStrToTokens(CmdLine);
+	tokens = convertStrToTokens(CmdLine); // Lexer
 	int i = -1;
 	while (tokens[++i])
 		ft_printf("%s\n", tokens[i]);
+	mystruct->CommandTable = parseTokens(mystruct, tokens); // Parser
 	ft_destroy_str_arr(&tokens);
-	(void)mystruct;
 }
