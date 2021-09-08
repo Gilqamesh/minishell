@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:02:11 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 16:43:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ static bool	isValidToken(char *token)
 		if (isCharPartOfSet(*token, OPERATORS))
 			return (true);
 	}
-	if (ft_isValidCName(token))
-		return (true);
 	return (false);
 }
 
@@ -43,9 +41,10 @@ void	parser(t_minishell *mystruct, char **tokens)
 	{
 		if (isValidToken(tokens[i]) == false)
 		{
-			ft_printf("parse error near '%s'\n", tokens[i]);
+			ft_printf("syntax error near unexpected token `%s'\n", tokens[i]);
 			return ;
 		}
 	}
-	return (NULL);
+	(void)mystruct;
+	return ;
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:17:00 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 16:54:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -317,5 +317,7 @@ int				ft_trim_from_left_index(char *str, char *set);
 bool			ft_isStrAlphaNumeric(char *str);
 // Returns true if 'str' is a valid C identifieer, false otherwise.
 bool			ft_isValidCName(char *str);
+// Returns true if 'str' is a valid Bash identifier, false otherwise.
+bool			ft_isValidBashIdentifier(char *str);
 
 #endif

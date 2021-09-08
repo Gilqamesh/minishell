@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 16:02:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:16:11 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 16:53:08 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	isStrContainedInStrArr(char *str, char **strArr)
 
 static bool	isStrCKeyword(char *str)
 {
-	static char	**keywords = {
+	static char	*keywords[] = {
 		"auto", "break", "char", "const", "continue", "do", "double", "else",
 		"extern", "float", "float", "for", "if", NULL
 	};
@@ -41,7 +41,7 @@ static bool	isStrCKeyword(char *str)
 }
 
 /*
-** Returns true if 'str' is a valid C identifieer, false otherwise.
+** Returns true if 'str' is a valid C identifier, false otherwise.
 */
 bool	ft_isValidCName(char *str)
 {
