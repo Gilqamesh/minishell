@@ -8,6 +8,7 @@ char	*myreadline(const char *promptMsg)
 /*
 ** Checks if 'CmdLine' is properly nested or not
 ** Converts 'CmdLine' into a NULL terminated array of strings (tokens)
+** Builds 'CommandTable' in 'mystruct' based on the tokens
 */
 void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
 {
@@ -20,10 +21,10 @@ void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
 		printf("Not nested properly\n");
 		return ;
 	}
-	tokens = convertStrToTokens(CmdLine); // Lexer
+	tokens = lexer(CmdLine);
 	int i = -1;
 	while (tokens[++i])
 		ft_printf("%s\n", tokens[i]);
-	mystruct->CommandTable = parseTokens(mystruct, tokens); // Parser
+	parser(mystruct, tokens);
 	ft_destroy_str_arr(&tokens);
 }

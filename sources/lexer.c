@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   convertStrToTokens.c                               :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/07 18:11:31 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 15:58:07 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
-
-/*
-** Returns true if 'c' is part of 'set', otherwise false.
-*/
-static bool	isCharPartOfSet(char c, char *set)
-{
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
-}
 
 /*
 ** Breaks down 's' into substrings, removing matching ' or " from the string.
@@ -86,10 +73,20 @@ static void	appendLstWithTokens(t_node_binary **tokenlst, char *str)
 	while (*str)
 	{
 		while (isCharPartOfSet(*str, METACHARACTERS))
-			str++;
-		prev = str;
+		{
+			str += ft_trim_from_left_index(str, WHITESPACES);
+			if (isCharPartOfSet(*str, OPERATORS))
+			{
+				prev = str;
+				str += ft_trim_from_left_index(str, OPERATORS);
+				ft_nodbinadd_front(tokenlst, ft_nodbinnew(ft_substr(prev, 0,
+					str - prev)));
+			}
+			str += ft_trim_from_left_index(str, WHITESPACES);
+		}
 		if (!*str)
 			break ;
+		prev = str;
 		while (*str && !isCharPartOfSet(*str, METACHARACTERS))
 		{
 			if (*str == '\'')
@@ -98,8 +95,8 @@ static void	appendLstWithTokens(t_node_binary **tokenlst, char *str)
 				str = ft_strchr(str + 1, '\"');
 			if (str == NULL)
 				// This can't happen, problem with 'isValidCmdLine' function.
-				// This exit() call is for debugging only, remove it later
-				// As we never want to exit from the shell.
+				// This exit() call is for debugging only, remove it or change
+				// it later, as we never want to exit from the shell.
 				exit(1);
 			str++;
 		}
@@ -112,7 +109,7 @@ static void	appendLstWithTokens(t_node_binary **tokenlst, char *str)
 ** Allocates and returns a NULL terminated array of strings.
 ** The strings are separated by metacharacters, obeying the quoting rules.
 */
-char	**convertStrToTokens(char *str)
+char	**lexer(char *str)
 {
 	char			**tokenarr;
 	t_node_binary	*tokenlst;

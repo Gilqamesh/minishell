@@ -1,17 +1,18 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 SDIR = sources
 ODIR = objects
+HDIR = headers
 NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
-SRC = readline.c minishell.c stack_operations.c convertStrToTokens.c \
-isValidCmdLine.c parseTokens.c
+SRC = readline.c minishell.c stack_operations.c lexer.c \
+isValidCmdLine.c parser.c
 
 $(NAME): $(MYLIB) $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)
-$(ODIR)/%.o: $(SDIR)/%.c
+$(ODIR)/%.o: $(SDIR)/%.c $(HDIR)/ft_minishell.h
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
 	$(MAKE) --directory=mylib

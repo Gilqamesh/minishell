@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/07 18:22:33 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 16:00:21 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,54 @@
 # include <readline/history.h>
 
 // Defines
-# define METACHARACTERS " \t\n|&;()<>"
+//
+// not supported currently: "&;()"
+# define METACHARACTERS " \t\n|<>"
+# define WHITESPACES " \t\n"
+# define OPERATORS "|<>"
+// debugging
+# define PRINT_HERE() (ft_printf("line %d, file %s\n", __LINE__, __FILE__))
+
+// Binary Tree ADT to implement Abstract Syntax Tree
+// We don't need this for mandatory as we don't have any operator presedence
+# ifndef T_BIN_TREE
+#  define T_BIN_TREE
+typedef struct s_bin_tree
+{
+	int					type;
+	char				*token;
+	struct s_bin_tree	*left;
+	struct s_bin_tree	*right;
+}	t_bin_tree;
+# endif
+
+typedef struct s_node
+{
+	int		type;
+	union
+	{
+		char	*filename;
+		char	**arguments;
+	}	u_data;
+}	t_node;
 
 // Main structure for the project
+// 'CommandTable' is a table, each row is an array of simple commands
+// A simple command is a NULL terminated str array, ex: "grep" "if" NULL
 typedef struct s_minishell
 {
-	char	***CommandTable;
-	int		nOfCmnds;
+	t_list	*nodes;
 	char	*inFile;
 	char	*outFile;
 	char	*errFile;
 }	t_minishell;
 
-// readline.c
 char		*myreadline(const char *promptMsg);
-char		**convertStrToTokens(char *str);
 void		parseCmdLine(t_minishell *mystruct, char *CmdLine);
+char		**lexer(char *str);
 bool		isValidCmdLine(char *CmdLine);
+void		parser(t_minishell *mystruct, char **tokens);
+bool		isCharPartOfSet(char c, char *set);
 
 // Stack operations
 //

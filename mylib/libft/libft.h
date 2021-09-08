@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/07 14:35:17 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/08 16:17:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,5 +311,11 @@ void			ft_lstmallocfree(t_list **lst);
 // Malloc instead it also adds the address into 'lst'
 // Use ft_lstmallocfree to free all the saved addresses
 void			*ft_lstmallocwrapper(t_list **lst, size_t size, bool is_calloc);
+// Returns the first index in 'str' that is not part of 'set'
+int				ft_trim_from_left_index(char *str, char *set);
+// Returns true if 'str' only consists of alphanumeric characters.
+bool			ft_isStrAlphaNumeric(char *str);
+// Returns true if 'str' is a valid C identifieer, false otherwise.
+bool			ft_isValidCName(char *str);
 
 #endif

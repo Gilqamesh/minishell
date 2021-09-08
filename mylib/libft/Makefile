@@ -6,7 +6,7 @@
 #    By: edavid <edavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/15 10:05:25 by edavid            #+#    #+#              #
-#    Updated: 2021/09/07 14:35:22 by edavid           ###   ########.fr        #
+#    Updated: 2021/09/08 16:17:22 by edavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ ft_abs_int.c ft_merge_sort_str.c ft_strcmp.c ft_intdup.c ft_printintarr.c \
 ft_intlen.c ft_minofint.c ft_putnstr_fd.c ft_maxofint.c ft_baselen.c ft_itobase.c \
 ft_n_of_words_by_delim.c ft_destroy_str_arr.c ft_nodbinstrjoin_from_back.c \
 ft_lstmallocwrapper.c ft_lstmallocfree.c ft_splitstr.c ft_nodbinstrarrjoin_from_back.c \
-ft_nodbinstr_to_strarr.c
+ft_nodbinstr_to_strarr.c ft_trim_from_left_index.c ft_isStrAlphaNumeric.c \
+ft_isValidCName.c
 
 NAME = libft.a
 

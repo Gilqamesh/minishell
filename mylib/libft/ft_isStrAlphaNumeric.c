@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parseTokens.c                                      :+:      :+:    :+:   */
+/*   ft_isStrAlphaNumeric.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/07 19:07:13 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/08 16:04:51 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/08 16:09:29 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Builds the CommandTable in 'mystruct'
+** Returns true if 'str' only consists of alphanumeric characters.
 */
-char	***parseTokens(t_minishell *mystruct, char **tokens)
+bool	ft_isStrAlphaNumeric(char *str)
 {
+	if (str == NULL)
+		return (false);
+	while (*str)
+		if (!ft_isalnum(*str++))
+			return (false);
+	return (true);
 }
