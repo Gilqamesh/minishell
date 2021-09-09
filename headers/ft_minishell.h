@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:48:19 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 12:47:53 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # define OPERATORS "|<>"
 // debugging
 # define PRINT_HERE() (ft_printf("line %d, file %s\n", __LINE__, __FILE__))
+// type defines for 't_shell_node'
+# define TYPE_OPERATOR	0
+# define TYPE_FILENAME	1
+# define TYPE_COMMAND	2
 
 // Binary Tree ADT to implement Abstract Syntax Tree
 // We don't need this for mandatory as we don't have any operator presedence
@@ -41,15 +45,25 @@ typedef struct s_bin_tree
 }	t_bin_tree;
 # endif
 
-typedef struct s_node
+typedef struct s_std_FDs
 {
-	int		type;
+	char	*inFile;
+	char	*outFile;
+	char	*errFile;
+}	t_std_FDs;
+
+// Command/Filename/Operator
+typedef struct s_shell_node
+{
+	int			type;
 	union
 	{
+		char	*operator;
 		char	*filename;
 		char	**arguments;
 	}	u_data;
-}	t_node;
+	t_std_FDs	FDs;
+}	t_shell_node;
 
 // Main structure for the project
 // 'CommandTable' is a table, each row is an array of simple commands
