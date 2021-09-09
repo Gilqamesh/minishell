@@ -24,6 +24,6 @@ int	parseCmdLine(t_minishell *mystruct)
 	// printTokens(mystruct);
 	if (parser(mystruct))
 		return (1);
-	
+	// printNodes(mystruct);
 	return (0);
 }

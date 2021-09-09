@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 17:52:37 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:33:07 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 19:53:37 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,31 @@ bool	isValidFilename(char *str)
 	if (ft_strlen(str) <= NAME_MAX)
 		return (true);
 	return (false);
+}
+
+/*
+** Returns true if 'str' is obeying the quoting rules in bash, false otherwise
+*/
+static bool	isProperlyNested(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\'')
+			str = ft_strchr(str + 1, '\'');
+		else if (*str == '\"')
+			str = ft_strchr(str + 1, '\"');
+		if (str == NULL)
+			return (false);
+		str++;
+	}
+	return (true);
+}
+
+/*
+** Checks if 'CmdLine' is quoted properly
+** And that metacharacters are used properly
+*/
+bool	isValidCmdLine(char *CmdLine)
+{
+	return (isProperlyNested(CmdLine));
 }
