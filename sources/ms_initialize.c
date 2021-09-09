@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:48:41 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/09 19:25:08 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-/*
-** Returns true if 'c' is part of 'set', otherwise false.
-*/
-bool	isCharPartOfSet(char c, char *set)
+static void	init_envp(t_minishell *mystruct)
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	ft_nodbinadd_front(&mystruct->envpLst, ft_nodbinnew(ft_strjoin("PATH=",
+		getenv("PATH"))));
+	mystruct->envp = ft_nodbinstr_to_strarr(mystruct->envpLst);
+}
+
+/*
+** Initialize 'mystruct'
+*/
+void	init_mystruct(t_minishell *mystruct)
+{
+	ft_bzero(mystruct, sizeof(*mystruct));
+	init_envp(mystruct);
 }

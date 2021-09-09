@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_isStrContainedInStrArr.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:48:41 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/09 18:01:29 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/09 18:03:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Returns true if 'str' is contained in the NULL terminated 'strArr'
 */
-bool	isCharPartOfSet(char c, char *set)
+bool	ft_isStrContainedInStrArr(char *str, char **strArr)
 {
-	if (set == NULL)
+	if (str == NULL || strArr == NULL)
 		return (false);
-	while (*set)
-		if (c == *set++)
+	while (*strArr)
+	{
+		if (!ft_strcmp(str, *strArr))
 			return (true);
+		strArr++;
+	}
 	return (false);
 }

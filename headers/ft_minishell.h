@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 12:47:53 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 19:49:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "../pipex/headers/pipex.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 
 // Defines
 //
@@ -55,14 +56,15 @@ typedef struct s_std_FDs
 // Command/Filename/Operator
 typedef struct s_shell_node
 {
-	int			type;
+	int					type;
 	union
 	{
-		char	*operator;
-		char	*filename;
-		char	**arguments;
+		char			*operator;
+		char			*filename;
+		char			**arguments;
 	}	u_data;
-	t_std_FDs	FDs;
+	t_std_FDs			FDs;
+	struct s_shell_node	*next;
 }	t_shell_node;
 
 // Main structure for the project
@@ -70,18 +72,35 @@ typedef struct s_shell_node
 // A simple command is a NULL terminated str array, ex: "grep" "if" NULL
 typedef struct s_minishell
 {
-	t_list	*nodes;
-	char	*inFile;
-	char	*outFile;
-	char	*errFile;
+	char			*promptStr;
+	char			**tokens;
+	t_shell_node	*nodes;
+	char			*inFile;
+	char			*outFile;
+	char			*errFile;
+	char			**envp;
+	t_node_binary	*envpLst;
 }	t_minishell;
 
 char		*myreadline(const char *promptMsg);
-void		parseCmdLine(t_minishell *mystruct, char *CmdLine);
-char		**lexer(char *str);
+int			parseCmdLine(t_minishell *mystruct);
+int			lexer(t_minishell *mystruct);
 bool		isValidCmdLine(char *CmdLine);
-void		parser(t_minishell *mystruct, char **tokens);
+int			parser(t_minishell *mystruct);
 bool		isCharPartOfSet(char c, char *set);
+void		free_mystruct(t_minishell *mystruct);
+bool		isValidOperator(char *str);
+bool		isValidCommand(t_minishell *mystruct, char *str);
+bool		isValidFilename(char *str);
+void		init_mystruct(t_minishell *mystruct);
+
+// DEBUG FUNCTIONS
+// Print 'mystruct->tokens'.
+void		printTokens(t_minishell *mystruct);
+// Print 'mystruct->nodes'.
+void		printNodes(t_minishell *mystruct);
+// Prints a NULL terminated strArr.
+void		printStrArr(char **strArr);
 
 // Stack operations
 //

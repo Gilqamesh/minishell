@@ -10,21 +10,20 @@ char	*myreadline(const char *promptMsg)
 ** Converts 'CmdLine' into a NULL terminated array of strings (tokens)
 ** Builds 'CommandTable' in 'mystruct' based on the tokens
 */
-void	parseCmdLine(t_minishell *mystruct, char *CmdLine)
+int	parseCmdLine(t_minishell *mystruct)
 {
-	char	**tokens;
-
-	if (isValidCmdLine(CmdLine) == false)
+	if (isValidCmdLine(mystruct->promptStr) == false)
 	{
 	// Could just ignore the CmdLine and skip this case entirely (pdf)
 	// Or give new prompt to the user waiting for the enclosing quotes (bash)
 		printf("Not nested properly\n");
-		return ;
+		return (1);
 	}
-	tokens = lexer(CmdLine);
-	int i = -1;
-	while (tokens[++i])
-		ft_printf("%s\n", tokens[i]);
-	parser(mystruct, tokens);
-	ft_destroy_str_arr(&tokens);
+	if (lexer(mystruct))
+		return (1);
+	// printTokens(mystruct);
+	if (parser(mystruct))
+		return (1);
+	
+	return (0);
 }

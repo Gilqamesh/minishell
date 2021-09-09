@@ -28,4 +28,5 @@ re:
 bonus:
 	make $(NAME)
 fcleanall:
+	make fclean
 	$(MAKE) fcleanall --directory=$(MYLIBDIR)

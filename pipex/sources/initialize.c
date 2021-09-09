@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/04 17:34:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 19:21:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	initialize_Cmds(t_pipex *mystruct, char *argv[], char *envp[])
 			error_handler(mystruct, PIPEX_ERR, "ft_split() failed\n");
 		if (mystruct->commands[i][0] == NULL)
 			error_handler(mystruct, PIPEX_EUSAGE, "Empty command\n");
-		cmd_path(mystruct, &mystruct->commands[i][0], envp);
+		cmd_path(&mystruct->commands[i][0], envp);
 	}
 }
 
@@ -94,7 +94,7 @@ t_pipex *mystruct)
 ** It tries out all the possibilities in the string array 'paths'
 ** If none of them are valid paths for 'cmd', the function returns NULL
 */
-static char	*get_cur_path(t_pipex *mystruct, char **paths, char **cmd)
+static char	*get_cur_path(char **paths, char **cmd)
 {
 	int		i;
 	char	*cur_path;
@@ -103,9 +103,7 @@ static char	*get_cur_path(t_pipex *mystruct, char **paths, char **cmd)
 	while (paths[++i])
 	{
 		cur_path = ft_strjoin_free(ft_strdup(paths[i]), ft_strjoin("/", *cmd));
-		if (cur_path == NULL)
-			error_handler(mystruct, PIPEX_ERR, "ft_strjoin_free() failed\n");
-		if (!access(cur_path, F_OK))
+		if (!access(cur_path, F_OK | X_OK))
 			break ;
 		free(cur_path);
 	}
@@ -119,19 +117,19 @@ static char	*get_cur_path(t_pipex *mystruct, char **paths, char **cmd)
 ** 'envp' is the environment variable from the shell
 ** Returns NULL on failure
 */
-void	cmd_path(t_pipex *mystruct, char **cmd, char *envp[])
+void	cmd_path(char **cmd, char *envp[])
 {
 	int		i;
 	char	**paths;
 	char	*cur_path;
 
+	if (!access(*cmd, F_OK | X_OK))
+		return ;
 	i = -1;
 	while (envp[++i] && ft_strncmp(envp[i], "PATH=", 5))
 		;
 	paths = ft_split(envp[i] + 5, ':');
-	if (paths == NULL)
-		error_handler(mystruct, PIPEX_ERR, "ft_split() failed\n");
-	cur_path = get_cur_path(mystruct, paths, cmd);
+	cur_path = get_cur_path(paths, cmd);
 	if (cur_path == NULL)
 		cur_path = ft_strdup("");
 	ft_destroy_str_arr(&paths);

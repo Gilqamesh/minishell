@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 15:58:07 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 17:50:52 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ static char	*removeQuotes(char *s, size_t len)
 /*
 ** Breaks down 'str' into allocated tokens and appends 'tokenlst' with them.
 */
-static void	appendLstWithTokens(t_node_binary **tokenlst, char *str)
+static int	appendLstWithTokens(t_minishell *mystruct, t_node_binary **tokenlst)
 {
 	char		*prev;
+	char		*str;
 
+	str = mystruct->promptStr;
 	while (*str)
 	{
 		while (isCharPartOfSet(*str, METACHARACTERS))
@@ -94,29 +96,30 @@ static void	appendLstWithTokens(t_node_binary **tokenlst, char *str)
 			else if (*str == '\"')
 				str = ft_strchr(str + 1, '\"');
 			if (str == NULL)
-				// This can't happen, problem with 'isValidCmdLine' function.
-				// This exit() call is for debugging only, remove it or change
-				// it later, as we never want to exit from the shell.
-				exit(1);
+			{
+				free_mystruct(mystruct);
+				return (1);
+			}
 			str++;
 		}
 		ft_nodbinadd_front(tokenlst,
 			ft_nodbinnew(removeQuotes(prev, str - prev)));
 	}
+	return (0);
 }
 
 /*
 ** Allocates and returns a NULL terminated array of strings.
 ** The strings are separated by metacharacters, obeying the quoting rules.
 */
-char	**lexer(char *str)
+int	lexer(t_minishell *mystruct)
 {
-	char			**tokenarr;
 	t_node_binary	*tokenlst;
 
 	tokenlst = NULL;
-	appendLstWithTokens(&tokenlst, str);
-	tokenarr = ft_nodbinstr_to_strarr(tokenlst);
+	if (appendLstWithTokens(mystruct, &tokenlst))
+		return (1);
+	mystruct->tokens = ft_nodbinstr_to_strarr(tokenlst);
 	ft_nodbinclear(&tokenlst, ft_nodbindel, -1);
-	return (tokenarr);
+	return (0);
 }

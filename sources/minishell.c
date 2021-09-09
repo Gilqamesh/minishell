@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/09 12:16:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 19:40:13 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 int	main(void)
 {
-	char		 *str;
 	t_minishell	mystruct;
 
+	init_mystruct(&mystruct);
 	while(1)
 	{
-		str = myreadline("hello, please enter a command line: ");
-			if (str == NULL)
+		mystruct.promptStr = myreadline("hello, please enter a command line: ");
+			if (mystruct.promptStr == NULL)
 				continue ;
-		ft_bzero(&mystruct, sizeof(mystruct));
-		parseCmdLine(&mystruct, str);
-		free(str);
+		if (parseCmdLine(&mystruct))
+			continue ;
 	}
 	return (0);
 }

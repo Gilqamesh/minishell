@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:54:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/09 18:29:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,5 +319,7 @@ bool			ft_isStrAlphaNumeric(char *str);
 bool			ft_isValidCName(char *str);
 // Returns true if 'str' is a valid Bash identifier, false otherwise.
 bool			ft_isValidBashIdentifier(char *str);
+// Returns true if 'str' is contained in the NULL terminated 'strArr'.
+bool			ft_isStrContainedInStrArr(char *str, char **strArr);
 
 #endif
