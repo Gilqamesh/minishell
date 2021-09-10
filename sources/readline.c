@@ -3,9 +3,9 @@
 char	*myreadline(const char *promptMsg)
 {
 	char* buf;
-	
+
 	buf = readline(promptMsg); 
-    if (strlen(buf) > 0)
+	if (ft_strlen(buf) > 0)
 		add_history(buf);
 	return (buf);
 }
