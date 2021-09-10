@@ -2,7 +2,12 @@
 
 char	*myreadline(const char *promptMsg)
 {
-	return (readline(promptMsg));
+	char* buf;
+	
+	buf = readline(promptMsg); 
+    if (strlen(buf) > 0)
+		add_history(buf);
+	return (buf);
 }
 
 /*
