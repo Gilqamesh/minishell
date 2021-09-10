@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 17:50:52 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 12:54:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ static void	appendLstWithChars(t_node_binary **charLst, char *s, size_t len)
 				ft_nodbinclear(charLst, ft_nodbindel, -1);
 				return ;
 			}
-			ft_nodbinadd_front(charLst, ft_nodbinnew(ft_substr(prev + 1, 0,
-				s - prev - 1)));
+			ft_nodbinadd_front(charLst, ft_nodbinnew(ft_substr(prev, 0,
+				s - prev + 1)));
 			len -= s++ - prev;
 			continue ;
 		}
@@ -109,7 +109,7 @@ static int	appendLstWithTokens(t_minishell *mystruct, t_node_binary **tokenlst)
 }
 
 /*
-** Allocates and returns a NULL terminated array of strings.
+** Allocates 'mystruct->tokens' with a NULL terminated array of strings.
 ** The strings are separated by metacharacters, obeying the quoting rules.
 */
 int	lexer(t_minishell *mystruct)

@@ -11,7 +11,7 @@
 //		metacharacters: ' ', '\t', '\n', '|', '&', ';', '(', ')', '<', '>'
 // 2.	Parses the tokens into simple and compound commands. (Parser)
 // 3.	Performs the various shell expansions, breaking the expanded tokens into
-//		lists of filenames and commands and arguments. (Expandor)
+//		lists of filenames and commands and arguments. (Expander)
 // 4.	Performs any necessary redirections and removes the redirection
 //		operators and their operands from the argument list.
 // 5.	Executes the command.
