@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:49:18 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 11:25:12 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ bool		isValidOperator(char *str);
 bool		isValidCommand(t_minishell *mystruct, char *str);
 bool		isValidFilename(char *str);
 void		init_mystruct(t_minishell *mystruct);
+void		clearStruct(t_minishell *mystruct);
+void		ft_shell_node_add_back(t_shell_node **lst, t_shell_node *new);
+void		ft_shell_node_clear(t_shell_node **lst, void (*del)(void *));
+void		ft_shell_node_delone(t_shell_node *item, void (*del)(void *));
+void		ft_shell_node_del(void *item);
 
 // DEBUG FUNCTIONS
 // Print 'mystruct->tokens'.

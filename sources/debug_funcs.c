@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:51:06 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 11:44:43 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	printStrArr(char **strArr)
 	if (strArr == NULL)
 		return ;
 	while (*strArr)
-		ft_printf("%s\n", *strArr++);
+		ft_printf("%s ", *strArr++);
+	ft_printf("\n");
 }
 
 void	printNodes(t_minishell *mystruct)
@@ -46,5 +47,6 @@ void	printNodes(t_minishell *mystruct)
 			printStrArr(tmp->u_data.arguments);
 		else
 			ft_printf("Wrong type for node in printNodes\n");
+		tmp = tmp->next;
 	}	
 }
