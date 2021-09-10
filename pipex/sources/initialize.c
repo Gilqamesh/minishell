@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 19:21:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:24:13 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,22 @@
 
 /*
 ** Initializes command arguments and store them
+** Not supported: 'awk'
 ** Warning, delimiter used for each argument is ' ', so stuff like awk is not
 ** handled, ex.: "awk '{print $3}'" would be interpreted as:
 ** "awk" "'{print" "$3}'"
 */
 static void	initialize_Cmds(t_pipex *mystruct, char *argv[], char *envp[])
 {
-	int	i;
-	int	firstArgIndex;
+	int			i;
+	int			firstArgIndex;
+	t_obj_lst	*envpLst;
 
 	if (mystruct->isHereDoc)
 		firstArgIndex = 3;
 	else
 		firstArgIndex = 2;
+	envpLst = ft_objlst_mapFromEnv(envp);
 	i = -1;
 	while (++i < mystruct->nOfCmds)
 	{
@@ -35,7 +38,7 @@ static void	initialize_Cmds(t_pipex *mystruct, char *argv[], char *envp[])
 			error_handler(mystruct, PIPEX_ERR, "ft_split() failed\n");
 		if (mystruct->commands[i][0] == NULL)
 			error_handler(mystruct, PIPEX_EUSAGE, "Empty command\n");
-		cmd_path(&mystruct->commands[i][0], envp);
+		cmd_path(&mystruct->commands[i][0], envpLst);
 	}
 }
 
@@ -115,20 +118,19 @@ static char	*get_cur_path(char **paths, char **cmd)
 /*
 ** Allocates and returns a string that is the path of the UNIX command 'cmd'
 ** 'envp' is the environment variable from the shell
-** Returns NULL on failure
 */
-void	cmd_path(char **cmd, char *envp[])
+void	cmd_path(char **cmd, t_obj_lst *envp)
 {
-	int		i;
-	char	**paths;
-	char	*cur_path;
+	char		**paths;
+	char		*cur_path;
+	t_obj_lst	*keyPtr;
 
 	if (!access(*cmd, F_OK | X_OK))
 		return ;
-	i = -1;
-	while (envp[++i] && ft_strncmp(envp[i], "PATH=", 5))
-		;
-	paths = ft_split(envp[i] + 5, ':');
+	keyPtr = ft_objlst_findbykey(envp, "PATH");
+	if (keyPtr == NULL)
+		return ;
+	paths = ft_split(keyPtr->value, ':');
 	cur_path = get_cur_path(paths, cmd);
 	if (cur_path == NULL)
 		cur_path = ft_strdup("");

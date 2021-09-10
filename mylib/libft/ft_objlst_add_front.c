@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_objlst_add_front.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/10 17:53:19 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/10 17:54:13 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Adds the element 'new' at the beginning of the list.
 */
-bool	isCharPartOfSet(char c, char *set)
+void	ft_objlstadd_front(t_obj_lst **lst, t_obj_lst *new)
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	new->next = *lst;
+	*lst = new;
 }

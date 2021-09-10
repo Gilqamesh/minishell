@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 17:52:37 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 11:46:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:33:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	isValidCommand(t_minishell *mystruct, char *str)
 	if (ft_isStrContainedInStrArr(str, builtIns))
 		return (true);
 	cmd = ft_strdup(str);
-	cmd_path(&cmd, mystruct->envp);
+	cmd_path(&cmd, mystruct->envpLst);
 	if (*cmd == '\0')
 	{
 		free(cmd);

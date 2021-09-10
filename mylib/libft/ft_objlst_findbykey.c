@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_objlst_findbykey.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/10 17:32:55 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/10 17:40:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Finds the str 'key' in the list 'head' and returns the address to it.
+** Returns NULL if no match was found.
+** Match if: 'key' == 'head'->key
 */
-bool	isCharPartOfSet(char c, char *set)
+t_obj_lst	*ft_objlst_findbykey(t_obj_lst *head, char *key)
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	t_obj_lst	*cur;
+
+	if (head == NULL)
+		return (NULL);
+	cur = head;
+	while (cur)
+	{
+		if (!ft_strcmp(key, head->key))
+			break ;
+		cur = cur->next;
+	}
+	return (cur);
 }

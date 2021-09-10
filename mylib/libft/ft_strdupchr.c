@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strdupchr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/10 18:05:24 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/10 18:19:11 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Works like the function 'ft_strdup' but only copies the 'str' just before the
+** first matching of char 'c' in 'str'.
 */
-bool	isCharPartOfSet(char c, char *set)
+char	*ft_strdupchr(char *str, char c)
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	char	*tmp;
+
+	if (str == NULL)
+		return (NULL);
+	tmp = ft_strchr(str, c);
+	if (tmp == NULL)
+		return (ft_strdup(str));
+	return (ft_substr(str, 0, tmp - str));
 }

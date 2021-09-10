@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 11:25:12 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:32:22 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,14 @@ typedef struct s_minishell
 	char			*inFile;
 	char			*outFile;
 	char			*errFile;
-	char			**envp;
-	t_node_binary	*envpLst;
+	t_obj_lst		*envpLst;
+	unsigned char	fgExitStatus;
 }	t_minishell;
 
 char		*myreadline(const char *promptMsg);
 int			parseCmdLine(t_minishell *mystruct);
 int			lexer(t_minishell *mystruct);
+int			expander(t_minishell *mystruct);
 bool		isValidCmdLine(char *CmdLine);
 int			parser(t_minishell *mystruct);
 bool		isCharPartOfSet(char c, char *set);

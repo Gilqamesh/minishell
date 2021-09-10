@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_objlst_new.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/10 17:55:29 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/10 18:20:13 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Allocates and returns a new element t_obj_lst *result;
+** result->key = key;
+** result->value = value;
+** The variable 'next' is initialized to NULL.
 */
-bool	isCharPartOfSet(char c, char *set)
+t_obj_lst	*ft_objlst_new(char *key, char *value)
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	t_obj_lst	*new;
+
+	new = ft_calloc(1, sizeof(*new));
+	new->key = key;
+	new->value = value;
+	new->next = NULL;
+	return (new);
 }

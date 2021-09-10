@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_objlst_clear.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/10 18:34:49 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/10 18:39:54 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Returns true if 'c' is part of 'set', otherwise false.
+** Frees the list using the function 'del' and free.
+** Finally, the pointer to the list is set to NULL.
 */
-bool	isCharPartOfSet(char c, char *set)
+void	ft_objlst_clear(t_obj_lst **lst, void (*del)(void *))
 {
-	if (set == NULL)
-		return (false);
-	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	t_obj_lst	*cur;
+	t_obj_lst	*tmp;
+
+	if (lst == NULL || *lst == NULL)
+		return ;
+	cur = *lst;
+	while (cur)
+	{
+		tmp = cur;
+		cur = cur->next;
+		ft_objlst_delone(tmp, del);
+	}
+	*lst = NULL;
 }

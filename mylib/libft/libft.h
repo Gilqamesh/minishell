@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 18:29:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 18:46:58 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,5 +321,34 @@ bool			ft_isValidCName(char *str);
 bool			ft_isValidBashIdentifier(char *str);
 // Returns true if 'str' is contained in the NULL terminated 'strArr'.
 bool			ft_isStrContainedInStrArr(char *str, char **strArr);
+# ifndef T_OBJ_LST
+#  define T_OBJ_LST
+typedef struct s_obj_lst
+{
+	char				*key;
+	char				*value;
+	struct s_obj_lst	*next;
+}	t_obj_lst;
+# endif
+// Finds the str 'key' in the list 'head' and returns the address to it.
+t_obj_lst		*ft_objlst_findbykey(t_obj_lst *head, char *key);
+// Adds the element 'new' at the beginning of the list.
+void			ft_objlstadd_front(t_obj_lst **lst, t_obj_lst *new);
+// Allocates and returns a new element t_obj_lst *result;
+t_obj_lst		*ft_objlst_new(char *key, char *value);
+// Works like the function 'ft_strdup' but only copies the 'str' until the first
+// matching of char 'c' in 'str'.
+char			*ft_strdupchr(char *str, char c);
+// Creates a list using the NULL terminated 'strArr' and returns a pointer to it
+// In reverse order, using ft_objlst_front.
+t_obj_lst		*ft_objlst_mapFromEnv(char **strArr);
+// Frees the list using the function 'del' and free.
+// Finally, the pointer to the list is set to NULL.
+void			ft_objlst_clear(t_obj_lst **lst, void (*del)(void *));
+// Applies the function 'del' on 'lst'.
+// The memory of 'next' is not freed.
+void			ft_objlst_delone(t_obj_lst *lst, void (*del)(void *));
+// Frees node->content and node, where node is of type *t_obj_lst
+void			ft_objlst_del(void *node);
 
 #endif

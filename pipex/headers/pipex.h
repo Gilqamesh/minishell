@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/19 16:24:08 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/09 18:17:37 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/10 17:44:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int		handle_lastCmd_outputFile(t_pipex *mystruct);
 void	destroy_mystruct(t_pipex *mystruct);
 void	initialize_mystruct(int argc, char *argv[], char *envp[],
 			t_pipex *mystruct);
-void	cmd_path(char **cmd, char *envp[]);
+void	cmd_path(char **cmd, t_obj_lst *lst);
 void	closePreviousPipes(t_pipex *mystruct, int upToPipeNum);
 void	read_until_delimiter(t_pipex *mystruct);
 int		wait_childProcess(void);
