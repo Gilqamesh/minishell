@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:55:36 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 16:13:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	expander(t_minishell *mystruct)
 			expandStr(mystruct, &mystruct->tokens[i], parameter, tmp);
 			if (parameter)
 				free(parameter);
-			tmp = expandIndex(mystruct->tokens[i] + 1);
+			tmp = expandIndex(mystruct->tokens[i]);
 		}
 	}
 	return (0);
