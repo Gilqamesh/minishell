@@ -2,9 +2,9 @@
 
 char	*myreadline(const char *promptMsg)
 {
-	char* buf;
+	char	*buf;
 
-	buf = readline(promptMsg); 
+	buf = readline(promptMsg);
 	if (ft_strlen(buf) > 0)
 		add_history(buf);
 	return (buf);
@@ -17,7 +17,7 @@ char	*myreadline(const char *promptMsg)
 */
 int	parseCmdLine(t_minishell *mystruct)
 {
-	if (isValidCmdLine(mystruct->promptStr) == false)
+	if (isProperlyNested(mystruct->promptStr) == false)
 	{
 	// Could just ignore the CmdLine and skip this case entirely (pdf)
 	// Or give new prompt to the user waiting for the enclosing quotes (bash)
@@ -26,12 +26,14 @@ int	parseCmdLine(t_minishell *mystruct)
 	}
 	if (lexer(mystruct))
 		return (1);
-	printTokens(mystruct);
+	// printTokens(mystruct);
 	if (expander(mystruct))
 		return (1);
 	if (parser(mystruct))
 		return (1);
 	printNodes(mystruct);
+	if (executor(mystruct))
+		return (1);
 	clearStruct(mystruct);
 	return (0);
 }

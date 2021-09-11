@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/05 19:06:53 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 19:37:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, char *argv[], char *envp[])
 	if (mystruct->isHereDoc)
 		read_until_delimiter(mystruct);
 	if (execve(mystruct->commands[0][0], mystruct->commands[0], envp) == -1)
-		error_handler(mystruct, PIPEX_EEXIT, "command not found\n");
+		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/19 16:24:08 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 17:44:26 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 19:37:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int		ft_pipex(int argc, char *argv[], char *envp[]);
 /*
 ** Error codes
 */
-# define PIPEX_ECMD		1	/* Command was not found */
 # define PIPEX_EUSAGE	2	/* Wrong usage */
 # define PIPEX_EMALLOC	3	/* Malloc failed */
 # define PIPEX_ERR		4	/* Unexpected error */
@@ -65,5 +64,6 @@ int		ft_pipex(int argc, char *argv[], char *envp[]);
 # define PIPEX_EDUP2	9	/* dup2() failed */
 # define PIPEX_ESTATUS	10	/* Status code error */
 # define PIPEX_EEXIT	11	/* Process has not exited properly */
+# define PIPEX_ECMD		127	/* Command was not found */
 
 #endif

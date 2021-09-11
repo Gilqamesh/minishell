@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:22 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 18:20:34 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char		*myreadline(const char *promptMsg);
 int			parseCmdLine(t_minishell *mystruct);
 int			lexer(t_minishell *mystruct);
 int			expander(t_minishell *mystruct);
-bool		isValidCmdLine(char *CmdLine);
+bool		isProperlyNested(char *str);
 int			parser(t_minishell *mystruct);
 bool		isCharPartOfSet(char c, char *set);
 void		free_mystruct(t_minishell *mystruct);
@@ -99,6 +99,7 @@ void		ft_shell_node_add_back(t_shell_node **lst, t_shell_node *new);
 void		ft_shell_node_clear(t_shell_node **lst, void (*del)(void *));
 void		ft_shell_node_delone(t_shell_node *item, void (*del)(void *));
 void		ft_shell_node_del(void *item);
+int			executor(t_minishell *mystruct);
 
 // DEBUG FUNCTIONS
 // Print 'mystruct->tokens'.

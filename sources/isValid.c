@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 17:52:37 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:33:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 19:40:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ bool	isValidCommand(t_minishell *mystruct, char *str)
 		return (true);
 	cmd = ft_strdup(str);
 	cmd_path(&cmd, mystruct->envpLst);
-	if (*cmd == '\0')
+	if (!ft_strcmp(cmd, str))
 	{
 		free(cmd);
 		return (false);
@@ -54,6 +54,8 @@ bool	isValidCommand(t_minishell *mystruct, char *str)
 */
 bool	isValidFilename(char *str)
 {
+	if (!access(str, F_OK))
+		return (true);
 	if (ft_strlen(str) <= NAME_MAX)
 		return (true);
 	return (false);
@@ -62,7 +64,7 @@ bool	isValidFilename(char *str)
 /*
 ** Returns true if 'str' is obeying the quoting rules in bash, false otherwise
 */
-static bool	isProperlyNested(char *str)
+bool	isProperlyNested(char *str)
 {
 	while (*str)
 	{
@@ -75,13 +77,4 @@ static bool	isProperlyNested(char *str)
 		str++;
 	}
 	return (true);
-}
-
-/*
-** Checks if 'CmdLine' is quoted properly
-** And that metacharacters are used properly
-*/
-bool	isValidCmdLine(char *CmdLine)
-{
-	return (isProperlyNested(CmdLine));
 }

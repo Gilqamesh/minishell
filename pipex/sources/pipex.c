@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/05 19:11:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 19:37:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	handleChildProcess(t_pipex *mystruct, int curPipeNum, char *envp[])
 	closePipe(mystruct, curPipeNum, 1);
 	if (execve(mystruct->commands[curPipeNum][0],
 		mystruct->commands[curPipeNum], envp) == -1)
-		error_handler(mystruct, PIPEX_EEXIT, "command not found\n");
+		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
 
 /*
@@ -63,22 +63,16 @@ char *envp[])
 int	wait_childProcess(void)
 {
 	pid_t	pid;
-	int		statusCode;
 	int		wstatus;
 
-	statusCode = 0;
 	pid = wait(&wstatus);
 	if (pid == -1)
 		return (PIPEX_ERR);
 	if (WIFEXITED(wstatus))
-	{
-		statusCode = WEXITSTATUS(wstatus);
-		if (statusCode)
-			return (PIPEX_ESTATUS);
-	}
-	else
-		return (PIPEX_EEXIT);
-	return (statusCode);
+		return (WEXITSTATUS(wstatus));
+	else if (WIFSIGNALED(wstatus))
+		return (WTERMSIG(wstatus));
+	return (0);
 }
 
 /*

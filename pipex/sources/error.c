@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/04 19:44:29 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 19:48:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	error_handler(t_pipex *mystruct, int errcode, char *message)
 {
 	destroy_mystruct(mystruct);
-	perror(message);
+	ft_putstr_fd(message, STDERR_FILENO);
 	exit(errcode);
 }
 

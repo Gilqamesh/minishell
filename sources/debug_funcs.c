@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 11:44:43 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/11 16:31:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	printStrArr(char **strArr)
 {
 	if (strArr == NULL)
 		return ;
+	ft_printf("command: ");
 	while (*strArr)
 		ft_printf("%s ", *strArr++);
 	ft_printf("\n");
@@ -40,9 +41,9 @@ void	printNodes(t_minishell *mystruct)
 	while (tmp)
 	{
 		if (tmp->type == TYPE_OPERATOR)
-			ft_printf("%s\n", tmp->u_data.operator);
+			ft_printf("operator: %s\n", tmp->u_data.operator);
 		else if (tmp->type == TYPE_FILENAME)
-			ft_printf("%s\n", tmp->u_data.filename);
+			ft_printf("filename: %s\n", tmp->u_data.filename);
 		else if (tmp->type == TYPE_COMMAND)
 			printStrArr(tmp->u_data.arguments);
 		else
