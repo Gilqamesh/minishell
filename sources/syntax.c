@@ -12,18 +12,6 @@
 
 #include "../headers/ft_minishell.h"
 
-/*
-** <simple command>::=	<pathname>
-** 	        		|	<simple command>  <token>
-*/
-static int	parse_simple_cmd(t_minishell *mystruct, int start, int end)
-{
-	(void)start;
-	(void)end;
-	(void)mystruct;
-	return (0);
-}
-
 static int	parse_filename(t_minishell *mystruct, int index)
 {
 	if (isValidFilename(mystruct->tokens[index]) == true)
@@ -36,11 +24,8 @@ static int	parse_filename(t_minishell *mystruct, int index)
 ** 	        		|	<simple command> '<' <filename>
 ** 	        		|	<simple command> '>' <filename>
 */
-static int	parse_command(t_minishell *mystruct, int start, int end)
+static int	parse_command(t_minishell *mystruct, int start)
 {
-	int		tmp;
-	bool	isSimpleCmd;
-
 	if (mystruct->tokens[start] == NULL)
 		return (0);
 	if (isValidOperator(mystruct->tokens[start])
@@ -49,29 +34,14 @@ static int	parse_command(t_minishell *mystruct, int start, int end)
 		ft_printf("parse error near `%s'\n", mystruct->tokens[start]);
 		return (1);
 	}
-	isSimpleCmd = true;
-	tmp = start;
-	while (mystruct->tokens[++tmp])
+	while (mystruct->tokens[++start] && ft_strcmp(mystruct->tokens[start], "|"))
 	{
-		if (isValidOperator(mystruct->tokens[tmp]))
+		if (isValidOperator(mystruct->tokens[start])
+			&& parse_filename(mystruct, start + 1))
 		{
-			isSimpleCmd = false;
-			if (parse_filename(mystruct, tmp + 1))
-			{
-				ft_printf("parse error near `%s'\n", mystruct->tokens[tmp]);
-				return (1);
-			}
-			if (parse_simple_cmd(mystruct, start, tmp - 1))
-			{
-				ft_printf("command not found: %s\n", mystruct->tokens[start]);
-				return (1);
-			}
+			ft_printf("parse error near `%s'\n", mystruct->tokens[start]);
+			return (1);
 		}
-	}
-	if (isSimpleCmd && parse_simple_cmd(mystruct, start, end))
-	{
-		ft_printf("command not found: %s\n", mystruct->tokens[start]);	
-		return (1);
 	}
 	return (0);
 }
@@ -83,19 +53,22 @@ static int	parse_command(t_minishell *mystruct, int start, int end)
 ** <job>			::=	<command>
 ** 					|	< job > '|' < command >
 */
-static int	parse_job(t_minishell *mystruct, int start, int end)
+static int	parse_job(t_minishell *mystruct, int start)
 {
+	int	end;
+
 	if (mystruct->tokens[start] == NULL)
 	{
 		ft_printf("no <command> after pipe\n");
 		return (1);
 	}
+	end = start;
 	while (mystruct->tokens[end + 1]
 		&& ft_strcmp(mystruct->tokens[end + 1], "|"))
 		end++;
-	if (mystruct->tokens[end + 1] && parse_job(mystruct, end + 2, end + 2))
+	if (mystruct->tokens[end + 1] && parse_job(mystruct, end + 2))
 		return (1);
-	if (parse_command(mystruct, start, end))
+	if (parse_command(mystruct, start))
 		return (1);
 	return (0);
 }
@@ -114,7 +87,7 @@ int	checkSyntax(t_minishell *mystruct)
 {
 	if (mystruct->tokens[0] == NULL)
 		return (0);
-	if (parse_job(mystruct, 0, 0))
+	if (parse_job(mystruct, 0))
 	{
 		clearStruct(mystruct);
 		return (1);
