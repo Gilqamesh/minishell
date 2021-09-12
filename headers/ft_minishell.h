@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/12 20:21:57 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 21:36:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,16 @@ typedef struct s_bin_tree
 }	t_bin_tree;
 # endif
 
+// inFiles and outFiles are NULL terminated strArrays
+// example on when we would need multiple of these:
+// echo "hey\nlol" | cat < outfile3 < outfile > outfile4 > outfile5 | cat
+// cat's INFDs: prev pipe's output, outfile3, outfile
+// cat's OUTFDs: outfile4, outfile5, next pipe's input
 typedef struct s_std_FDs
 {
-	char	*inFile;
-	char	*outFile;
-	char	*errFile;
+	char	**inFiles;
+	char	**outFiles;
+	char	**errFile;
 }	t_std_FDs;
 
 // Command/Filename/Operator
