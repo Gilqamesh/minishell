@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:32:47 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:32:20 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 /*
 ** Returns true if 'c' is part of 'set', otherwise false.
 */
-bool	isCharPartOfSet(char c, char *set)
+char	isCharPartOfSet(char c, char *set)
 {
 	if (set == NULL)
-		return (false);
+		return ('\0');
 	while (*set)
-		if (c == *set++)
-			return (true);
-	return (false);
+	{
+		if (c == *set)
+			return (*set);
+		set++;
+	}
+	return ('\0');
 }

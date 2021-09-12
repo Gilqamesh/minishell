@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:08:05 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 14:12:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static int	appendLstWithTokens(t_minishell *mystruct, t_node_binary **tokenlst)
 				str = ft_strchr(str + 1, '\"');
 			if (str == NULL)
 			{
-				free_mystruct(mystruct);
+				clearStruct(mystruct);
 				return (1);
 			}
 			str++;

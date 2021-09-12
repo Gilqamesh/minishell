@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 18:20:34 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:32:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,8 @@ int			lexer(t_minishell *mystruct);
 int			expander(t_minishell *mystruct);
 bool		isProperlyNested(char *str);
 int			parser(t_minishell *mystruct);
-bool		isCharPartOfSet(char c, char *set);
-void		free_mystruct(t_minishell *mystruct);
-bool		isValidOperator(char *str);
+char		isCharPartOfSet(char c, char *set);
+char		*isValidOperator(char *str);
 bool		isValidCommand(t_minishell *mystruct, char *str);
 bool		isValidFilename(char *str);
 void		init_mystruct(t_minishell *mystruct);
@@ -100,6 +99,7 @@ void		ft_shell_node_clear(t_shell_node **lst, void (*del)(void *));
 void		ft_shell_node_delone(t_shell_node *item, void (*del)(void *));
 void		ft_shell_node_del(void *item);
 int			executor(t_minishell *mystruct);
+int			checkSyntax(t_minishell *mystruct);
 
 // DEBUG FUNCTIONS
 // Print 'mystruct->tokens'.

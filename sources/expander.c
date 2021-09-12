@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 16:13:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:45:49 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,50 @@ char *index)
 	*curTokenPtr = start;
 }
 
+static int	isOperatorSyntaxErr(char *str)
+{
+	if (*str == '<')
+	{
+		str++;
+		if (*str == '\0')
+			return (0);
+		if (*str != '<')
+		{
+			ft_putstr_fd("parse error near `<'\n", STDERR_FILENO);
+			return (1);
+		}
+		str++;
+		if (*str != '\0')
+		{
+			ft_putstr_fd("parse error near `<<'\n", STDERR_FILENO);
+			return (1);
+		}
+	}
+	else if (*str == '>')
+	{
+		str++;
+		if (*str == '\0')
+			return (0);
+		if (*str != '>')
+		{
+			ft_putstr_fd("parse error near `>'\n", STDERR_FILENO);
+			return (1);
+		}
+		str++;
+		if (*str != '\0')
+		{
+			ft_putstr_fd("parse error near `>>'\n", STDERR_FILENO);
+			return (1);
+		}
+	}
+	else if (*str == '|' && *(str + 1) != '\0')
+	{
+		ft_putstr_fd("parse error near `|'\n", STDERR_FILENO);
+		return (1);
+	}
+	return (0);
+}
+
 /*
 ** Performs the various shell expansions, breaking the expanded tokens into
 ** lists of filenames and commands and arguments.
@@ -126,6 +170,11 @@ int	expander(t_minishell *mystruct)
 			if (parameter)
 				free(parameter);
 			tmp = expandIndex(mystruct->tokens[i]);
+		}
+		if (isOperatorSyntaxErr(mystruct->tokens[i]))
+		{
+			clearStruct(mystruct);
+			return (1);
 		}
 	}
 	return (0);

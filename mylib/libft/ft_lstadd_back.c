@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/18 19:30:43 by edavid            #+#    #+#             */
-/*   Updated: 2021/07/27 11:30:53 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 15:22:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 {
 	t_list	*cur;
 
-	if (!new)
+	if (new == NULL)
 		return ;
-	if (!*lst)
+	if (*lst == NULL)
 	{
 		*lst = new;
 		return ;

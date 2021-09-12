@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 17:52:37 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 19:40:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:34:07 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,18 @@
 ** Checks if 'str' is a valid operator.
 ** Currently supports: "<<", ">>", "<", ">", "|"
 */
-bool	isValidOperator(char *str)
+char	*isValidOperator(char *str)
 {
-	if (!ft_strcmp(str, "<<") || !ft_strcmp(str, ">>"))
-		return (true);
+	if (str == NULL)
+		return (NULL);
+	if (!ft_strcmp(str, "<<"))
+		return ("<<");
+	if (!ft_strcmp(str, ">>"))
+		return (">>");
 	if (ft_strlen(str) == 1)
 		if (isCharPartOfSet(*str, OPERATORS))
-			return (true);
-	return (false);
+			return (str);
+	return (NULL);
 }
 
 /*
@@ -54,6 +58,10 @@ bool	isValidCommand(t_minishell *mystruct, char *str)
 */
 bool	isValidFilename(char *str)
 {
+	if (str == NULL)
+		return (false);
+	if (isValidOperator(str))
+		return (false);
 	if (!access(str, F_OK))
 		return (true);
 	if (ft_strlen(str) <= NAME_MAX)

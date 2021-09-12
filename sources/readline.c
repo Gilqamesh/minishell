@@ -21,13 +21,15 @@ int	parseCmdLine(t_minishell *mystruct)
 	{
 	// Could just ignore the CmdLine and skip this case entirely (pdf)
 	// Or give new prompt to the user waiting for the enclosing quotes (bash)
-		printf("Not nested properly\n");
+		ft_putstr_fd("Not nested properly\n", STDERR_FILENO);
 		return (1);
 	}
 	if (lexer(mystruct))
 		return (1);
 	// printTokens(mystruct);
 	if (expander(mystruct))
+		return (1);
+	if (checkSyntax(mystruct))
 		return (1);
 	if (parser(mystruct))
 		return (1);

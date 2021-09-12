@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 16:30:33 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/12 16:31:43 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	parser(t_minishell *mystruct)
 		else if (isValidCommand(mystruct, mystruct->tokens[i]))
 		{
 			tmp = NULL;
-			while (mystruct->tokens[i] && !isValidOperator(mystruct->tokens[i]))
+			while (mystruct->tokens[i]
+				&& isValidOperator(mystruct->tokens[i]) == NULL)
 				ft_nodbinadd_front(&tmp, ft_nodbinnew(ft_strdup(
 					mystruct->tokens[i++])));
 			ft_shell_node_add_back(&mystruct->nodes, createNode(
@@ -66,7 +67,7 @@ int	parser(t_minishell *mystruct)
 		else
 		{
 			ft_printf("%s: command not found\n", mystruct->tokens[i]);
-			free_mystruct(mystruct);
+			clearStruct(mystruct);
 			return (1);
 		}
 	}
