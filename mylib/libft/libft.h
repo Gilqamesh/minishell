@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gohar <gohar@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 14:26:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 15:26:46 by gohar            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,9 @@ void			ft_objlst_clear(t_obj_lst **lst, void (*del)(void *));
 void			ft_objlst_delone(t_obj_lst *lst, void (*del)(void *));
 // Frees node->content and node, where node is of type *t_obj_lst
 void			ft_objlst_del(void *node);
+// Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list intact.
+void	ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
+
 # ifndef T_FILELST
 #  define T_FILELST
 enum e_redirection_mode
