@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gohar <gohar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 15:26:46 by gohar            ###   ########.fr       */
+/*   Updated: 2021/09/13 19:30:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,5 +381,8 @@ void			ft_filelstdel(void *node);
 void			ft_filelstdelone(t_filelst *lst, void (*del)(void *));
 // Allocates and returns a new element t_filelst *result;
 t_filelst		*ft_filelstnew(char *filename, int mode);
+// Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list
+// intact.
+void			ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_objlst_rem.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gohar <gohar@student.42.fr>                +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:18:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 15:15:36 by gohar            ###   ########.fr       */
+/*   Updated: 2021/09/13 19:29:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stdlib.h>
 
 /*
-** Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list intact.
+** Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list
+** intact.
 */
 void	ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node)
 {

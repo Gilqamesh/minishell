@@ -12,9 +12,9 @@
 
 #include "../headers/ft_minishell.h"
 
-static int	parse_filename(t_minishell *mystruct, int index)
+static int	parse_filename(char *str)
 {
-	if (isValidFilename(mystruct->tokens[index]) == true)
+	if (isValidOperator(str) || isValidFilename(str) == true)
 		return (0);
 	return (1);
 }
@@ -24,24 +24,19 @@ static int	parse_filename(t_minishell *mystruct, int index)
 ** 	        		|	<simple command> '<' <filename>
 ** 	        		|	<simple command> '>' <filename>
 */
-static int	parse_command(t_minishell *mystruct, int start)
+static int	parse_simpleCmd(t_minishell *mystruct, int index)
 {
-	if (mystruct->tokens[start] == NULL)
-		return (0);
-	if (isValidOperator(mystruct->tokens[start])
-		&& (start || !ft_strcmp(mystruct->tokens[start], "|")))
-	{
-		ft_printf("parse error near `%s'\n", mystruct->tokens[start]);
+	if (mystruct->tokens[index] == NULL)
 		return (1);
-	}
-	while (mystruct->tokens[++start] && ft_strcmp(mystruct->tokens[start], "|"))
+	while (mystruct->tokens[index] && ft_strcmp(mystruct->tokens[index], "|"))
 	{
-		if (isValidOperator(mystruct->tokens[start])
-			&& parse_filename(mystruct, start + 1))
+		if (isValidOperator(mystruct->tokens[index])
+			&& parse_filename(mystruct->tokens[++index]))
 		{
-			ft_printf("parse error near `%s'\n", mystruct->tokens[start]);
+			ft_printf("parse error near `%s'\n", mystruct->tokens[index]);
 			return (1);
 		}
+		index++;
 	}
 	return (0);
 }
@@ -59,7 +54,7 @@ static int	parse_job(t_minishell *mystruct, int start)
 
 	if (mystruct->tokens[start] == NULL)
 	{
-		ft_printf("no <command> after pipe\n");
+		ft_printf("no <command> after pipe\n"); 
 		return (1);
 	}
 	end = start;
@@ -68,7 +63,7 @@ static int	parse_job(t_minishell *mystruct, int start)
 		end++;
 	if (mystruct->tokens[end + 1] && parse_job(mystruct, end + 2))
 		return (1);
-	if (parse_command(mystruct, start))
+	if (parse_simpleCmd(mystruct, start))
 		return (1);
 	return (0);
 }
