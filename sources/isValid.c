@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 17:52:37 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 11:33:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 16:53:01 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,15 @@ bool	isProperlyNested(char *str)
 		str++;
 	}
 	return (true);
+}
+
+/*
+** Returns 'str' if it is a valid redirection operator.
+** Returns NULL if it is not.
+*/
+char	*isValidRedirection(char *str)
+{
+	if (!ft_strcmp(str, "|"))
+		return (NULL);
+	return (isValidOperator(str));
 }

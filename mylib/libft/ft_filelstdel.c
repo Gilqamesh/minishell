@@ -6,11 +6,12 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 14:16:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 14:18:52 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:46:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
 /*
 ** Frees memory associated with 'node' that is of t_filelst* type.

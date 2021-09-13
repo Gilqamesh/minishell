@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:27:57 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 18:35:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,6 @@ void	clearStruct(t_minishell *mystruct)
 	if (mystruct->tokens)
 		ft_destroy_str_arr(&mystruct->tokens);
 	if (mystruct->nodes)
-		ft_shell_node_clear(&mystruct->nodes, ft_shell_node_del);
-	if (mystruct->inFile)
-	{
-		free(mystruct->inFile);
-		mystruct->inFile = NULL;
-	}
-	if (mystruct->outFile)
-	{
-		free(mystruct->outFile);
-		mystruct->outFile = NULL;
-	}
-	if (mystruct->errFile)
-	{
-		free(mystruct->errFile);
-		mystruct->errFile = NULL;
-	}
+		ft_simpleCmdclear(&mystruct->nodes, ft_simpleCmddel);
+	ft_lstclear(&mystruct->allocedPointers, ft_lstdel);
 }

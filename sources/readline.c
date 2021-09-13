@@ -26,7 +26,6 @@ int	parseCmdLine(t_minishell *mystruct)
 	}
 	if (lexer(mystruct))
 		return (1);
-	// printTokens(mystruct);
 	if (expander(mystruct))
 		return (1);
 	if (checkSyntax(mystruct))

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 10:50:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 14:33:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 18:26:04 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 /*
 ** Adds the element 'new' at the end of 'lst'.
 */
-void	ft_shell_node_add_back(t_shell_node **lst, t_shell_node *new)
+void	ft_simpleCmdadd_back(t_simpleCmd **lst, t_simpleCmd *new)
 {
-	t_shell_node	*tmp;
+	t_simpleCmd	*tmp;
 
 	if (lst == NULL || new == NULL)
 		return ;
@@ -37,10 +37,10 @@ void	ft_shell_node_add_back(t_shell_node **lst, t_shell_node *new)
 ** using the function 'del' and free. Finally, the pointer to the list is
 ** set to NULL.
 */
-void	ft_shell_node_clear(t_shell_node **lst, void (*del)(void *))
+void	ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *))
 {
-	t_shell_node	*cur;
-	t_shell_node	*tmp;
+	t_simpleCmd	*cur;
+	t_simpleCmd	*tmp;
 
 	if (lst == NULL)
 		return ;
@@ -49,7 +49,7 @@ void	ft_shell_node_clear(t_shell_node **lst, void (*del)(void *))
 	{
 		tmp = cur;
 		cur = cur->next;
-		ft_shell_node_delone(tmp, del);
+		ft_simpleCmddelone(tmp, del);
 	}
 	*lst = NULL;
 }
@@ -59,7 +59,7 @@ void	ft_shell_node_clear(t_shell_node **lst, void (*del)(void *))
 ** content using the function 'del' given as a parameter and free the element.
 ** The memory of 'next' is not freed.
 */
-void	ft_shell_node_delone(t_shell_node *item, void (*del)(void *))
+void	ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *))
 {
 	(*del)(item);
 }
@@ -68,22 +68,31 @@ void	ft_shell_node_delone(t_shell_node *item, void (*del)(void *))
 ** Frees all memory in the structure pointed to by 'item'.
 ** Frees 'item'.
 */
-void	ft_shell_node_del(void *item)
+void	ft_simpleCmddel(void *item)
 {
-	if (((t_shell_node *)item)->type == TYPE_OPERATOR)
-		free(((t_shell_node *)item)->u_data.operator);
-	else if (((t_shell_node *)item)->type == TYPE_SIMPLE_CMD)
-	{
-		ft_destroy_str_arr(&((t_shell_node *)item)
-			->u_data.simple_cmd.arguments);
-		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.inFiles)
-			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
-				.inFiles, ft_filelstdel);
-		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.outFiles)
-			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
-				.outFiles, ft_filelstdel);
-		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.errFiles)
-			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
-				.errFiles, ft_filelstdel);
-	}
+	if (item == NULL)
+		return ;
+	if (((t_simpleCmd *)item)->arguments)
+		ft_destroy_str_arr(&((t_simpleCmd *)item)->arguments);
+	if (((t_simpleCmd *)item)->FDs.inFile.filename)
+		free(((t_simpleCmd *)item)->FDs.inFile.filename);
+	if (((t_simpleCmd *)item)->FDs.outFile.filename)
+		free(((t_simpleCmd *)item)->FDs.outFile.filename);
+	if (((t_simpleCmd *)item)->FDs.errFile.filename)
+		free(((t_simpleCmd *)item)->FDs.errFile.filename);
+	free(item);
+}
+
+/*
+** Allocates, initializes with 'arguments and 'FDs' and returns 't_simpleCmd *'.
+*/
+t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs)
+{
+	t_simpleCmd	*new;
+
+	new = malloc(sizeof(*new));
+	new->arguments = arguments;
+	new->FDs = *FDs;
+	new->next = NULL;
+	return (new);
 }
