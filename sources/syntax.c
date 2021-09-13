@@ -14,7 +14,7 @@
 
 static int	parse_filename(char *str)
 {
-	if (isValidOperator(str) == NULL && isValidFilename(str) == true)
+	if (isValidFilename(str) == true)
 		return (0);
 	return (1);
 }
