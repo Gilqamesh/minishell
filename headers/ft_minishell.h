@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/12 21:36:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:34:58 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@
 // debugging
 # define PRINT_HERE() (ft_printf("line %d, file %s\n", __LINE__, __FILE__))
 // type defines for 't_shell_node'
-# define TYPE_OPERATOR	0
-# define TYPE_FILENAME	1
-# define TYPE_COMMAND	2
+# define TYPE_OPERATOR		0
+# define TYPE_SIMPLE_CMD	1
 
 // Binary Tree ADT to implement Abstract Syntax Tree
 // We don't need this for mandatory as we don't have any operator presedence
@@ -46,29 +45,31 @@ typedef struct s_bin_tree
 }	t_bin_tree;
 # endif
 
-// inFiles and outFiles are NULL terminated strArrays
 // example on when we would need multiple of these:
 // echo "hey\nlol" | cat < outfile3 < outfile > outfile4 > outfile5 | cat
 // cat's INFDs: prev pipe's output, outfile3, outfile
 // cat's OUTFDs: outfile4, outfile5, next pipe's input
 typedef struct s_std_FDs
 {
-	char	**inFiles;
-	char	**outFiles;
-	char	**errFile;
+	t_filelst	*inFiles;
+	t_filelst	*outFiles;
+	t_filelst	*errFiles;
 }	t_std_FDs;
 
-// Command/Filename/Operator
+typedef struct s_simple_cmd
+{
+	char		**arguments;
+	t_std_FDs	FDs;
+}	t_simple_cmd;
+
 typedef struct s_shell_node
 {
 	int					type;
 	union
 	{
 		char			*operator;
-		char			*filename;
-		char			**arguments;
+		t_simple_cmd	simple_cmd;
 	}	u_data;
-	t_std_FDs			FDs;
 	struct s_shell_node	*next;
 }	t_shell_node;
 

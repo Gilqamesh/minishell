@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_objlst_del.c                                    :+:      :+:    :+:   */
+/*   ft_filelstnew.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/26 14:18:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 14:17:22 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/13 14:19:41 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/13 14:21:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,18 @@
 #include <stdlib.h>
 
 /*
-** Frees node->content and node, where node is of type *t_obj_lst
+** Allocates and returns a new element t_filelst *result;
+** result->filename = filename;
+** result->mode = mode;
+** The variable 'next' is initialized to NULL.
 */
-void	ft_objlst_del(void *node)
+t_filelst	*ft_filelstnew(char *filename, int mode)
 {
-	if (node == NULL)
-		return ;
-	if (((t_obj_lst *)node)->key)
-		free(((t_obj_lst *)node)->key);
-	if (((t_obj_lst *)node)->value)
-		free(((t_obj_lst *)node)->value);
-	free(node);
+	t_filelst	*new;
+
+	new = ft_calloc(1, sizeof(*new));
+	new->filename = filename;
+	new->mode = mode;
+	new->next = NULL;
+	return (new);
 }

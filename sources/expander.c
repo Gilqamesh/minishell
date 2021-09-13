@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/12 16:45:49 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 11:21:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*getParameter(const char *str)
 	t_node_binary	*lst;
 	char			*parameter;
 
-	if (str == NULL)
+	if (str == NULL || *str == '\0')
 		return (NULL);
 	if (*str == '?')
 		return (ft_substr(str, 0, 1));
@@ -166,9 +166,10 @@ int	expander(t_minishell *mystruct)
 		while (tmp)
 		{
 			parameter = getParameter(tmp + 1);
+			if (parameter == NULL)
+				break ;
 			expandStr(mystruct, &mystruct->tokens[i], parameter, tmp);
-			if (parameter)
-				free(parameter);
+			free(parameter);
 			tmp = expandIndex(mystruct->tokens[i]);
 		}
 		if (isOperatorSyntaxErr(mystruct->tokens[i]))

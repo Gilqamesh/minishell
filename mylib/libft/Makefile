@@ -6,7 +6,7 @@
 #    By: edavid <edavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/15 10:05:25 by edavid            #+#    #+#              #
-#    Updated: 2021/09/12 15:41:21 by edavid           ###   ########.fr        #
+#    Updated: 2021/09/13 14:23:52 by edavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ ft_lstmallocwrapper.c ft_lstmallocfree.c ft_splitstr.c ft_nodbinstrarrjoin_from_
 ft_nodbinstr_to_strarr.c ft_trim_from_left_index.c ft_isStrAlphaNumeric.c \
 ft_isValidCName.c ft_isValidBashIdentifier.c ft_isStrContainedInStrArr.c \
 ft_objlst_findbykey.c ft_objlst_add_front.c ft_strdupchr.c ft_objlst_new.c \
-ft_objlst_mapFromEnv.c ft_objlst_clear.c ft_objlst_delone.c ft_objlst_del.c
+ft_objlst_mapFromEnv.c ft_objlst_clear.c ft_objlst_delone.c ft_objlst_del.c \
+ft_filelstadd_back.c ft_filelstclear.c ft_filelstdel.c ft_filelstdelone.c \
+ft_filelstnew.c
 
 NAME = libft.a
 

@@ -6,14 +6,14 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 18:34:49 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 18:39:54 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:16:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** Frees the list using the function 'del' and free.
+** Frees the list using the function 'del'.
 ** Finally, the pointer to the list is set to NULL.
 */
 void	ft_objlst_clear(t_obj_lst **lst, void (*del)(void *))

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 10:50:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 11:25:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/13 14:33:01 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,18 @@ void	ft_shell_node_del(void *item)
 {
 	if (((t_shell_node *)item)->type == TYPE_OPERATOR)
 		free(((t_shell_node *)item)->u_data.operator);
-	else if (((t_shell_node *)item)->type == TYPE_FILENAME)
-		free(((t_shell_node *)item)->u_data.filename);
-	else if (((t_shell_node *)item)->type == TYPE_COMMAND)
-		ft_destroy_str_arr(&((t_shell_node *)item)->u_data.arguments);
-	if (((t_shell_node *)item)->FDs.inFile)
-		free(((t_shell_node *)item)->FDs.inFile);
-	if (((t_shell_node *)item)->FDs.outFile)
-		free(((t_shell_node *)item)->FDs.outFile);
-	if (((t_shell_node *)item)->FDs.errFile)
-		free(((t_shell_node *)item)->FDs.errFile);
+	else if (((t_shell_node *)item)->type == TYPE_SIMPLE_CMD)
+	{
+		ft_destroy_str_arr(&((t_shell_node *)item)
+			->u_data.simple_cmd.arguments);
+		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.inFiles)
+			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
+				.inFiles, ft_filelstdel);
+		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.outFiles)
+			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
+				.outFiles, ft_filelstdel);
+		if (((t_shell_node *)item)->u_data.simple_cmd.FDs.errFiles)
+			ft_filelstclear(&((t_shell_node *)item)->u_data.simple_cmd.FDs
+				.errFiles, ft_filelstdel);
+	}
 }

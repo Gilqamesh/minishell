@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_objlst_del.c                                    :+:      :+:    :+:   */
+/*   ft_filelstadd_back.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/26 14:18:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 14:17:22 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/13 13:59:37 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/13 14:15:45 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 /*
-** Frees node->content and node, where node is of type *t_obj_lst
+** Adds the element 'new' at the end of the list.
 */
-void	ft_objlst_del(void *node)
+void	ft_filelstadd_back(t_filelst **lst, t_filelst *new)
 {
-	if (node == NULL)
+	t_filelst	*cur;
+
+	if (new == NULL)
 		return ;
-	if (((t_obj_lst *)node)->key)
-		free(((t_obj_lst *)node)->key);
-	if (((t_obj_lst *)node)->value)
-		free(((t_obj_lst *)node)->value);
-	free(node);
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	cur = *lst;
+	while (cur->next)
+		cur = cur->next;
+	cur->next = new;
 }
