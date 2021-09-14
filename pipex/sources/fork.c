@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:23:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 17:05:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static void	redirectInputFromFile(t_pipex *mystruct)
 /*
 ** Creates connection between input file and first CMD then runs execve on CMD
 */
-void	handle_inputFile_firstCmd(t_pipex *mystruct, char *argv[], char *envp[])
+void	handle_inputFile_firstCmd(t_pipex *mystruct)
 {
 	closePipe(mystruct, 0, 0);
-	if (!mystruct->isHereDoc)
+	if (!mystruct->isHereDoc && ft_strcmp(mystruct->argv[1], ""))
 	{
-		mystruct->file[0] = open(argv[1], O_RDONLY);
+		mystruct->file[0] = open(mystruct->argv[1], O_RDONLY);
 		if (mystruct->file[0] == -1)
 			error_handler(mystruct, PIPEX_EFOPEN, "Could not open infile\n");
 		redirectInputFromFile(mystruct);
@@ -36,7 +36,8 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, char *argv[], char *envp[])
 	closePipe(mystruct, 0, 1);
 	if (mystruct->isHereDoc)
 		read_until_delimiter(mystruct);
-	if (execve(mystruct->commands[0][0], mystruct->commands[0], envp) == -1)
+	if (execve(mystruct->commands[0][0], mystruct->commands[0], 
+		mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
 
@@ -47,25 +48,30 @@ static void	transfer_data(t_pipex *mystruct)
 {
 	char	*line;
 	int		ret;
+	int		fd;
 
+	if (ft_strcmp(mystruct->argv[mystruct->argc - 1], ""))
+		fd = mystruct->file[1];
+	else
+		fd = STDOUT_FILENO;
 	while (1)
 	{
 		ret = get_next_line(STDIN_FILENO, &line);
 		if (ret == -1)
 			error_handler(mystruct, PIPEX_ERR, "get_next_line() failed\n");
-		if (write(mystruct->file[1], line, ft_strlen(line)) == -1)
+		if (write(fd, line, ft_strlen(line)) == -1)
 		{
 			free(line);
 			error_handler(mystruct, PIPEX_ERR, "write() failed at line\n");
 		}
 		free(line);
 		if (ret)
-			if (write(mystruct->file[1], "\n", 1) == -1)
+			if (write(fd, "\n", 1) == -1)
 				error_handler(mystruct, PIPEX_ERR, "write() failed\n");
 		if (ret == 0)
 			break ;
 	}
-	if (close(mystruct->file[1]) == -1)
+	if (ft_strcmp(mystruct->argv[mystruct->argc - 1], "") && close(fd) == -1)
 		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:23:26 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 17:01:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	init_hereDoc(t_pipex *mystruct, int argc, char **argv)
 	mystruct->isHereDoc = true;
 	mystruct->nOfCmds--;
 	mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND,
-			0777);
+		0777);
 	if (mystruct->file[1] == -1)
 		error_handler(mystruct, PIPEX_EFOPEN, "Could not open outfile\n");
 	if (mystruct->nOfCmds < 1)
@@ -65,23 +65,21 @@ static void	init_hereDoc(t_pipex *mystruct, int argc, char **argv)
 /*
 ** Initializes t_pipex variable
 */
-void	initialize_mystruct(int argc, char *argv[], char *envp[],
-t_pipex *mystruct)
+void	initialize_mystruct(t_pipex *mystruct)
 {
-	ft_bzero(mystruct, sizeof(*mystruct));
-	mystruct->nOfCmds = argc - 3;
+	mystruct->nOfCmds = mystruct->argc - 3;
 	if (mystruct->nOfCmds < 1)
 		error_handler(mystruct, PIPEX_EUSAGE,
 			"Usage: ./pipex infile cmd1 [additional commands ...] outfile\n");
-	if (!ft_strcmp(argv[1], "here_doc"))
-		init_hereDoc(mystruct, argc, argv);
-	else
-		initOutFile(mystruct, argc, argv);
+	if (!ft_strcmp(mystruct->argv[1], "here_doc"))
+		init_hereDoc(mystruct, mystruct->argc, mystruct->argv);
+	else if (ft_strcmp(mystruct->argv[1], ""))
+		initOutFile(mystruct, mystruct->argc, mystruct->argv);
 	mystruct->commands = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->commands), true);
 	if (mystruct->commands == NULL)
 		error_handler(mystruct, PIPEX_EMALLOC, "Malloc failed\n");
-	initialize_Cmds(mystruct, argv, envp);
+	initialize_Cmds(mystruct, mystruct->argv, mystruct->envp);
 	mystruct->pipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->pipes), false);
 	if (mystruct->pipes == NULL)

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:35:10 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 17:02:15 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,16 +114,17 @@ typedef struct s_pipex
 	int		hereDocPipe[2];
 	char	*delimiter;
 	t_list	*alloced_lst;
+	int		argc;
+	char	**argv;
+	char	**envp;
 }	t_pipex;
 
 // PIPEX FUNCTIONS
 void		error_handler(t_pipex *mystruct, int errcode, char *message);
-void		handle_inputFile_firstCmd(t_pipex *mystruct, char *argv[],
-				char *envp[]);
+void		handle_inputFile_firstCmd(t_pipex *mystruct);
 int			handle_lastCmd_outputFile(t_pipex *mystruct);
 void		destroy_mystruct(t_pipex *mystruct);
-void		initialize_mystruct(int argc, char *argv[], char *envp[],
-				t_pipex *mystruct);
+void		initialize_mystruct(t_pipex *mystruct);
 void		cmd_path(char **cmd, t_obj_lst *lst);
 void		closePreviousPipes(t_pipex *mystruct, int upToPipeNum);
 void		read_until_delimiter(t_pipex *mystruct);
@@ -133,8 +134,7 @@ void		closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end);
 void		openPipe(t_pipex *mystruct, int pipeNumber);
 void		mydup2(t_pipex *mystruct, int fromFd, int toFd);
 pid_t		myfork(t_pipex *mystruct);
-int			ft_pipex(t_minishell *minishellStruct,
-				int argc, char *argv[], char *envp[]);
+int			ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[]);
 
 /*
 ** Error codes
