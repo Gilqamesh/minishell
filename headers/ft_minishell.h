@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:24:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:28:46 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 // Library includes
 # include "../mylib/mylib.h"
-# include "../pipex/headers/pipex.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>

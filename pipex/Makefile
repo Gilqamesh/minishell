@@ -6,10 +6,11 @@ SRC = pipex.c fork.c error.c initialize.c here_doc.c myfuncs.c
 NAME = pipex.a
 MYLIBDIR = ../mylib
 MYLIB = $(MYLIBDIR)/libmylib.a
+HEADERLIB = ../headers
 
 $(NAME): $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(MYLIB)
 	ar -rs $(NAME) $^
-$(ODIR)/%.o: $(SDIR)/%.c
+$(ODIR)/%.o: $(SDIR)/%.c $(HEADERLIB)/*.h
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
 	$(MAKE) --directory=$(MYLIBDIR)

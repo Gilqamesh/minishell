@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:24:10 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:32:25 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ static void	handleChildProcess(t_pipex *mystruct, int curPipeNum, char *envp[])
 ** Makes a pipe between two commands
 ** And waits for the previous child process
 */
-static void	createPipe_betweenTwoCmds(t_pipex *mystruct, int curPipeNum,
-char *envp[])
+static void	createPipe_betweenTwoCmds(t_minishell *minishellStruct,
+t_pipex *mystruct, int curPipeNum, char *envp[])
 {
 	pid_t	pid;
 	int		wstatus;
@@ -56,6 +56,8 @@ char *envp[])
 	pid = myfork(mystruct);
 	if (pid == 0)
 		handleChildProcess(mystruct, curPipeNum, envp);
+	else
+		minishellStruct->curProcess = pid;
 	closePipe(mystruct, curPipeNum - 1, 0);
 	closePipe(mystruct, curPipeNum, 1);
 }
@@ -90,9 +92,11 @@ int	ft_pipex(t_minishell *minishellStruct, int argc, char *argv[], char *envp[])
 	pid = myfork(&mystruct);
 	if (pid == 0)
 		handle_inputFile_firstCmd(&mystruct, argv, envp);
+	else
+		minishellStruct = pid;
 	i = 0;
 	while (++i < mystruct.nOfCmds)
-		createPipe_betweenTwoCmds(&mystruct, i, envp);
+		createPipe_betweenTwoCmds(minishellStruct, &mystruct, i, envp);
 	statusCode = handle_lastCmd_outputFile(&mystruct);
 	destroy_mystruct(&mystruct);
 	return (statusCode);
