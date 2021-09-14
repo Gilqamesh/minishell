@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:32:25 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:37:57 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_pipex *mystruct, int curPipeNum, char *envp[])
 
 	closePipe(mystruct, curPipeNum - 1, 1);
 	wstatus = wait_childProcess();
+	minishellStruct->fgExitStatus = wstatus;
 	if (wstatus)
 		closePipe(mystruct, curPipeNum - 1, 0);
 	openPipe(mystruct, curPipeNum);
@@ -57,7 +58,7 @@ t_pipex *mystruct, int curPipeNum, char *envp[])
 	if (pid == 0)
 		handleChildProcess(mystruct, curPipeNum, envp);
 	else
-		minishellStruct->curProcess = pid;
+		minishellStruct->lastPID = pid;
 	closePipe(mystruct, curPipeNum - 1, 0);
 	closePipe(mystruct, curPipeNum, 1);
 }
@@ -93,11 +94,12 @@ int	ft_pipex(t_minishell *minishellStruct, int argc, char *argv[], char *envp[])
 	if (pid == 0)
 		handle_inputFile_firstCmd(&mystruct, argv, envp);
 	else
-		minishellStruct = pid;
+		minishellStruct->lastPID = pid;
 	i = 0;
 	while (++i < mystruct.nOfCmds)
 		createPipe_betweenTwoCmds(minishellStruct, &mystruct, i, envp);
 	statusCode = handle_lastCmd_outputFile(&mystruct);
+	minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
 	return (statusCode);
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:28:46 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:35:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_minishell
 	t_obj_lst		*envpLst;
 	unsigned char	fgExitStatus;
 	t_list			*allocedPointers;
-	pid_t			curProcess;
+	pid_t			lastPID;
 }	t_minishell;
 
 char		*myreadline(const char *promptMsg);
