@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 19:22:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 13:13:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,35 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 {
 	if (!ft_strcmp(redirOp, "<"))
 	{
+		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO)
+			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_IN;
+		old->inFile.fd = open(old->inFile.filename, O_RDONLY);
 	}
 	else if (!ft_strcmp(redirOp, ">"))
 	{
+		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO)
+			close(old->outFile.fd);
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_OUT;
+		old->outFile.fd = open(old->outFile.filename, O_WRONLY | O_CREAT
+			| O_TRUNC, 0777);
 	}
 	else if (!ft_strcmp(redirOp, "<<"))
 	{
+		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO)
+			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_HEREDOC;
+		old->inFile.fd = STDIN_FILENO;
 	}
 	else if (!ft_strcmp(redirOp, ">>"))
 	{
+		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO)
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_APPEND;
+		old->outFile.fd = open(old->outFile.filename, O_CREAT | O_APPEND, 0777);
 	}
 }
 
@@ -55,6 +67,9 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 	t_node_binary	*tmpLst;
 
 	ft_bzero(&FD, sizeof(FD));
+	FD.inFile.fd = STDIN_FILENO;
+	FD.outFile.fd = STDOUT_FILENO;
+	FD.errFile.fd = STDERR_FILENO;
 	tmpLst = NULL;
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
 	{

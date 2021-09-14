@@ -6,11 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 11:33:16 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:23:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/pipex.h"
+#include "../../headers/ft_minishell.h"
 
 /*
 ** Initializes command arguments and store them

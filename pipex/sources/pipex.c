@@ -6,11 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 19:37:10 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:24:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/pipex.h"
+#include "../../headers/ft_minishell.h"
 
 static void	sendEOFtoInput(t_pipex *mystruct)
 {
@@ -78,7 +78,7 @@ int	wait_childProcess(void)
 /*
 ** Usage is the same as in the project pipex
 */
-int	ft_pipex(int argc, char *argv[], char *envp[])
+int	ft_pipex(t_minishell *minishellStruct, int argc, char *argv[], char *envp[])
 {
 	pid_t	pid;
 	int		i;

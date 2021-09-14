@@ -6,11 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/11 19:48:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:23:32 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/pipex.h"
+#include "../../headers/ft_minishell.h"
 
 void	error_handler(t_pipex *mystruct, int errcode, char *message)
 {

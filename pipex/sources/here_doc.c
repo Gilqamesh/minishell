@@ -6,11 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 13:33:36 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/04 17:32:53 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:23:29 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/pipex.h"
+#include "../../headers/ft_minishell.h"
 
 static void	redirect_stdin(t_pipex *mystruct)
 {

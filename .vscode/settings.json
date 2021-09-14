@@ -1,6 +1,10 @@
 {
 	"files.associations": {
 		"ft_minishell.h": "c",
-		"signal.h": "c"
+		"signal.h": "c",
+		"cdefs.h": "c",
+		"_types.h": "c",
+		"mylib.h": "c",
+		"libft.h": "c"
 	}
 }

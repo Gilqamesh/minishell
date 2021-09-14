@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/13 19:08:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/14 15:13:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(void)
 {
 	t_minishell	mystruct;
 
-	init_mystruct(&mystruct);
 	while(1)
 	{
 		mystruct.promptStr = myreadline("hello, please enter a command line: ");
