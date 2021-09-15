@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 18:35:00 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 17:42:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	clearStruct(t_minishell *mystruct)
 		free(mystruct->promptStr);
 		mystruct->promptStr = NULL;
 	}
-	if (mystruct->tokens)
-		ft_destroy_str_arr(&mystruct->tokens);
-	if (mystruct->nodes)
-		ft_simpleCmdclear(&mystruct->nodes, ft_simpleCmddel);
+	ft_destroy_str_arr(&mystruct->tokens);
+	ft_simpleCmdclear(&mystruct->nodes, ft_simpleCmddel);
+	// ft_lstclear(&mystruct->pipeLines, ft_simpleCmddel);
+	mystruct->pipeLines = NULL;
 	ft_lstclear(&mystruct->allocedPointers, ft_lstdel);
 }

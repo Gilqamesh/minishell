@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 14:34:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 14:02:21 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 14:48:34 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,5 @@
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 # include "printf/ft_printf.h"
-void	*GLOBALPTR;
 
 #endif

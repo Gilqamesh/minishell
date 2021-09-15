@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 17:03:16 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 14:46:28 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,8 @@ int	wait_childProcess(void)
 /*
 ** Usage is the same as in the project pipex
 */
-int	ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[])
+int	ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[],
+t_std_FDs *FDs)
 {
 	pid_t	pid;
 	int		i;
@@ -95,7 +96,7 @@ int	ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[])
 	mystruct.argc = i;
 	mystruct.argv = argv;
 	mystruct.envp = envp;
-	initialize_mystruct(&mystruct);
+	initialize_mystruct(&mystruct, FDs);
 	openPipe(&mystruct, 0);
 	pid = myfork(&mystruct);
 	if (pid == 0)

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 17:01:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 17:11:56 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,9 @@ static void	init_hereDoc(t_pipex *mystruct, int argc, char **argv)
 /*
 ** Initializes t_pipex variable
 */
-void	initialize_mystruct(t_pipex *mystruct)
+void	initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs)
 {
+	(void)FDs;
 	mystruct->nOfCmds = mystruct->argc - 3;
 	if (mystruct->nOfCmds < 1)
 		error_handler(mystruct, PIPEX_EUSAGE,

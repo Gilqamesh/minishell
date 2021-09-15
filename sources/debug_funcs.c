@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 19:24:35 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 17:46:32 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,20 @@ void	printNodes(t_minishell *mystruct)
 	{
 		printSimpleCmd(tmp);
 		tmp = tmp->next;
+	}
+}
+
+void	printPipelines(t_minishell *mystruct)
+{
+	t_list	*cur;
+
+	cur = mystruct->pipeLines;
+	ft_printf("Pipelines:\n");
+	while (cur)
+	{
+		ft_printf("PIPELINE START\n");
+		printSimpleCmd((t_simpleCmd *)cur->content);
+		ft_printf("PIPELINE END\n");
+		cur = cur->next;
 	}
 }

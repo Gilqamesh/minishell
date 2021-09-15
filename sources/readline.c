@@ -33,6 +33,7 @@ int	parseCmdLine(t_minishell *mystruct)
 	if (parser(mystruct))
 		return (1);
 	printNodes(mystruct);
+	printPipelines(mystruct);
 	if (executor(mystruct))
 		return (1);
 	clearStruct(mystruct);
