@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 17:42:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 20:38:56 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ static void	init_envp(t_minishell *mystruct)
 
 	path = getenv("PATH");
 	if (path)
+	{
 		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup("PATH"),
 			ft_strdup(path)));
+		ft_appendStrArr(&mystruct->envp, path);
+	}
 }
 
 /*

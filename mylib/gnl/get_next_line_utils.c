@@ -28,9 +28,9 @@ int	contains_newline(char *str, size_t n)
 
 static char	*strjoin_return_helper(char *s1, char *s2)
 {
-	if (!s1 && s2)
+	if (s1 == NULL && s2)
 		return (s2);
-	if (s1 && !s2)
+	if (s1 && s2 == NULL)
 		return (s1);
 	return ((char *)0);
 }

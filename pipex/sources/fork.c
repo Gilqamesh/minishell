@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 17:05:18 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 18:18:25 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,16 @@ static void	redirectInputFromFile(t_pipex *mystruct)
 /*
 ** Creates connection between input file and first CMD then runs execve on CMD
 */
-void	handle_inputFile_firstCmd(t_pipex *mystruct)
+void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 {
 	closePipe(mystruct, 0, 0);
-	if (!mystruct->isHereDoc && ft_strcmp(mystruct->argv[1], ""))
+	if (!ft_strcmp(FDs->inFile.filename, ""))
+	{
+		if (pipe(mystruct->hereDocPipe) == -1)
+			error_handler(mystruct, PIPEX_EPIPE, "pipe() failed\n");
+		redirect_stdin(mystruct);
+	}
+	else if (!mystruct->isHereDoc)
 	{
 		mystruct->file[0] = open(mystruct->argv[1], O_RDONLY);
 		if (mystruct->file[0] == -1)
@@ -75,7 +81,7 @@ static void	transfer_data(t_pipex *mystruct)
 		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
 }
 
-int	handle_lastCmd_outputFile(t_pipex *mystruct)
+int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
 {
 	int	statusCode;
 
@@ -83,7 +89,8 @@ int	handle_lastCmd_outputFile(t_pipex *mystruct)
 	statusCode = wait_childProcess();
 	mydup2(mystruct, mystruct->pipes[mystruct->nOfCmds - 1][0], STDIN_FILENO);
 	closePipe(mystruct, mystruct->nOfCmds - 1, 0);
-	transfer_data(mystruct);
+	if (FDs->outFile.mode != REDIR_VOID)
+		transfer_data(mystruct);
 	return (statusCode);
 }
 

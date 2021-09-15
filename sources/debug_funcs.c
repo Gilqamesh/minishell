@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 17:46:32 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 19:55:43 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	printStrArr(char **strArr)
 		return ;
 	i = -1;
 	while (strArr[++i])
-		ft_printf("%s ", strArr[i]);
+		ft_printf("|%s| ", strArr[i]);
 	ft_printf("\n");
 }
 

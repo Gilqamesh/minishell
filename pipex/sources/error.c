@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:23:32 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 18:12:15 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,15 @@ void	destroy_mystruct(t_pipex *mystruct)
 /*
 ** Helper function for initialize_mystruct in initialize.c
 */
-void	initOutFile(t_pipex *mystruct, int argc, char **argv)
+void	initOutFile(t_pipex *mystruct, int argc, char **argv, t_std_FDs *FDs)
 {
-	mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
+	if (FDs->outFile.mode == REDIR_OUT)
+		mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
 			0777);
+	else if (FDs->outFile.mode == REDIR_APPEND)
+		mystruct->file[1] = open(argv[argc - 1], O_APPEND | O_CREAT, 0777);
+	else
+		ft_printf("Error in %s. Not supported FD mode.", __FILE__);
 	if (mystruct->file[1] == -1)
 		error_handler(mystruct, PIPEX_EFOPEN, "Could not open outfile\n");
 }

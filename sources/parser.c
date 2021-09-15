@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 17:14:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 20:31:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,33 +96,6 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 // the arguments for the commandcan be anywhere after the command
 
 /*
-** Allocates and copies the content of 'src' into 'dest'.
-** If src->filename == NULL, then old->filename = ft_strdup("");
-** The above is contention in ft_pipex() to send an to the corresponding FD.
-*/
-static void	copy_FD(t_std_FDs *dest, t_std_FDs *src)
-{
-	if (src->inFile.filename == NULL)
-		dest->inFile.filename = ft_strdup("");
-	else
-		dest->inFile.filename = ft_strdup(src->inFile.filename);
-	dest->inFile.fd = src->inFile.fd;
-	dest->inFile.mode = src->inFile.mode;
-	if (src->outFile.filename == NULL)
-		dest->outFile.filename = ft_strdup("");
-	else
-		dest->outFile.filename = ft_strdup(src->outFile.filename);
-	dest->outFile.fd = src->outFile.fd;
-	dest->outFile.mode = src->outFile.mode;
-	if (src->errFile.filename == NULL)
-		dest->errFile.filename = ft_strdup("");
-	else
-		dest->errFile.filename = ft_strdup(src->errFile.filename);
-	dest->errFile.fd = src->errFile.fd;
-	dest->errFile.mode = src->errFile.mode;
-}
-
-/*
 ** Builds mystruct->pipeLines that is a linked list of t_simpleCmd linked lists.
 */
 static void	buildPipeline(t_minishell *mystruct)
@@ -144,6 +117,8 @@ static void	buildPipeline(t_minishell *mystruct)
 			if (cur->FDs.outFile.filename)
 			{
 				cur = cur->next;
+				if (cur)
+					cur->FDs.outFile.mode = REDIR_VOID;
 				break ;
 			}
 			cur = cur->next;
@@ -154,7 +129,7 @@ static void	buildPipeline(t_minishell *mystruct)
 	}
 }
 
-/* 
+/*
 ** Parses mystruct->tokens and adds to mystruct->nodes each simple command,
 ** that are separated with pipes.
 ** Then builds mystruct->pipeLines from mystruct->nodes.

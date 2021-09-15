@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 14:46:28 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 20:39:54 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,16 @@ int	wait_childProcess(void)
 }
 
 /*
-** Usage is the same as in the project pipex
+** Usage is similar as in the project pipex.
+** 'FDs' is the whole pipeline's infile and outfile.
+** If infile is "", then infile is an empty file.
+** If outfile is "", then the output of the last child is lost.
 */
-int	ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[],
-t_std_FDs *FDs)
+void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 {
 	pid_t	pid;
 	int		i;
 	t_pipex	mystruct;
-	int		statusCode;
 
 	ft_bzero(&mystruct, sizeof(mystruct));
 	i = -1;
@@ -95,19 +96,17 @@ t_std_FDs *FDs)
 		;
 	mystruct.argc = i;
 	mystruct.argv = argv;
-	mystruct.envp = envp;
+	mystruct.envp = minishellStruct->envp;
 	initialize_mystruct(&mystruct, FDs);
 	openPipe(&mystruct, 0);
 	pid = myfork(&mystruct);
 	if (pid == 0)
-		handle_inputFile_firstCmd(&mystruct);
+		handle_inputFile_firstCmd(&mystruct, FDs);
 	else
 		minishellStruct->lastPID = pid;
 	i = 0;
 	while (++i < mystruct.nOfCmds)
 		createPipe_betweenTwoCmds(minishellStruct, &mystruct, i);
-	statusCode = handle_lastCmd_outputFile(&mystruct);
-	minishellStruct->fgExitStatus = statusCode;
+	minishellStruct->fgExitStatus = handle_lastCmd_outputFile(&mystruct, FDs);
 	destroy_mystruct(&mystruct);
-	return (statusCode);
 }

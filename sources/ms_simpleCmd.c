@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_shell_node.c                                    :+:      :+:    :+:   */
+/*   ms_simpleCmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 10:50:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 18:26:04 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 18:35:07 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,22 @@ t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs)
 	new->FDs = *FDs;
 	new->next = NULL;
 	return (new);
+}
+
+/*
+** Returns the size of 'list'.
+*/
+int	ft_simpleCmdsize(t_simpleCmd *list)
+{
+	int	len;
+
+	if (list == NULL)
+		return (0);
+	len = 0;
+	while (list)
+	{
+		list = list->next;
+		len++;
+	}
+	return (len);
 }

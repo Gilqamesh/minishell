@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 17:43:46 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/15 20:40:02 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ typedef struct s_minishell
 	char			**tokens;
 	t_simpleCmd		*nodes;
 	t_list			*pipeLines;
-	t_std_FDs		FDs;
 	t_obj_lst		*envpLst;
+	char			**envp;
 	unsigned char	fgExitStatus;
 	t_list			*allocedPointers;
 	pid_t			lastPID;
@@ -100,47 +100,54 @@ void		ft_simpleCmdadd_back(t_simpleCmd **lst, t_simpleCmd *new);
 void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
 void		ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *));
 void		ft_simpleCmddel(void *item);
+int			ft_simpleCmdsize(t_simpleCmd *list);
 t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs);
 int			executor(t_minishell *mystruct);
 int			checkSyntax(t_minishell *mystruct);
 char		*isValidRedirection(char *str);
 char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
+void		copy_FD(t_std_FDs *dest, t_std_FDs *src);
+char		*ft_strArrtoStr(char **strArr, char delimiter);
+void		ft_appendStrArr(char ***strArrPtr, char *str);
 
 typedef struct s_pipex
 {
-	char	***commands;
-	int		nOfCmds;
-	int		tmpFd[2];
-	int		file[2];
-	int		(*pipes)[2];
-	bool	(*openPipes)[2];
-	bool	isHereDoc;
-	int		hereDocPipe[2];
-	char	*delimiter;
-	t_list	*alloced_lst;
-	int		argc;
-	char	**argv;
-	char	**envp;
+	char		***commands;
+	int			nOfCmds;
+	int			tmpFd[2];
+	int			file[2];
+	int			(*pipes)[2];
+	bool		(*openPipes)[2];
+	bool		isHereDoc;
+	int			hereDocPipe[2];
+	char		*delimiter;
+	t_list		*alloced_lst;
+	int			argc;
+	char		**argv;
+	t_obj_lst	*envpLst;
+	char		**envp;
 }	t_pipex;
 
 // PIPEX FUNCTIONS
 void		error_handler(t_pipex *mystruct, int errcode, char *message);
-void		handle_inputFile_firstCmd(t_pipex *mystruct);
-int			handle_lastCmd_outputFile(t_pipex *mystruct);
+void		handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs);
+int			handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs);
 void		destroy_mystruct(t_pipex *mystruct);
 void		initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs);
 void		cmd_path(char **cmd, t_obj_lst *lst);
 void		closePreviousPipes(t_pipex *mystruct, int upToPipeNum);
 void		read_until_delimiter(t_pipex *mystruct);
 int			wait_childProcess(void);
-void		initOutFile(t_pipex *mystruct, int argc, char **argv);
+void		initOutFile(t_pipex *mystruct, int argc, char **argv,
+				t_std_FDs *FDs);
 void		closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end);
 void		openPipe(t_pipex *mystruct, int pipeNumber);
 void		mydup2(t_pipex *mystruct, int fromFd, int toFd);
 pid_t		myfork(t_pipex *mystruct);
-int			ft_pipex(t_minishell *minishellStruct, char *argv[], char *envp[],
+void		ft_pipex(t_minishell *minishellStruct, char *argv[],
 				t_std_FDs *FDs);
+void		redirect_stdin(t_pipex *mystruct);
 
 /*
 ** Error codes
