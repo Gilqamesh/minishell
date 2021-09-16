@@ -6,7 +6,7 @@
 /*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:47:09 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/16 19:51:01 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ void sighandler(int sig)
 	}
 	else if (sig == SIGINT)
 	{
-		rl_replace_line("", 1);
+		*rl_line_buffer = '\0';
+		rl_point = 0;
+		rl_end = 0;
 		ft_putstr_fd("\n", 1);
 		rl_redisplay();
 		ft_putstr_fd("hello, please enter a command line: ", 1);

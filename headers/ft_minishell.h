@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:03:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:50:32 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <stdlib.h>
-# include "../readline/include/readline/readline.h"
-# include "../readline/include/readline/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 // Defines
 //

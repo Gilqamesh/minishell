@@ -6,7 +6,7 @@ HDIR = headers
 NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
-RLLIB = -I ../readline/include -lreadline -Lreadline/lib -lhistory -Lreadline/lib
+RLLIB = -lreadline
 SRC = readline.c minishell.c stack_operations.c lexer.c \
 parser.c utils.c isValid.c ms_initialize.c ms_simpleCmd.c \
 debug_funcs.c expander.c executor.c syntax.c
