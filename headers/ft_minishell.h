@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:03:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:23:53 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef struct s_pipex
 	char		**argv;
 	t_obj_lst	*envpLst;
 	char		**envp;
+	int			oldSTDIN;
 }	t_pipex;
 
 // PIPEX FUNCTIONS

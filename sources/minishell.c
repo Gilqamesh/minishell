@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/16 19:03:20 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:35:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	main(void)
 
 	getMystruct(&mystruct);
 	init_mystruct(&mystruct);
-	while(1)
+	while (1)
 	{
 		mystruct.promptStr = myreadline("hello, please enter a command line: ");
 		if (mystruct.promptStr == NULL)
-			continue ;
+			break ;
 		if (parseCmdLine(&mystruct))
 			continue ;
 	}

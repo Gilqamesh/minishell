@@ -6,7 +6,7 @@ char	*myreadline(const char *promptMsg)
 
 	buf = readline(promptMsg);
 	if (buf == NULL)
-		exit(EXIT_SUCCESS);
+		return (NULL);
 	if (ft_strlen(buf) > 0)
 		add_history(buf);
 	return (buf);

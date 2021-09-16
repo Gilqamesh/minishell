@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 13:33:36 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 18:04:12 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:17:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	redirect_stdin(t_pipex *mystruct)
 {
 	if (close(mystruct->hereDocPipe[1]) == -1)
 		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
+	mystruct->oldSTDIN = dup(STDIN_FILENO);
 	mydup2(mystruct, mystruct->hereDocPipe[0], STDIN_FILENO);
 	if (close(mystruct->hereDocPipe[0]) == -1)
 		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
