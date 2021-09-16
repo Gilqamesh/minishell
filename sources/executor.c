@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 20:41:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:15:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	executor(t_minishell *mystruct)
 			tmp = tmp->next;
 		FDs.outFile = tmp->FDs.outFile;
 		argv = buildArgv((t_simpleCmd *)cur->content, &FDs);
+		printStrArr(argv);
 		ft_pipex(mystruct, argv, &FDs);
 		cur = cur->next;
 	}

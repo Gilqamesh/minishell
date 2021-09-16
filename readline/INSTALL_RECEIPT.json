@@ -16,7 +16,7 @@
     "share/doc/readline/INSTALL",
     "share/readline/rl-fgets.c"
   ],
-  "time": 1631734557,
+  "time": 1631808652,
   "source_modified_time": 1605728412,
   "compiler": "clang",
   "aliases": [
@@ -32,8 +32,8 @@
       "head": null,
       "version_scheme": 0
     },
-    "path": "/Users/gsiddiqu/.brew/Library/Taps/homebrew/homebrew-core/Formula/readline.rb",
-    "tap_git_head": "e79d8126370187be3bd7be6bdbffacf803732113",
+    "path": "/Users/edavid/.brew/Library/Taps/homebrew/homebrew-core/Formula/readline.rb",
+    "tap_git_head": "7750fec752b6db4e124c57133be4713d4132ca63",
     "tap": "homebrew/core"
   },
   "arch": "x86_64",

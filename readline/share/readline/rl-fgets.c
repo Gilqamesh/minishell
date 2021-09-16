@@ -78,7 +78,7 @@ Best Regards,
       #### replace this with the libfgets.so directory:
       set dir2 = "/usr/fgets"
       #### replace this with the libreadline.so directory:
-      set dir3 = "/Users/gsiddiqu/.brew/lib"
+      set dir3 = "/Users/edavid/.brew/lib"
       set lib1 = "${dir1}/libtermcap.so"
       set lib2 = "${dir2}/libfgets.so"
       set lib3 = "${dir3}/libreadline.so"

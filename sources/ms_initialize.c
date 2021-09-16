@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 17:03:47 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/16 18:12:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ void	clearStruct(t_minishell *mystruct)
 	// ft_lstclear(&mystruct->pipeLines, ft_simpleCmddel);
 	mystruct->pipeLines = NULL;
 	ft_lstclear(&mystruct->allocedPointers, ft_lstdel);
+	mystruct->lastPID = 0;
 }

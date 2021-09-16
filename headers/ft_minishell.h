@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 17:02:57 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/16 18:22:19 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void		copy_FD(t_std_FDs *dest, t_std_FDs *src);
 char		*ft_strArrtoStr(char **strArr, char delimiter);
 void		ft_appendStrArr(char ***strArrPtr, char *str);
 void 		sighandler(int sig);
+// Magic happens here.
+t_minishell	*getPid(t_minishell *mystruct);
 
 typedef struct s_pipex
 {
@@ -193,6 +195,6 @@ void		*popStack(t_stack *sp);
 t_stack		*createStack(void);
 
 // Global Variables
-t_minishell *data;
+t_minishell	*data;
 
 #endif

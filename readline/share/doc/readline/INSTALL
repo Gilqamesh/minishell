@@ -70,7 +70,7 @@ this:
 
 Or on systems that have the `env' program, you can do it like this:
 
-     env CPPFLAGS=-I/Users/gsiddiqu/.brew/include LDFLAGS=-s ./configure
+     env CPPFLAGS=-I/Users/edavid/.brew/include LDFLAGS=-s ./configure
 
 Compiling For Multiple Architectures
 ====================================
@@ -93,10 +93,10 @@ Installation Names
 ==================
 
 By default, `make install' will install the readline libraries in
-`/Users/gsiddiqu/.brew/lib', the include files in
-`/Users/gsiddiqu/.brew/include/readline', the man pages in `/Users/gsiddiqu/.brew/man',
-and the info files in `/Users/gsiddiqu/.brew/info'.  You can specify an
-installation prefix other than `/Users/gsiddiqu/.brew' by giving `configure'
+`/Users/edavid/.brew/lib', the include files in
+`/Users/edavid/.brew/include/readline', the man pages in `/Users/edavid/.brew/man',
+and the info files in `/Users/edavid/.brew/info'.  You can specify an
+installation prefix other than `/Users/edavid/.brew' by giving `configure'
 the option `--prefix=PATH' or by supplying a value for the
 DESTDIR variable when running `make install'. 
 
