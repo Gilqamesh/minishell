@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:22:38 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:30:47 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,17 @@ void	ft_appendStrArr(char ***strArrPtr, char *str)
 }
 
 /*
-**
+** Yes.
 */
-t_minishell	*getPid(t_minishell *mystruct)
+t_minishell	*getMystruct(t_minishell *mystruct)
 {
-	static t_minishell *ptr = mystruct;
+	static t_minishell	*ptr;
+	static bool			called;
 
+	if (called == true)
+	{
+		ptr = mystruct;
+		called = false;
+	}
 	return (ptr);
 }

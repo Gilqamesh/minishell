@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:22:19 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:29:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char		*ft_strArrtoStr(char **strArr, char delimiter);
 void		ft_appendStrArr(char ***strArrPtr, char *str);
 void 		sighandler(int sig);
 // Magic happens here.
-t_minishell	*getPid(t_minishell *mystruct);
+t_minishell	*getMystruct(t_minishell *mystruct);
 
 typedef struct s_pipex
 {
