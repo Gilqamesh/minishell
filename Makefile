@@ -17,7 +17,7 @@ $(ODIR)/%.o: $(SDIR)/%.c $(HDIR)/ft_minishell.h
 	cd $(ODIR) && $(CC) $(CFLAGS) -c ../$<
 $(MYLIB):
 	$(MAKE) --directory=mylib
-$(PIPEXLIB): $(HDIR)/*.h
+$(PIPEXLIB): pipex/sources/*.c $(HDIR)/*.h
 	$(MAKE) --directory=pipex
 
 .PHONY: all clean fclean re bonus fcleanall

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:29:18 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:49:08 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,21 +140,21 @@ void		error_handler(t_pipex *mystruct, int errcode, char *message);
 void		handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs);
 int			handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs);
 void		destroy_mystruct(t_pipex *mystruct);
-void		initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs);
+int			initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs);
 void		cmd_path(char **cmd, t_obj_lst *lst);
 void		closePreviousPipes(t_pipex *mystruct, int upToPipeNum);
 void		read_until_delimiter(t_pipex *mystruct);
 int			wait_childProcess(void);
-void		initOutFile(t_pipex *mystruct, int argc, char **argv,
+int			initOutFile(t_pipex *mystruct, int argc, char **argv,
 				t_std_FDs *FDs);
-void		closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end);
-void		openPipe(t_pipex *mystruct, int pipeNumber);
+int			closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end);
+int			openPipe(t_pipex *mystruct, int pipeNumber);
 void		mydup2(t_pipex *mystruct, int fromFd, int toFd);
 pid_t		myfork(t_pipex *mystruct);
 void		ft_pipex(t_minishell *minishellStruct, char *argv[],
 				t_std_FDs *FDs);
 void		redirect_stdin(t_pipex *mystruct);
-
+int			terminate_pipex(t_pipex *mystruct, char *message);
 /*
 ** Error codes
 */

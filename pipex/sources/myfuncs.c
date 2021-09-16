@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 19:23:43 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/14 15:23:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:53:45 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ pid_t	myfork(t_pipex *mystruct)
 
 	pid = fork();
 	if (pid == -1)
-		error_handler(mystruct, PIPEX_EFORK, "fork() failed\n");
+	{
+		destroy_mystruct(mystruct);
+		ft_putstr_fd("fork() failed\n", STDERR_FILENO);
+		return (-1);
+	}
 	return (pid);
 }
 
@@ -38,24 +42,26 @@ void	mydup2(t_pipex *mystruct, int fromFd, int toFd)
 ** Opens 'pipeNumber'
 ** In case there is an error with pipe() it calls error_handler
 */
-void	openPipe(t_pipex *mystruct, int pipeNumber)
+int	openPipe(t_pipex *mystruct, int pipeNumber)
 {
 	if (pipe(mystruct->pipes[pipeNumber]) == -1)
-		error_handler(mystruct, PIPEX_EPIPE, "pipe() failed");
+		return (terminate_pipex(mystruct, "pipe() failed\n"));
 	mystruct->openPipes[pipeNumber][0] = true;
 	mystruct->openPipes[pipeNumber][1] = true;
+	return (0);
 }
 
 /*
 ** Closes 'pipeNumber' read/write end for mystruct->pipes
 ** In case there is an error with close() it calls error_handler
 */
-void	closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end)
+int	closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end)
 {
 	if (mystruct->openPipes[pipeNumber][read_or_write_end])
 	{
 		mystruct->openPipes[pipeNumber][read_or_write_end] = false;
 		if (close(mystruct->pipes[pipeNumber][read_or_write_end]) == -1)
-			error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
+			return (terminate_pipex(mystruct, "close() failed\n"));
 	}
+	return (0);
 }

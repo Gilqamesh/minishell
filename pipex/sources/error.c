@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 18:12:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:44:09 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@ void	error_handler(t_pipex *mystruct, int errcode, char *message)
 	destroy_mystruct(mystruct);
 	ft_putstr_fd(message, STDERR_FILENO);
 	exit(errcode);
+}
+
+/*
+** Destroy mystruct, writes 'message' to STDERR then returns 1.
+*/
+int	terminate_pipex(t_pipex *mystruct, char *message)
+{
+	destroy_mystruct(mystruct);
+	ft_putstr_fd(message, STDERR_FILENO);
+	return (1);
 }
 
 /*
@@ -38,7 +48,7 @@ void	destroy_mystruct(t_pipex *mystruct)
 /*
 ** Helper function for initialize_mystruct in initialize.c
 */
-void	initOutFile(t_pipex *mystruct, int argc, char **argv, t_std_FDs *FDs)
+int	initOutFile(t_pipex *mystruct, int argc, char **argv, t_std_FDs *FDs)
 {
 	if (FDs->outFile.mode == REDIR_OUT)
 		mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
@@ -46,7 +56,8 @@ void	initOutFile(t_pipex *mystruct, int argc, char **argv, t_std_FDs *FDs)
 	else if (FDs->outFile.mode == REDIR_APPEND)
 		mystruct->file[1] = open(argv[argc - 1], O_APPEND | O_CREAT, 0777);
 	else
-		ft_printf("Error in %s. Not supported FD mode.", __FILE__);
+		return (terminate_pipex(mystruct, "Not supported FD mode.\n"));
 	if (mystruct->file[1] == -1)
-		error_handler(mystruct, PIPEX_EFOPEN, "Could not open outfile\n");
+		return (terminate_pipex(mystruct, "Could not open outfile\n"));
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/16 17:02:12 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/16 19:02:45 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(void)
 	while(1)
 	{
 		mystruct.promptStr = myreadline("hello, please enter a command line: ");
-			if (mystruct.promptStr == NULL)
-				continue ;
+		if (mystruct.promptStr == NULL)
+			continue ;
 		if (parseCmdLine(&mystruct))
 			continue ;
 	}

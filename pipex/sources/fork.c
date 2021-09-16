@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 18:18:25 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:49:29 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
 	closePipe(mystruct, mystruct->nOfCmds - 1, 1);
 	statusCode = wait_childProcess();
 	mydup2(mystruct, mystruct->pipes[mystruct->nOfCmds - 1][0], STDIN_FILENO);
-	closePipe(mystruct, mystruct->nOfCmds - 1, 0);
+	if (closePipe(mystruct, mystruct->nOfCmds - 1, 0))
+		return (-1);
 	if (FDs->outFile.mode != REDIR_VOID)
 		transfer_data(mystruct);
 	return (statusCode);

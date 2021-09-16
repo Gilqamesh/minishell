@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:22:47 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:52:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,33 @@ static void	handleChildProcess(t_pipex *mystruct, int curPipeNum, char *envp[])
 ** Makes a pipe between two commands
 ** And waits for the previous child process
 */
-static void	createPipe_betweenTwoCmds(t_minishell *minishellStruct,
+static int	createPipe_betweenTwoCmds(t_minishell *minishellStruct,
 t_pipex *mystruct, int curPipeNum)
 {
 	pid_t	pid;
 	int		wstatus;
 
-	closePipe(mystruct, curPipeNum - 1, 1);
+	if (closePipe(mystruct, curPipeNum - 1, 1))
+		return (1);
 	wstatus = wait_childProcess();
 	minishellStruct->fgExitStatus = wstatus;
 	if (wstatus)
-		closePipe(mystruct, curPipeNum - 1, 0);
-	openPipe(mystruct, curPipeNum);
+		if (closePipe(mystruct, curPipeNum - 1, 0))
+			return (1);
+	if (openPipe(mystruct, curPipeNum))
+		return (1);
 	pid = myfork(mystruct);
+	if (pid == -1)
+		return (1);
 	if (pid == 0)
 		handleChildProcess(mystruct, curPipeNum, mystruct->envp);
 	else
 		minishellStruct->lastPID = pid;
-	closePipe(mystruct, curPipeNum - 1, 0);
-	closePipe(mystruct, curPipeNum, 1);
+	if (closePipe(mystruct, curPipeNum - 1, 0))
+		return (1);
+	if (closePipe(mystruct, curPipeNum, 1))
+		return (1);
+	return (0);
 }
 
 int	wait_childProcess(void)
@@ -89,6 +97,7 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	pid_t	pid;
 	int		i;
 	t_pipex	mystruct;
+	int		statusCode;
 
 	ft_bzero(&mystruct, sizeof(mystruct));
 	i = -1;
@@ -97,16 +106,23 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	mystruct.argc = i;
 	mystruct.argv = argv;
 	mystruct.envp = minishellStruct->envp;
-	initialize_mystruct(&mystruct, FDs);
-	openPipe(&mystruct, 0);
+	if (initialize_mystruct(&mystruct, FDs))
+		return ;
+	if (openPipe(&mystruct, 0))
+		return ;
 	pid = myfork(&mystruct);
+	if (pid == -1)
+		return ;
 	if (pid == 0)
 		handle_inputFile_firstCmd(&mystruct, FDs);
 	else
 		minishellStruct->lastPID = pid;
 	i = 0;
 	while (++i < mystruct.nOfCmds)
-		createPipe_betweenTwoCmds(minishellStruct, &mystruct, i);
-	minishellStruct->fgExitStatus = handle_lastCmd_outputFile(&mystruct, FDs);
+		if (createPipe_betweenTwoCmds(minishellStruct, &mystruct, i))
+			return ;
+	statusCode = handle_lastCmd_outputFile(&mystruct, FDs);
+	if (statusCode != -1)
+		minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
 }

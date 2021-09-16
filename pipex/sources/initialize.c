@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 19:34:19 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:56:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** handled, ex.: "awk '{print $3}'" would be interpreted as:
 ** "awk" "'{print" "$3}'"
 */
-static void	initialize_Cmds(t_pipex *mystruct, char *argv[])
+static int	initialize_Cmds(t_pipex *mystruct, char *argv[])
 {
 	int			i;
 	int			firstArgIndex;
@@ -33,59 +33,65 @@ static void	initialize_Cmds(t_pipex *mystruct, char *argv[])
 	{
 		mystruct->commands[i] = ft_split(argv[i + firstArgIndex], ' ');
 		if (mystruct->commands[i] == NULL)
-			error_handler(mystruct, PIPEX_ERR, "ft_split() failed\n");
+			return (terminate_pipex(mystruct, "ft_split() failed\n"));
 		if (mystruct->commands[i][0] == NULL)
-			error_handler(mystruct, PIPEX_EUSAGE, "Empty command\n");
+			return (terminate_pipex(mystruct, "Empty command\n"));
 		cmd_path(&mystruct->commands[i][0], mystruct->envpLst);
 	}
+	return (0);
 }
 
 /*
 ** Initializes values related to here_doc in 'mystruct'
 */
-static void	init_hereDoc(t_pipex *mystruct, int argc, char **argv)
+static int	init_hereDoc(t_pipex *mystruct, int argc, char **argv)
 {
 	mystruct->isHereDoc = true;
 	mystruct->nOfCmds--;
 	mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND,
 		0777);
 	if (mystruct->file[1] == -1)
-		error_handler(mystruct, PIPEX_EFOPEN, "Could not open outfile\n");
+		return (terminate_pipex(mystruct, "Could not open outfile\n"));
 	if (mystruct->nOfCmds < 1)
-		error_handler(mystruct, PIPEX_EUSAGE,
-			"Usage: ./pipex here_doc LIMITER cmd [commands ...] outfile\n");
+		return (terminate_pipex(mystruct,
+			"Usage: ./pipex here_doc LIMITER cmd [commands ...] outfile\n"));
 	mystruct->delimiter = ft_strdup(argv[2]);
 	if (mystruct->delimiter == NULL)
-		error_handler(mystruct, PIPEX_ERR, "Malloc failed\n");
+		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	ft_lstadd_front(&mystruct->alloced_lst, ft_lstnew(mystruct->delimiter));
+	return (0);
 }
 
 /*
 ** Initializes t_pipex variable
 */
-void	initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs)
+int	initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs)
 {
 	mystruct->nOfCmds = mystruct->argc - 3;
 	if (mystruct->nOfCmds < 1)
-		error_handler(mystruct, PIPEX_EUSAGE,
+		terminate_pipex(mystruct,
 			"Usage: ./pipex infile cmd1 [additional commands ...] outfile\n");
-	if (!ft_strcmp(mystruct->argv[1], "here_doc"))
-		init_hereDoc(mystruct, mystruct->argc, mystruct->argv);
-	else if (ft_strcmp(mystruct->argv[1], ""))
-		initOutFile(mystruct, mystruct->argc, mystruct->argv, FDs);
+	if (!ft_strcmp(mystruct->argv[1], "here_doc")
+		&& init_hereDoc(mystruct, mystruct->argc, mystruct->argv))
+		return (1);
+	else if (ft_strcmp(mystruct->argv[1], "")
+		&& initOutFile(mystruct, mystruct->argc, mystruct->argv, FDs))
+		return (1);
 	mystruct->commands = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->commands), true);
 	if (mystruct->commands == NULL)
-		error_handler(mystruct, PIPEX_EMALLOC, "Malloc failed\n");
-	initialize_Cmds(mystruct, mystruct->argv);
+		return (terminate_pipex(mystruct, "Malloc failed\n"));
+	if (initialize_Cmds(mystruct, mystruct->argv))
+		return (1);
 	mystruct->pipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->pipes), false);
 	if (mystruct->pipes == NULL)
-		error_handler(mystruct, PIPEX_EMALLOC, "Malloc failed\n");
+		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	mystruct->openPipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->openPipes), true);
 	if (mystruct->openPipes == NULL)
-		error_handler(mystruct, PIPEX_EMALLOC, "Malloc failed\n");
+		return (terminate_pipex(mystruct, "Malloc failed\n"));
+	return (0);
 }
 
 /*
