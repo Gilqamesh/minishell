@@ -3,25 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 20:40:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 17:02:57 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MINISHELL_H
 # define FT_MINISHELL_H
 
+# define READLINE_LIBRARY
 // Library includes
 # include "../mylib/mylib.h"
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <stdio.h>
 # include <limits.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <sys/wait.h>
-# include <stdio.h>
+# include <signal.h>
+# include <stdlib.h>
+# include "../readline/include/readline/readline.h"
+# include "../readline/include/readline/history.h"
 
 // Defines
 //
@@ -110,6 +113,7 @@ void		printPipelines(t_minishell *mystruct);
 void		copy_FD(t_std_FDs *dest, t_std_FDs *src);
 char		*ft_strArrtoStr(char **strArr, char delimiter);
 void		ft_appendStrArr(char ***strArrPtr, char *str);
+void 		sighandler(int sig);
 
 typedef struct s_pipex
 {
@@ -187,5 +191,8 @@ void		pushStack(t_stack *sp, void *content);
 void		destroyStack(t_stack *sp);
 void		*popStack(t_stack *sp);
 t_stack		*createStack(void);
+
+// Global Variables
+t_minishell *data;
 
 #endif
