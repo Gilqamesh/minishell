@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:12:17 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:47:09 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void sighandler(int sig)
 {
-	if (data->lastPID != 0)
+	if ((getMystruct(NULL))->lastPID != 0)
 	{
-		kill(data->lastPID, sig);
+		kill((getMystruct(NULL))->lastPID, sig);
 	}
 	else if (sig == SIGINT)
 	{

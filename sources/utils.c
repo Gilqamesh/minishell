@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:30:47 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 18:46:50 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ void	ft_appendStrArr(char ***strArrPtr, char *str)
 t_minishell	*getMystruct(t_minishell *mystruct)
 {
 	static t_minishell	*ptr;
-	static bool			called;
+	static bool			called = true;
 
 	if (called == true)
 	{
