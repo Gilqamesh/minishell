@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:49:08 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:03:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,8 +193,5 @@ void		pushStack(t_stack *sp, void *content);
 void		destroyStack(t_stack *sp);
 void		*popStack(t_stack *sp);
 t_stack		*createStack(void);
-
-// Global Variables
-t_minishell	*data;
 
 #endif
