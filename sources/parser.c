@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 15:32:26 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 17:03:44 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 {
 	if (!ft_strcmp(redirOp, "<"))
 	{
-		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO)
+		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO
+			&& old->inFile.fd != 1)
 			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_IN;
@@ -33,7 +34,8 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 	}
 	else if (!ft_strcmp(redirOp, ">"))
 	{
-		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO)
+		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO
+			&& old->outFile.fd != -1)
 			close(old->outFile.fd);
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_OUT;
@@ -42,7 +44,8 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 	}
 	else if (!ft_strcmp(redirOp, "<<"))
 	{
-		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO)
+		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO
+			&& old->inFile.fd != -1)
 			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_HEREDOC;
@@ -50,7 +53,8 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 	}
 	else if (!ft_strcmp(redirOp, ">>"))
 	{
-		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO)
+		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO
+			&& old->outFile.fd != -1)
 			close(old->outFile.fd);
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_APPEND;
@@ -67,12 +71,7 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 	t_std_FDs		FD;
 	t_node_binary	*tmpLst;
 
-	ft_bzero(&FD, sizeof(FD));
-	FD.inFile.fd = STDIN_FILENO;
-	FD.inFile.mode = REDIR_VOID;
-	FD.outFile.fd = STDOUT_FILENO;
-	FD.outFile.mode = REDIR_OUT;
-	FD.errFile.fd = STDERR_FILENO;
+	initFD(&FD);
 	tmpLst = NULL;
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
 	{
@@ -120,12 +119,15 @@ static void	buildPipeline(t_minishell *mystruct)
 			{
 				cur = cur->next;
 				if (cur)
-					cur->FDs.outFile.mode = REDIR_VOID;
+					cur->FDs.inFile.mode = REDIR_VOID;
 				break ;
 			}
 			cur = cur->next;
 			if (cur && cur->FDs.inFile.filename)
+			{
+				new->FDs.outFile.mode = REDIR_VOID;
 				break ;
+			}
 		}
 		ft_lstadd_back(&mystruct->pipeLines, ft_lstnew(tmp));
 	}

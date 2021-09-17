@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 15:40:20 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 17:14:04 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 			error_handler(mystruct, PIPEX_EPIPE, "pipe() failed\n");
 		redirect_stdin(mystruct);
 	}
-	else if (mystruct->isHereDoc == false)
+	else if (FDs->inFile.mode == REDIR_IN)
 	{
 		mystruct->file[0] = open(mystruct->argv[1], O_RDONLY);
 		if (mystruct->file[0] == -1)
@@ -40,7 +40,7 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 	}
 	mydup2(mystruct, mystruct->pipes[0][1], STDOUT_FILENO);
 	closePipe(mystruct, 0, 1);
-	if (mystruct->isHereDoc == true)
+	if (FDs->inFile.mode == REDIR_HEREDOC)
 		read_until_delimiter(mystruct);
 	if (execve(mystruct->commands[0][0], mystruct->commands[0], 
 		mystruct->envp) == -1)
@@ -50,13 +50,13 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 /*
 ** Transfers the data read from last CMD to output file through a pipe
 */
-static void	transfer_data(t_pipex *mystruct)
+static void	transfer_data(t_pipex *mystruct, t_std_FDs *FDs)
 {
 	char	*line;
 	int		ret;
 	int		fd;
 
-	if (ft_strcmp(mystruct->argv[mystruct->argc - 1], ""))
+	if (FDs->outFile.mode == REDIR_OUT || FDs->outFile.mode == REDIR_APPEND)
 		fd = mystruct->file[1];
 	else
 		fd = STDOUT_FILENO;
@@ -79,8 +79,9 @@ static void	transfer_data(t_pipex *mystruct)
 		if (ret == 0)
 			break ;
 	}
-	if (ft_strcmp(mystruct->argv[mystruct->argc - 1], "") && close(fd) == -1)
-		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
+	if (FDs->outFile.mode == REDIR_OUT || FDs->outFile.mode == REDIR_APPEND)
+		if (close(fd) == -1)
+			error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
 }
 
 int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
@@ -93,7 +94,7 @@ int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
 	if (closePipe(mystruct, mystruct->nOfCmds - 1, 0))
 		return (-1);
 	if (FDs->outFile.mode != REDIR_VOID)
-		transfer_data(mystruct);
+		transfer_data(mystruct, FDs);
 	return (statusCode);
 }
 

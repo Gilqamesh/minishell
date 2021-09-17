@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 13:56:17 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:43:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,4 +164,20 @@ t_minishell	*getMystruct(t_minishell *mystruct)
 		called = false;
 	}
 	return (ptr);
+}
+
+/*
+** Initializes 'FD' with default values for a simple command.
+*/
+void	initFD(t_std_FDs *FD)
+{
+	FD->errFile.fd = STDERR_FILENO;
+	FD->errFile.filename = NULL;
+	FD->errFile.mode = REDIR_NONE;
+	FD->inFile.fd = STDIN_FILENO;
+	FD->inFile.filename = NULL;
+	FD->inFile.mode = REDIR_NONE;
+	FD->outFile.fd = STDOUT_FILENO;
+	FD->outFile.filename = NULL;
+	FD->outFile.mode = REDIR_NONE;
 }

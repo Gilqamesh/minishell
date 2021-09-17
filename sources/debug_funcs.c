@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 15:34:31 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:45:15 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	printSimpleCmd(t_simpleCmd *simpleCmd)
 		ft_printf("| mode: heredoc");
 	else if (simpleCmd->FDs.inFile.mode == REDIR_VOID)
 		ft_printf("| mode: void");
+	else if (simpleCmd->FDs.inFile.mode == REDIR_NONE)
+		ft_printf("| mode: none");
 	ft_printf("\n");
 	ft_printf("Outfile: %s ", simpleCmd->FDs.outFile.filename);
 	if (simpleCmd->FDs.outFile.mode == REDIR_OUT)
@@ -42,6 +44,8 @@ void	printSimpleCmd(t_simpleCmd *simpleCmd)
 		ft_printf("| mode: append");
 	else if (simpleCmd->FDs.outFile.mode == REDIR_VOID)
 		ft_printf("| mode: void");
+	else if (simpleCmd->FDs.outFile.mode == REDIR_NONE)
+		ft_printf("| mode: none");
 	ft_printf("\n");
 }
 

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 13:46:09 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:43:22 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,8 @@ enum e_redirection_mode
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
-	REDIR_HEREDOC
+	REDIR_HEREDOC,
+	REDIR_NONE
 };
 typedef struct s_filelst
 {

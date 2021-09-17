@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 14:19:11 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 20:01:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs)
 	if (mystruct->nOfCmds < 1)
 		terminate_pipex(mystruct,
 			"Usage: ./pipex infile cmd1 [additional commands ...] outfile\n");
-	if (!ft_strcmp(mystruct->argv[1], "here_doc")
+	if (FDs->inFile.mode == REDIR_HEREDOC
 		&& init_hereDoc(mystruct, mystruct->argc, mystruct->argv))
 		return (1);
-	else if (ft_strcmp(mystruct->argv[1], "")
+	else if (FDs->outFile.mode != REDIR_NONE && FDs->outFile.mode != REDIR_VOID
 		&& initOutFile(mystruct, mystruct->argc, mystruct->argv, FDs))
 		return (1);
 	mystruct->commands = ft_lstmallocwrapper(&mystruct->alloced_lst,

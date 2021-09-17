@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 14:23:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:04:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,9 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	if (statusCode != -1)
 		minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
+	if (mystruct.tempSTDIN != 0)
+	{
+		dup2(mystruct.tempSTDIN, STDIN_FILENO);
+		close(mystruct.tempSTDIN);
+	}
 }

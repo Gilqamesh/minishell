@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 14:22:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:48:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,28 @@ int	executor(t_minishell *mystruct)
 		FDs.outFile = tmp->FDs.outFile;
 		argv = buildArgv((t_simpleCmd *)cur->content, &FDs);
 		printStrArr(argv);
+		ft_printf("Pipeline's FDs:\nInfile: %s", FDs.inFile.filename);
+		if (FDs.inFile.mode == REDIR_IN)
+			ft_printf("| mode: REDIR_IN");
+		else if (FDs.inFile.mode == REDIR_VOID)
+			ft_printf("| mode: REDIR_VOID");
+		else if (FDs.inFile.mode == REDIR_HEREDOC)
+			ft_printf("| mode: REDIR_HEREDOC");
+		else if (FDs.inFile.mode == REDIR_NONE)
+			ft_printf("| mode: REDIR_NONE");
+		else
+			ft_printf("| mode: NOT SUPPORTED");
+		ft_printf("\nOutfile: %s", FDs.outFile.filename);
+		if (FDs.outFile.mode == REDIR_OUT)
+			ft_printf("| mode: REDIR_OUT\n");
+		else if (FDs.outFile.mode == REDIR_VOID)
+			ft_printf("| mode: REDIR_VOID\n");
+		else if (FDs.outFile.mode == REDIR_APPEND)
+			ft_printf("| mode: REDIR_APPEND\n");
+		else if (FDs.outFile.mode == REDIR_NONE)
+			ft_printf("| mode: REDIR_NONE\n");
+		else
+			ft_printf("| mode: NOT SUPPORTED\n");
 		ft_pipex(mystruct, argv, &FDs);
 		cur = cur->next;
 	}

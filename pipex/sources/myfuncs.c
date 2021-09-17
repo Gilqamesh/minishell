@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 19:23:43 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:53:45 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 16:02:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ pid_t	myfork(t_pipex *mystruct)
 */
 void	mydup2(t_pipex *mystruct, int fromFd, int toFd)
 {
+	if (toFd == STDIN_FILENO)
+		mystruct->tempSTDIN = dup(toFd);
 	if (dup2(fromFd, toFd) == -1)
 		error_handler(mystruct, PIPEX_EDUP2, "dup2() failed\n");
 }
