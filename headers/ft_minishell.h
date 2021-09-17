@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 16:02:11 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 20:22:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ typedef struct s_pipex
 	int			file[2];
 	int			(*pipes)[2];
 	bool		(*openPipes)[2];
-	bool		isHereDoc;
 	int			hereDocPipe[2];
 	char		*delimiter;
 	t_list		*alloced_lst;
