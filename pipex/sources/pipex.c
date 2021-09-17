@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 16:04:18 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 20:36:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ int	wait_childProcess(void)
 }
 
 /*
-** Usage is similar as in the project pipex.
-** 'FDs' is the whole pipeline's infile and outfile.
-** If infile is "", then infile is an empty file.
-** If outfile is "", then the output of the last child is lost.
+** Usage currently: "./pipex" "infile" "cmd1" "cmd2" "..." "outfile"
 */
 void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 {
@@ -127,9 +124,9 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	if (statusCode != -1)
 		minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
-	if (mystruct.tempSTDIN != 0)
-	{
-		dup2(mystruct.tempSTDIN, STDIN_FILENO);
-		close(mystruct.tempSTDIN);
-	}
+	// if (mystruct.tempSTDIN != 0)
+	// {
+	// 	dup2(mystruct.tempSTDIN, STDIN_FILENO);
+	// 	close(mystruct.tempSTDIN);
+	// }
 }

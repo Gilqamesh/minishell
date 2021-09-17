@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:00:48 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 20:31:19 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	destroy_mystruct(t_pipex *mystruct)
 {
 	int	i;
 
-	if (mystruct->file[1] != -1)
+	if (mystruct->file[1] != -1 && mystruct->file[1] != 0)
 		close(mystruct->file[1]);
 	closePreviousPipes(mystruct, mystruct->nOfCmds);
 	i = -1;

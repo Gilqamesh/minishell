@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 17:14:04 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 20:36:03 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	transfer_data(t_pipex *mystruct, t_std_FDs *FDs)
 		fd = STDOUT_FILENO;
 	while (1)
 	{
-		ret = get_next_line(STDIN_FILENO, &line);
+		ret = get_next_line(mystruct->pipes[mystruct->nOfCmds - 1][0], &line);
 		if (ret == -1)
 			error_handler(mystruct, PIPEX_ERR, "get_next_line() failed\n");
 		if (write(fd, line, ft_strlen(line)) == -1)
@@ -90,9 +90,6 @@ int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
 
 	closePipe(mystruct, mystruct->nOfCmds - 1, 1);
 	statusCode = wait_childProcess();
-	mydup2(mystruct, mystruct->pipes[mystruct->nOfCmds - 1][0], STDIN_FILENO);
-	if (closePipe(mystruct, mystruct->nOfCmds - 1, 0))
-		return (-1);
 	if (FDs->outFile.mode != REDIR_VOID)
 		transfer_data(mystruct, FDs);
 	return (statusCode);
