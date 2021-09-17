@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:56:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 14:19:11 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	cmd_path(char **cmd, t_obj_lst *envp)
 	t_obj_lst	*keyPtr;
 
 	keyPtr = ft_objlst_findbykey(envp, "PATH");
+	// ft_printf("envp: %s %s\n", envp->key, envp->value);
 	if (keyPtr == NULL)
 		return ;
 	paths = ft_split(keyPtr->value, ':');

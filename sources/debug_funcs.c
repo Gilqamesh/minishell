@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 19:42:41 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 19:55:43 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 15:34:31 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,20 @@ void	printSimpleCmd(t_simpleCmd *simpleCmd)
 	ft_printf("Command: ");
 	printStrArr(simpleCmd->arguments);
 	ft_printf("Infile: %s ", simpleCmd->FDs.inFile.filename);
-	if (simpleCmd->FDs.inFile.filename)
-	{
-		if (simpleCmd->FDs.inFile.mode == REDIR_IN)
-			ft_printf("| mode: input");
-		else if (simpleCmd->FDs.inFile.mode == REDIR_HEREDOC)
-			ft_printf("| mode: heredoc");
-	}
+	if (simpleCmd->FDs.inFile.mode == REDIR_IN)
+		ft_printf("| mode: input");
+	else if (simpleCmd->FDs.inFile.mode == REDIR_HEREDOC)
+		ft_printf("| mode: heredoc");
+	else if (simpleCmd->FDs.inFile.mode == REDIR_VOID)
+		ft_printf("| mode: void");
 	ft_printf("\n");
 	ft_printf("Outfile: %s ", simpleCmd->FDs.outFile.filename);
-	if (simpleCmd->FDs.outFile.filename)
-	{
-		if (simpleCmd->FDs.outFile.mode == REDIR_OUT)
-			ft_printf("| mode: output");
-		else if (simpleCmd->FDs.outFile.mode == REDIR_APPEND)
-			ft_printf("| mode: append");
-	}
+	if (simpleCmd->FDs.outFile.mode == REDIR_OUT)
+		ft_printf("| mode: output");
+	else if (simpleCmd->FDs.outFile.mode == REDIR_APPEND)
+		ft_printf("| mode: append");
+	else if (simpleCmd->FDs.outFile.mode == REDIR_VOID)
+		ft_printf("| mode: void");
 	ft_printf("\n");
 }
 

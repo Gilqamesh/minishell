@@ -6,14 +6,13 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:53:17 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 13:35:49 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_MINISHELL_H
 # define FT_MINISHELL_H
 
-# define READLINE_LIBRARY
 // Library includes
 # include "../mylib/mylib.h"
 # include <stdio.h>

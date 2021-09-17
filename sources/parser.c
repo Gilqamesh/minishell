@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 20:14:31 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 15:32:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 
 	ft_bzero(&FD, sizeof(FD));
 	FD.inFile.fd = STDIN_FILENO;
+	FD.inFile.mode = REDIR_VOID;
 	FD.outFile.fd = STDOUT_FILENO;
+	FD.outFile.mode = REDIR_OUT;
 	FD.errFile.fd = STDERR_FILENO;
 	tmpLst = NULL;
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))

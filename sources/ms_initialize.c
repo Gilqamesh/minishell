@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:51:01 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:21:31 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void sighandler(int sig)
 		*rl_line_buffer = '\0';
 		rl_point = 0;
 		rl_end = 0;
-		ft_putstr_fd("\n", 1);
+		PRINT_HERE();
+		ft_putstr_fd("\n", STDOUT_FILENO);
 		rl_redisplay();
-		ft_putstr_fd("hello, please enter a command line: ", 1);
+		ft_putstr_fd("hello, please enter a command line: ", STDOUT_FILENO);
 	}
 }
 
@@ -38,7 +39,7 @@ static void	init_envp(t_minishell *mystruct)
 	{
 		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup("PATH"),
 			ft_strdup(path)));
-		ft_appendStrArr(&mystruct->envp, path);
+		ft_appendStrArr(&mystruct->envp, ft_strjoin("PATH=", path));
 	}
 }
 

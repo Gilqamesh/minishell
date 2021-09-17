@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:36:25 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 15:40:20 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	redirectInputFromFile(t_pipex *mystruct)
 void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 {
 	closePipe(mystruct, 0, 0);
-	if (!ft_strcmp(FDs->inFile.filename, ""))
+	if (FDs->inFile.mode == REDIR_VOID)
 	{
 		if (pipe(mystruct->hereDocPipe) == -1)
 			error_handler(mystruct, PIPEX_EPIPE, "pipe() failed\n");
 		redirect_stdin(mystruct);
 	}
-	else if (!mystruct->isHereDoc)
+	else if (mystruct->isHereDoc == false)
 	{
 		mystruct->file[0] = open(mystruct->argv[1], O_RDONLY);
 		if (mystruct->file[0] == -1)
@@ -40,7 +40,7 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 	}
 	mydup2(mystruct, mystruct->pipes[0][1], STDOUT_FILENO);
 	closePipe(mystruct, 0, 1);
-	if (mystruct->isHereDoc)
+	if (mystruct->isHereDoc == true)
 		read_until_delimiter(mystruct);
 	if (execve(mystruct->commands[0][0], mystruct->commands[0], 
 		mystruct->envp) == -1)
@@ -68,6 +68,8 @@ static void	transfer_data(t_pipex *mystruct)
 		if (write(fd, line, ft_strlen(line)) == -1)
 		{
 			free(line);
+			ft_printf("mystruct->file[1]: %d\n", mystruct->file[1]);
+			PRINT_HERE();
 			error_handler(mystruct, PIPEX_ERR, "write() failed at line\n");
 		}
 		free(line);

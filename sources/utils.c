@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 18:46:50 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/17 13:56:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,14 @@ void	ft_appendStrArr(char ***strArrPtr, char *str)
 	int		i;
 	char	**new;
 
-	if (strArrPtr == NULL || *strArrPtr == NULL)
+	if (strArrPtr == NULL)
 		return ;
+	if (*strArrPtr == NULL)
+	{
+		*strArrPtr = ft_calloc(2, sizeof(**strArrPtr));
+		(*strArrPtr)[0] = ft_strdup(str);
+		return ;
+	}
 	len = -1;
 	while ((*strArrPtr)[++len])
 		;

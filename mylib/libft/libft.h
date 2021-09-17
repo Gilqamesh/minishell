@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/15 20:11:12 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/17 13:46:09 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,11 +357,11 @@ void	ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
 #  define T_FILELST
 enum e_redirection_mode
 {
+	REDIR_VOID,
 	REDIR_IN,
 	REDIR_OUT,
 	REDIR_APPEND,
-	REDIR_HEREDOC,
-	REDIR_VOID
+	REDIR_HEREDOC
 };
 typedef struct s_filelst
 {
