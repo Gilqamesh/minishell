@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:23:53 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 19:53:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <stdlib.h>
-# include "../readline/include/readline/readline.h"
-# include "../readline/include/readline/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 // Defines
 //

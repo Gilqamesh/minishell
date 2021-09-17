@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/16 19:44:43 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/16 20:15:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,14 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	int		statusCode;
 
 	ft_bzero(&mystruct, sizeof(mystruct));
+	mystruct.file[1] = -1;
 	i = -1;
 	while (argv[++i])
 		;
 	mystruct.argc = i;
 	mystruct.argv = argv;
 	mystruct.envp = minishellStruct->envp;
+	perror(NULL);
 	if (initialize_mystruct(&mystruct, FDs))
 		return ;
 	if (openPipe(&mystruct, 0))
@@ -125,16 +127,4 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	if (statusCode != -1)
 		minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
-	// char buf[101];
-	// PRINT_HERE();
-	// int ret = read(STDIN_FILENO, buf, 100);
-	// printf("ret: %d\n", ret);
-	// buf[ret] = '\0';
-	// printf("%s\n", buf);
-	// perror(NULL);
-	// i = -1;
-	// while (++i < 10)
-	// 	printf("%d ", buf[i]);
-	// printf("\n");
-	// PRINT_HERE();
 }
