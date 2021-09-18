@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:36:03 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:07:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,30 @@ static void	redirectInputFromFile(t_pipex *mystruct)
 /*
 ** Creates connection between input file and first CMD then runs execve on CMD
 */
-void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
+void	handle_inputFile_firstCmd(t_minishell *minishellStruct,
+t_pipex *mystruct)
 {
 	closePipe(mystruct, 0, 0);
-	if (FDs->inFile.mode == REDIR_VOID)
+	if (mystruct->first->FDs.inFile.mode == REDIR_VOID)
 	{
 		if (pipe(mystruct->hereDocPipe) == -1)
 			error_handler(mystruct, PIPEX_EPIPE, "pipe() failed\n");
 		redirect_stdin(mystruct);
 	}
-	else if (FDs->inFile.mode == REDIR_IN)
+	else if (mystruct->first->FDs.inFile.mode == REDIR_IN)
 	{
-		mystruct->file[0] = open(mystruct->argv[1], O_RDONLY);
+		mystruct->file[0] = open(mystruct->first->arguments[0], O_RDONLY);
 		if (mystruct->file[0] == -1)
 			error_handler(mystruct, PIPEX_EFOPEN, "Could not open infile\n");
 		redirectInputFromFile(mystruct);
 	}
 	mydup2(mystruct, mystruct->pipes[0][1], STDOUT_FILENO);
 	closePipe(mystruct, 0, 1);
-	if (FDs->inFile.mode == REDIR_HEREDOC)
+	if (mystruct->first->FDs.inFile.mode == REDIR_HEREDOC)
 		read_until_delimiter(mystruct);
-	if (execve(mystruct->commands[0][0], mystruct->commands[0], 
+	if (mystruct->first->isBuiltin == true)
+		executeBuiltin(minishellStruct, mystruct->first->arguments);
+	if (execve(mystruct->first->arguments[0], mystruct->first->arguments, 
 		mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
@@ -50,13 +53,14 @@ void	handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs)
 /*
 ** Transfers the data read from last CMD to output file through a pipe
 */
-static void	transfer_data(t_pipex *mystruct, t_std_FDs *FDs)
+static void	transfer_data(t_pipex *mystruct)
 {
 	char	*line;
 	int		ret;
 	int		fd;
 
-	if (FDs->outFile.mode == REDIR_OUT || FDs->outFile.mode == REDIR_APPEND)
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
+		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
 		fd = mystruct->file[1];
 	else
 		fd = STDOUT_FILENO;
@@ -68,9 +72,7 @@ static void	transfer_data(t_pipex *mystruct, t_std_FDs *FDs)
 		if (write(fd, line, ft_strlen(line)) == -1)
 		{
 			free(line);
-			ft_printf("mystruct->file[1]: %d\n", mystruct->file[1]);
-			PRINT_HERE();
-			error_handler(mystruct, PIPEX_ERR, "write() failed at line\n");
+			error_handler(mystruct, PIPEX_ERR, "write() failed\n");
 		}
 		free(line);
 		if (ret)
@@ -79,19 +81,20 @@ static void	transfer_data(t_pipex *mystruct, t_std_FDs *FDs)
 		if (ret == 0)
 			break ;
 	}
-	if (FDs->outFile.mode == REDIR_OUT || FDs->outFile.mode == REDIR_APPEND)
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
+		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
 		if (close(fd) == -1)
 			error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
 }
 
-int	handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs)
+int	handle_lastCmd_outputFile(t_pipex *mystruct)
 {
 	int	statusCode;
 
 	closePipe(mystruct, mystruct->nOfCmds - 1, 1);
 	statusCode = wait_childProcess();
-	if (FDs->outFile.mode != REDIR_VOID)
-		transfer_data(mystruct, FDs);
+	if (mystruct->last->FDs.outFile.mode != REDIR_VOID)
+		transfer_data(mystruct);
 	return (statusCode);
 }
 

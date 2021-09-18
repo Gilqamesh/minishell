@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   ft_strToStrArr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 14:32:03 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/18 14:40:12 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/18 14:42:04 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_minishell.h"
+#include "libft.h"
 
 /*
-** Executes the pipeline with ft_pipex() in 'mystruct'->pipeLines
+** Allocates and returns a NULL terminated str array that has 'str' as its
+** first element.
 */
-int	executor(t_minishell *mystruct)
+char	**ft_strToStrArr(char *str)
 {
-	t_list		*cur;
+	char	**strArr;
 
-	cur = mystruct->pipeLines;
-	while (cur)
+	if (str == NULL)
 	{
-		ft_pipex(mystruct, (t_simpleCmd *)cur->content);
-		cur = cur->next;
+		strArr = ft_calloc(1, sizeof(*strArr));
+		return (strArr);
 	}
-	return (0);
+	strArr = ft_calloc(2, sizeof(*strArr));
+	strArr[0] = ft_strdup(str);
+	return (strArr);
 }

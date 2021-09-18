@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:22:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:47:14 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_simpleCmd
 {
 	char				**arguments;
 	t_std_FDs			FDs;
+	bool				isBuiltin;
 	struct s_simpleCmd	*next;
 }	t_simpleCmd;
 
@@ -80,7 +81,6 @@ typedef struct s_minishell
 	t_simpleCmd		*nodes;
 	t_list			*pipeLines;
 	t_obj_lst		*envpLst;
-	char			**envp;
 	unsigned char	fgExitStatus;
 	t_list			*allocedPointers;
 	pid_t			lastPID;
@@ -103,7 +103,7 @@ void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
 void		ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *));
 void		ft_simpleCmddel(void *item);
 int			ft_simpleCmdsize(t_simpleCmd *list);
-t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs);
+t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs, bool isBuiltin);
 int			executor(t_minishell *mystruct);
 int			checkSyntax(t_minishell *mystruct);
 char		*isValidRedirection(char *str);
@@ -116,10 +116,18 @@ void 		sighandler(int sig);
 // Magic happens here.
 t_minishell	*getMystruct(t_minishell *mystruct);
 void		initFD(t_std_FDs *FD);
+bool		isStrBuiltin(char *str);
+void		executeBuiltin(t_minishell *mystruct, char **commandArgs);
+// Builtins
+int			builtin_echo(char **commandArgs);
+int			builtin_export(t_minishell *mystruct, char *key, char *val);
+int			builtin_unset(t_minishell *mystruct, char *key);
+int			builtin_cd(t_minishell *mystruct, char *input);
+int			builtin_pwd(t_minishell *mystruct, int outstream);
+int			builtin_env(t_minishell *mystruct, int outstream);
 
 typedef struct s_pipex
 {
-	char		***commands;
 	int			nOfCmds;
 	int			tmpFd[2];
 	int			file[2];
@@ -128,34 +136,34 @@ typedef struct s_pipex
 	int			hereDocPipe[2];
 	char		*delimiter;
 	t_list		*alloced_lst;
-	int			argc;
-	char		**argv;
 	t_obj_lst	*envpLst;
 	char		**envp;
-	int			oldSTDIN;
-	int			tempSTDIN;
+	t_simpleCmd	*first;
+	t_simpleCmd	*last;
 }	t_pipex;
 
 // PIPEX FUNCTIONS
 void		error_handler(t_pipex *mystruct, int errcode, char *message);
-void		handle_inputFile_firstCmd(t_pipex *mystruct, t_std_FDs *FDs);
-int			handle_lastCmd_outputFile(t_pipex *mystruct, t_std_FDs *FDs);
+void		handle_inputFile_firstCmd(t_minishell *minishellStruct,
+				t_pipex *mystruct);
+int			handle_lastCmd_outputFile(t_pipex *mystruct);
 void		destroy_mystruct(t_pipex *mystruct);
-int			initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs);
+int			initialize_mystruct(t_minishell *minishellStruct, t_pipex *mystruct,
+				t_simpleCmd *pipeLine);
 void		cmd_path(char **cmd, t_obj_lst *lst);
 void		closePreviousPipes(t_pipex *mystruct, int upToPipeNum);
 void		read_until_delimiter(t_pipex *mystruct);
 int			wait_childProcess(void);
-int			initOutFile(t_pipex *mystruct, int argc, char **argv,
-				t_std_FDs *FDs);
+int			initOutFile(t_pipex *mystruct);
 int			closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end);
 int			openPipe(t_pipex *mystruct, int pipeNumber);
 void		mydup2(t_pipex *mystruct, int fromFd, int toFd);
 pid_t		myfork(t_pipex *mystruct);
-void		ft_pipex(t_minishell *minishellStruct, char *argv[],
-				t_std_FDs *FDs);
+void		ft_pipex(t_minishell *minishellStruct, t_simpleCmd *pipeLine);
 void		redirect_stdin(t_pipex *mystruct);
 int			terminate_pipex(t_pipex *mystruct, char *message);
+t_simpleCmd	*getSimpleCmdIndex(t_simpleCmd *lst, int index);
+
 /*
 ** Error codes
 */

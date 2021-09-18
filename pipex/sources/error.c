@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:31:19 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:04:07 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,28 +34,23 @@ int	terminate_pipex(t_pipex *mystruct, char *message)
 */
 void	destroy_mystruct(t_pipex *mystruct)
 {
-	int	i;
-
 	if (mystruct->file[1] != -1 && mystruct->file[1] != 0)
 		close(mystruct->file[1]);
 	closePreviousPipes(mystruct, mystruct->nOfCmds);
-	i = -1;
-	if (mystruct->commands)
-		while (++i < mystruct->nOfCmds && mystruct->commands[i])
-			ft_destroy_str_arr(mystruct->commands + i);
 	ft_lstmallocfree(&mystruct->alloced_lst);
 }
 
 /*
 ** Helper function for initialize_mystruct in initialize.c
 */
-int	initOutFile(t_pipex *mystruct, int argc, char **argv, t_std_FDs *FDs)
+int	initOutFile(t_pipex *mystruct)
 {
-	if (FDs->outFile.mode == REDIR_OUT)
-		mystruct->file[1] = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
-			0777);
-	else if (FDs->outFile.mode == REDIR_APPEND)
-		mystruct->file[1] = open(argv[argc - 1], O_APPEND | O_CREAT, 0777);
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT)
+		mystruct->file[1] = open(mystruct->last->arguments[0], O_WRONLY
+			| O_CREAT | O_TRUNC, 0777);
+	else if (mystruct->last->FDs.outFile.mode == REDIR_APPEND)
+		mystruct->file[1] = open(mystruct->last->arguments[0], O_APPEND
+			| O_CREAT, 0777);
 	else
 		return (terminate_pipex(mystruct, "Not supported FD mode.\n"));
 	if (mystruct->file[1] == -1)

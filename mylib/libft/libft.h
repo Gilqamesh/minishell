@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 16:43:22 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:42:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -386,5 +386,8 @@ t_filelst		*ft_filelstnew(char *filename, int mode);
 // Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list
 // intact.
 void			ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
+// Allocates and returns a NULL terminated str array that has 'str' as its
+// first element.
+char			**ft_strToStrArr(char *str);
 
 #endif

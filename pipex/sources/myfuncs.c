@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 19:23:43 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 16:02:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:47:12 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ pid_t	myfork(t_pipex *mystruct)
 */
 void	mydup2(t_pipex *mystruct, int fromFd, int toFd)
 {
-	if (toFd == STDIN_FILENO)
-		mystruct->tempSTDIN = dup(toFd);
 	if (dup2(fromFd, toFd) == -1)
 		error_handler(mystruct, PIPEX_EDUP2, "dup2() failed\n");
 }
@@ -66,4 +64,16 @@ int	closePipe(t_pipex *mystruct, int pipeNumber, int read_or_write_end)
 			return (terminate_pipex(mystruct, "close() failed\n"));
 	}
 	return (0);
+}
+
+/*
+** Returns the 'index'th pointer to t_simpleCmd in 'lst'.
+*/
+t_simpleCmd	*getSimpleCmdIndex(t_simpleCmd *lst, int index)
+{
+	if (index < 0)
+		return (lst);
+	while (index--)
+		lst = lst->next;
+	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:36:17 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:48:05 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ static void	sendEOFtoInput(t_pipex *mystruct)
 	close(mystruct->tmpFd[1]);
 }
 
-static void	handleChildProcess(t_pipex *mystruct, int curPipeNum, char *envp[])
+static void	handleChildProcess(t_minishell *minishellStruct, t_pipex *mystruct,
+int curPipeNum)
 {
+	t_simpleCmd	*cur;
+
 	closePipe(mystruct, curPipeNum, 0);
 	if (mystruct->openPipes[curPipeNum - 1][0])
 	{
@@ -33,8 +36,10 @@ static void	handleChildProcess(t_pipex *mystruct, int curPipeNum, char *envp[])
 		sendEOFtoInput(mystruct);
 	mydup2(mystruct, mystruct->pipes[curPipeNum][1], STDOUT_FILENO);
 	closePipe(mystruct, curPipeNum, 1);
-	if (execve(mystruct->commands[curPipeNum][0],
-		mystruct->commands[curPipeNum], envp) == -1)
+	cur = getSimpleCmdIndex(mystruct->first, curPipeNum);
+	if (cur->isBuiltin == true)
+		executeBuiltin(minishellStruct, cur->arguments);
+	if (execve(cur->arguments[0], cur->arguments, mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
 
@@ -61,7 +66,7 @@ t_pipex *mystruct, int curPipeNum)
 	if (pid == -1)
 		return (1);
 	if (pid == 0)
-		handleChildProcess(mystruct, curPipeNum, mystruct->envp);
+		handleChildProcess(minishellStruct, mystruct, curPipeNum);
 	else
 		minishellStruct->lastPID = pid;
 	if (closePipe(mystruct, curPipeNum - 1, 0))
@@ -89,23 +94,14 @@ int	wait_childProcess(void)
 /*
 ** Usage currently: "./pipex" "infile" "cmd1" "cmd2" "..." "outfile"
 */
-void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
+void	ft_pipex(t_minishell *minishellStruct, t_simpleCmd *pipeLine)
 {
 	pid_t	pid;
 	int		i;
 	t_pipex	mystruct;
 	int		statusCode;
 
-	ft_bzero(&mystruct, sizeof(mystruct));
-	mystruct.file[1] = -1;
-	i = -1;
-	while (argv[++i])
-		;
-	mystruct.argc = i;
-	mystruct.argv = argv;
-	mystruct.envp = minishellStruct->envp;
-	mystruct.envpLst = minishellStruct->envpLst;
-	if (initialize_mystruct(&mystruct, FDs))
+	if (initialize_mystruct(minishellStruct, &mystruct, pipeLine))
 		return ;
 	if (openPipe(&mystruct, 0))
 		return ;
@@ -113,20 +109,15 @@ void	ft_pipex(t_minishell *minishellStruct, char *argv[], t_std_FDs *FDs)
 	if (pid == -1)
 		return ;
 	if (pid == 0)
-		handle_inputFile_firstCmd(&mystruct, FDs);
+		handle_inputFile_firstCmd(minishellStruct, &mystruct);
 	else
 		minishellStruct->lastPID = pid;
 	i = 0;
 	while (++i < mystruct.nOfCmds)
 		if (createPipe_betweenTwoCmds(minishellStruct, &mystruct, i))
 			return ;
-	statusCode = handle_lastCmd_outputFile(&mystruct, FDs);
+	statusCode = handle_lastCmd_outputFile(&mystruct);
 	if (statusCode != -1)
 		minishellStruct->fgExitStatus = statusCode;
 	destroy_mystruct(&mystruct);
-	// if (mystruct.tempSTDIN != 0)
-	// {
-	// 	dup2(mystruct.tempSTDIN, STDIN_FILENO);
-	// 	close(mystruct.tempSTDIN);
-	// }
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 17:03:44 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 13:07:31 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 {
 	t_std_FDs		FD;
 	t_node_binary	*tmpLst;
+	bool			isBuiltin;
 
 	initFD(&FD);
 	tmpLst = NULL;
+	isBuiltin = false;
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
 	{
 		if (isValidRedirection(mystruct->tokens[*i]))
@@ -81,14 +83,18 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 			(*i)++;
 		}
 		else
+		{
+			if (tmpLst == NULL && isStrBuiltin(mystruct->tokens[*i]))
+				isBuiltin = true;
 			ft_nodbinadd_front(&tmpLst, ft_nodbinnew(ft_strdup(
 				mystruct->tokens[*i])));
+		}
 		(*i)++;
 	}
 	if (mystruct->tokens[*i])
 		(*i)++;
 	ft_simpleCmdadd_back(&mystruct->nodes,
-		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), &FD));
+		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), &FD, isBuiltin));
 	ft_nodbinclear(&tmpLst, ft_nodbindel, -1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 20:23:44 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:48:30 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,16 @@
 ** handled, ex.: "awk '{print $3}'" would be interpreted as:
 ** "awk" "'{print" "$3}'"
 */
-static int	initialize_Cmds(t_pipex *mystruct, char *argv[])
+static int	initialize_Cmds(t_pipex *mystruct, t_simpleCmd *pipeLine)
 {
-	int			i;
+	t_simpleCmd	*cur;
 
-	i = -1;
-	while (++i < mystruct->nOfCmds)
+	cur = pipeLine;
+	while (cur)
 	{
-		mystruct->commands[i] = ft_split(argv[i + 2], ' ');
-		if (mystruct->commands[i] == NULL)
-			return (terminate_pipex(mystruct, "ft_split() failed\n"));
-		if (mystruct->commands[i][0] == NULL)
-			return (terminate_pipex(mystruct, "Empty command\n"));
-		cmd_path(&mystruct->commands[i][0], mystruct->envpLst);
+		if (cur->isBuiltin == false)
+			cmd_path(&cur->arguments[0], mystruct->envpLst);
+		cur = cur->next;
 	}
 	return (0);
 }
@@ -39,9 +36,9 @@ static int	initialize_Cmds(t_pipex *mystruct, char *argv[])
 /*
 ** Initializes values related to here_doc in 'mystruct'
 */
-static int	init_hereDoc(t_pipex *mystruct, char **argv)
+static int	init_hereDoc(t_pipex *mystruct)
 {
-	mystruct->delimiter = ft_strdup(argv[1]);
+	mystruct->delimiter = ft_strdup(mystruct->first->arguments[0]);
 	if (mystruct->delimiter == NULL)
 		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	ft_lstadd_front(&mystruct->alloced_lst, ft_lstnew(mystruct->delimiter));
@@ -51,23 +48,31 @@ static int	init_hereDoc(t_pipex *mystruct, char **argv)
 /*
 ** Initializes t_pipex variable
 */
-int	initialize_mystruct(t_pipex *mystruct, t_std_FDs *FDs)
+int	initialize_mystruct(t_minishell *minishellStruct, t_pipex *mystruct,
+t_simpleCmd *pipeLine)
 {
-	mystruct->nOfCmds = mystruct->argc - 3;
-	if (mystruct->nOfCmds < 1)
-		terminate_pipex(mystruct,
-			"Usage: ./pipex infile cmd1 [additional commands ...] outfile\n");
-	if (FDs->inFile.mode == REDIR_HEREDOC
-		&& init_hereDoc(mystruct, mystruct->argv))
+	ft_bzero(&mystruct, sizeof(mystruct));
+	mystruct->file[1] = -1;
+	mystruct->envp = ft_strToStrArr(ft_strjoin_free(ft_strdup("PATH="),
+		ft_strdup(ft_objlst_findbykey(minishellStruct->envpLst,
+		"PATH")->value)));
+	mystruct->envpLst = minishellStruct->envpLst;
+	mystruct->first = pipeLine;
+	mystruct->last = pipeLine;
+	while (mystruct->last->next)
+		mystruct->last = mystruct->last->next;
+	mystruct->nOfCmds = ft_simpleCmdsize(pipeLine);
+	if (!mystruct->nOfCmds)
+		return (terminate_pipex(mystruct,
+			"Usage: [simpleCmd1] [simpleCmd2] ...\n"));
+	if (pipeLine->FDs.inFile.mode == REDIR_HEREDOC
+		&& init_hereDoc(mystruct))
 		return (1);
-	if (FDs->outFile.mode != REDIR_NONE && FDs->outFile.mode != REDIR_VOID
-		&& initOutFile(mystruct, mystruct->argc, mystruct->argv, FDs))
+	if (mystruct->last->FDs.outFile.mode != REDIR_NONE
+		&& mystruct->last->FDs.outFile.mode != REDIR_VOID
+		&& initOutFile(mystruct))
 		return (1);
-	mystruct->commands = ft_lstmallocwrapper(&mystruct->alloced_lst,
-			mystruct->nOfCmds * sizeof(*mystruct->commands), true);
-	if (mystruct->commands == NULL)
-		return (terminate_pipex(mystruct, "Malloc failed\n"));
-	if (initialize_Cmds(mystruct, mystruct->argv))
+	if (initialize_Cmds(mystruct, pipeLine))
 		return (1);
 	mystruct->pipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
 			mystruct->nOfCmds * sizeof(*mystruct->pipes), false);

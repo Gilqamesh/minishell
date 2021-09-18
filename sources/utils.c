@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/17 16:43:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 14:31:27 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,4 +180,28 @@ void	initFD(t_std_FDs *FD)
 	FD->outFile.fd = STDOUT_FILENO;
 	FD->outFile.filename = NULL;
 	FD->outFile.mode = REDIR_NONE;
+}
+
+/*
+** Returns true if 'str' is a builtin command.
+*/
+bool	isStrBuiltin(char *str)
+{
+	static char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
+		"exit", NULL};
+
+	return (ft_isStrContainedInStrArr(str, builtins));
+}
+
+/*
+** Executes the builtin function 'commandArgs'[0] with arguments.
+** STD FDs are automatically redirected from pipex at the call of this function.
+** exit() the process at the end.
+*/
+void	executeBuiltin(t_minishell *mystruct, char **commandArgs)
+{
+	(void)mystruct;
+	if (!ft_strcmp(commandArgs[0], "echo"))
+		builtin_echo(commandArgs);
+	exit(EXIT_SUCCESS);
 }

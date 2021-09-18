@@ -9,7 +9,7 @@ PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
 SRC = readline.c minishell.c stack_operations.c lexer.c \
 parser.c utils.c isValid.c ms_initialize.c ms_simpleCmd.c \
-debug_funcs.c expander.c executor.c syntax.c
+debug_funcs.c expander.c executor.c syntax.c builtins.c
 
 $(NAME): $(MYLIB) $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)
