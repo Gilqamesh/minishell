@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/18 14:33:10 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:11:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,12 @@
 
 int	builtin_echo(char **commandArgs)
 {
-	int		ret;
-	char	*line;
-	bool	havePrevious;
-
-	if (commandArgs == NULL)
-		return (0);
-	havePrevious = false;
-	while (1)
-	{
-		ret = get_next_line(STDIN_FILENO, &line);
-		if (ret == -1)
-			return (1);
-		if (havePrevious == true)
-		{
-			if (ret == 1)
-				ft_putchar_fd('\n', STDOUT_FILENO);
-			else if (ret == 0 && commandArgs[1]
-				&& ft_strcmp(commandArgs[1], "-n"))
-			{
-				ft_putendl_fd(line, STDOUT_FILENO);
-				free(line);
-				break ;
-			}
-		}
-		ft_putstr_fd(line, STDOUT_FILENO);
-		havePrevious = true;
-		free(line);
-		if (ret == 0)
-			break ;
-	}
+	if (commandArgs == NULL || commandArgs[0] == NULL || commandArgs[1] == NULL)
+		return (1);
+	if (!ft_strcmp(commandArgs[1], "-n"))
+		ft_putstr_fd(commandArgs[2], STDOUT_FILENO);
+	else
+		ft_putendl_fd(commandArgs[1], STDOUT_FILENO);
 	return (0);
 }
 

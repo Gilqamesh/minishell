@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 14:04:07 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 15:28:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	terminate_pipex(t_pipex *mystruct, char *message)
 */
 void	destroy_mystruct(t_pipex *mystruct)
 {
-	if (mystruct->file[1] != -1 && mystruct->file[1] != 0)
+	if (mystruct->file[1])
 		close(mystruct->file[1]);
 	closePreviousPipes(mystruct, mystruct->nOfCmds);
 	ft_lstmallocfree(&mystruct->alloced_lst);
@@ -50,7 +50,7 @@ int	initOutFile(t_pipex *mystruct)
 			| O_CREAT | O_TRUNC, 0777);
 	else if (mystruct->last->FDs.outFile.mode == REDIR_APPEND)
 		mystruct->file[1] = open(mystruct->last->arguments[0], O_APPEND
-			| O_CREAT, 0777);
+		| O_CREAT, 0777);
 	else
 		return (terminate_pipex(mystruct, "Not supported FD mode.\n"));
 	if (mystruct->file[1] == -1)

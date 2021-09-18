@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 14:48:30 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 16:13:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	initialize_Cmds(t_pipex *mystruct, t_simpleCmd *pipeLine)
 */
 static int	init_hereDoc(t_pipex *mystruct)
 {
-	mystruct->delimiter = ft_strdup(mystruct->first->arguments[0]);
+	mystruct->delimiter = ft_strdup(mystruct->first->FDs.inFile.filename);
 	if (mystruct->delimiter == NULL)
 		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	ft_lstadd_front(&mystruct->alloced_lst, ft_lstnew(mystruct->delimiter));
@@ -51,11 +51,14 @@ static int	init_hereDoc(t_pipex *mystruct)
 int	initialize_mystruct(t_minishell *minishellStruct, t_pipex *mystruct,
 t_simpleCmd *pipeLine)
 {
-	ft_bzero(&mystruct, sizeof(mystruct));
-	mystruct->file[1] = -1;
-	mystruct->envp = ft_strToStrArr(ft_strjoin_free(ft_strdup("PATH="),
+	char	*tmp;
+
+	ft_bzero(mystruct, sizeof(*mystruct));
+	tmp = ft_strjoin_free(ft_strdup("PATH="),
 		ft_strdup(ft_objlst_findbykey(minishellStruct->envpLst,
-		"PATH")->value)));
+		"PATH")->value));
+	mystruct->envp = ft_strToStrArr(tmp);
+	free(tmp);
 	mystruct->envpLst = minishellStruct->envpLst;
 	mystruct->first = pipeLine;
 	mystruct->last = pipeLine;
