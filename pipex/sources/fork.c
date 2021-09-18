@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 15:26:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 19:23:40 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,10 @@ t_pipex *mystruct)
 	}
 	else if (mystruct->first->FDs.inFile.mode == REDIR_IN)
 	{
-		mystruct->file[0] = open(mystruct->first->arguments[0], O_RDONLY);
+		mystruct->file[0] = open(mystruct->first->FDs.inFile.filename,
+			O_RDONLY);
 		if (mystruct->file[0] == -1)
-			error_handler(mystruct, PIPEX_EFOPEN, "Could not open infile\n");
+			error_handler(mystruct, PIPEX_EFOPEN, "open() failed");
 		redirectInputFromFile(mystruct);
 	}
 	mydup2(mystruct, mystruct->pipes[0][1], STDOUT_FILENO);
@@ -59,9 +60,12 @@ static void	transfer_data(t_pipex *mystruct)
 	int		ret;
 	int		fd;
 
-	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
-		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
-		fd = mystruct->file[1];
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT)
+		fd = open(mystruct->last->FDs.outFile.filename, O_WRONLY | O_CREAT
+			| O_TRUNC, 0777);
+	else if (mystruct->last->FDs.outFile.mode == REDIR_APPEND)
+		fd = open(mystruct->last->FDs.outFile.filename, O_WRONLY | O_APPEND
+			| O_CREAT, 0777);
 	else
 		fd = STDOUT_FILENO;
 	while (1)
@@ -75,16 +79,13 @@ static void	transfer_data(t_pipex *mystruct)
 			error_handler(mystruct, PIPEX_ERR, "write() failed\n");
 		}
 		free(line);
-		if (ret)
-			if (write(fd, "\n", 1) == -1)
-				error_handler(mystruct, PIPEX_ERR, "write() failed\n");
+		if (ret && write(fd, "\n", 1) == -1)
+			error_handler(mystruct, PIPEX_ERR, "write() failed\n");
 		if (ret == 0)
 			break ;
 	}
-	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
-		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
-		if (close(fd) == -1)
-			error_handler(mystruct, PIPEX_EFCLOSE, "close() failed\n");
+	if (mystruct->last->FDs.outFile.mode != REDIR_NONE)
+		close(fd);
 }
 
 int	handle_lastCmd_outputFile(t_pipex *mystruct)

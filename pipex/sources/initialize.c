@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 16:13:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 18:54:19 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,6 @@ t_simpleCmd *pipeLine)
 			"Usage: [simpleCmd1] [simpleCmd2] ...\n"));
 	if (pipeLine->FDs.inFile.mode == REDIR_HEREDOC
 		&& init_hereDoc(mystruct))
-		return (1);
-	if (mystruct->last->FDs.outFile.mode != REDIR_NONE
-		&& mystruct->last->FDs.outFile.mode != REDIR_VOID
-		&& initOutFile(mystruct))
 		return (1);
 	if (initialize_Cmds(mystruct, pipeLine))
 		return (1);

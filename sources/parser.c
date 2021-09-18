@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 13:07:31 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/18 19:01:21 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,40 +25,23 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 {
 	if (!ft_strcmp(redirOp, "<"))
 	{
-		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO
-			&& old->inFile.fd != 1)
-			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_IN;
-		old->inFile.fd = open(old->inFile.filename, O_RDONLY);
 	}
 	else if (!ft_strcmp(redirOp, ">"))
 	{
-		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO
-			&& old->outFile.fd != -1)
-			close(old->outFile.fd);
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_OUT;
-		old->outFile.fd = open(old->outFile.filename, O_WRONLY | O_CREAT
-			| O_TRUNC, 0777);
 	}
 	else if (!ft_strcmp(redirOp, "<<"))
 	{
-		if (old->inFile.filename && old->inFile.fd != STDIN_FILENO
-			&& old->inFile.fd != -1)
-			close(old->inFile.fd);
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_HEREDOC;
-		old->inFile.fd = STDIN_FILENO;
 	}
 	else if (!ft_strcmp(redirOp, ">>"))
 	{
-		if (old->outFile.filename && old->outFile.fd != STDOUT_FILENO
-			&& old->outFile.fd != -1)
-			close(old->outFile.fd);
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_APPEND;
-		old->outFile.fd = open(old->outFile.filename, O_CREAT | O_APPEND, 0777);
 	}
 }
 
@@ -124,7 +107,7 @@ static void	buildPipeline(t_minishell *mystruct)
 			if (cur->FDs.outFile.filename)
 			{
 				cur = cur->next;
-				if (cur)
+				if (cur && cur->FDs.inFile.mode == REDIR_NONE)
 					cur->FDs.inFile.mode = REDIR_VOID;
 				break ;
 			}
