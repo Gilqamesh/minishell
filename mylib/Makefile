@@ -1,24 +1,30 @@
-NAME = libmylib.a
-LIBFT = libft/libft.a
-LIBPRINTF = printf/libftprintf.a
-LIBGNL = gnl/libgnl.a
+include Makefile.variable
+LIBFT = $(LIBFTDIR)/$(LIBFTNAME)
+LIBPRINTF = $(PRINTFDIR)/$(LIBPRINTFNAME)
+LIBGNL = $(GNLDIR)/$(LIBGNLNAME)
 
-$(NAME): $(LIBFT) $(LIBPRINTF) $(LIBGNL)
+$(MYLIBNAME): $(LIBFT) $(LIBPRINTF) $(LIBGNL)
+$(LIBFT): $(LIBFTDIR)/*.c $(LIBFTDIR)/*.h
+	$(MAKE) --directory=$(LIBFTDIR)
 	cp $(LIBFT) .
-	ar -x libft.a
-	cp $(LIBPRINTF) .
-	ar -x libftprintf.a
-	cp $(LIBGNL) .
-	ar -x libgnl.a
-	rm -rf *.a
-	ar -rs $(NAME) *.o
+	ar -x $(LIBFTNAME)
+	ar -rs $(MYLIBNAME) *.o
+	rm -f $(LIBFTNAME)
 	make clean
-$(LIBFT):
-	$(MAKE) --directory=libft
-$(LIBPRINTF):
-	$(MAKE) --directory=printf
-$(LIBGNL):
-	$(MAKE) --directory=gnl
+$(LIBPRINTF): $(PRINTFDIR)/*.c $(PRINTFDIR)/*.h
+	$(MAKE) --directory=$(PRINTFDIR)
+	cp $(LIBPRINTF) .
+	ar -x $(LIBPRINTFNAME)
+	ar -rs $(MYLIBNAME) *.o
+	rm -f $(LIBPRINTFNAME)
+	make clean
+$(LIBGNL): $(GNLDIR)/*.c $(GNLDIR)/*.h
+	$(MAKE) --directory=$(GNLDIR)
+	cp $(LIBGNL) .
+	ar -x $(LIBGNLNAME)
+	ar -rs $(MYLIBNAME) *.o
+	rm -f $(LIBGNLNAME)
+	make clean
 .PHONY: all fclean fcleanall
 all: $(NAME)
 clean:
@@ -28,6 +34,6 @@ fclean:
 	rm -rf $(NAME)
 	rm -f $(LIBFT) $(LIBPRINTF) $(LIBGNL)
 fcleanall: fclean
-	$(MAKE) fcleanall --directory=libft
-	$(MAKE) fcleanall --directory=gnl
-	$(MAKE) fcleanall --directory=printf
+	$(MAKE) fcleanall --directory=$(LIBFTDIR)
+	$(MAKE) fcleanall --directory=$(GNLDIR)
+	$(MAKE) fcleanall --directory=$(PRINTFDIR)

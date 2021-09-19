@@ -6,7 +6,7 @@
 #    By: edavid <edavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 20:47:25 by edavid            #+#    #+#              #
-#    Updated: 2021/09/18 20:38:55 by edavid           ###   ########.fr        #
+#    Updated: 2021/09/19 16:21:58 by edavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,6 @@ clean:
 	rm -f *.o libft/*.o __.SYMDEF __.SYMDEF\ SORTED
 fclean: clean
 	rm -f $(NAME)
-	cd ../libft && rm -f libft.a
 re:
 	make clean
 	make all
