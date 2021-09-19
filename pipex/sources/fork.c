@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 19:23:40 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 19:08:02 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 static void	redirectInputFromFile(t_pipex *mystruct)
 {
 	mydup2(mystruct, mystruct->file[0], STDIN_FILENO);
-	if (close(mystruct->file[0]) == -1)
-		error_handler(mystruct, PIPEX_EFCLOSE, "close() failed");
+	close(mystruct->file[0]);
 }
 
 /*
@@ -33,19 +32,13 @@ t_pipex *mystruct)
 		redirect_stdin(mystruct);
 	}
 	else if (mystruct->first->FDs.inFile.mode == REDIR_IN)
-	{
-		mystruct->file[0] = open(mystruct->first->FDs.inFile.filename,
-			O_RDONLY);
-		if (mystruct->file[0] == -1)
-			error_handler(mystruct, PIPEX_EFOPEN, "open() failed");
 		redirectInputFromFile(mystruct);
-	}
 	mydup2(mystruct, mystruct->pipes[0][1], STDOUT_FILENO);
 	closePipe(mystruct, 0, 1);
 	if (mystruct->first->FDs.inFile.mode == REDIR_HEREDOC)
 		read_until_delimiter(mystruct);
 	if (mystruct->first->isBuiltin == true)
-		executeBuiltin(minishellStruct, mystruct->first->arguments);
+		executeBuiltin(minishellStruct, mystruct->first->arguments, true);
 	if (execve(mystruct->first->arguments[0], mystruct->first->arguments, 
 		mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
@@ -54,38 +47,34 @@ t_pipex *mystruct)
 /*
 ** Transfers the data read from last CMD to output file through a pipe
 */
-static void	transfer_data(t_pipex *mystruct)
+static int	transfer_data(t_pipex *mystruct)
 {
 	char	*line;
 	int		ret;
 	int		fd;
 
-	if (mystruct->last->FDs.outFile.mode == REDIR_OUT)
-		fd = open(mystruct->last->FDs.outFile.filename, O_WRONLY | O_CREAT
-			| O_TRUNC, 0777);
-	else if (mystruct->last->FDs.outFile.mode == REDIR_APPEND)
-		fd = open(mystruct->last->FDs.outFile.filename, O_WRONLY | O_APPEND
-			| O_CREAT, 0777);
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
+		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
+		fd = mystruct->last->FDs.outFile.fd;
 	else
 		fd = STDOUT_FILENO;
 	while (1)
 	{
 		ret = get_next_line(mystruct->pipes[mystruct->nOfCmds - 1][0], &line);
 		if (ret == -1)
-			error_handler(mystruct, PIPEX_ERR, "get_next_line() failed\n");
+			return (terminate_pipex(mystruct, "get_next_line() failed\n"));
 		if (write(fd, line, ft_strlen(line)) == -1)
 		{
 			free(line);
-			error_handler(mystruct, PIPEX_ERR, "write() failed\n");
+			return (terminate_pipex(mystruct, "write() failed\n"));
 		}
 		free(line);
 		if (ret && write(fd, "\n", 1) == -1)
-			error_handler(mystruct, PIPEX_ERR, "write() failed\n");
+			return (terminate_pipex(mystruct, "write() failed\n"));
 		if (ret == 0)
 			break ;
 	}
-	if (mystruct->last->FDs.outFile.mode != REDIR_NONE)
-		close(fd);
+	return (0);
 }
 
 int	handle_lastCmd_outputFile(t_pipex *mystruct)

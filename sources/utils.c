@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 19:05:34 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:41:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,23 @@ char	**ft_strArrDup(char **strArr)
 }
 
 /*
-** Allocates and copies the content of 'src' into 'dest'.
-** If src->filename == NULL, then old->filename = ft_strdup("");
-** The above is contention in ft_pipex() to send an to the corresponding FD.
+** Allocates and returns the copy of 'src'.
 */
-void	copy_FD(t_std_FDs *dest, t_std_FDs *src)
+t_std_FDs	*copy_FD(t_std_FDs *src)
 {
-	if (src->inFile.filename == NULL)
-		dest->inFile.filename = ft_strdup("");
-	else
-		dest->inFile.filename = ft_strdup(src->inFile.filename);
-	dest->inFile.fd = src->inFile.fd;
-	dest->inFile.mode = src->inFile.mode;
-	if (src->outFile.filename == NULL)
-		dest->outFile.filename = ft_strdup("");
-	else
-		dest->outFile.filename = ft_strdup(src->outFile.filename);
-	dest->outFile.fd = src->outFile.fd;
-	dest->outFile.mode = src->outFile.mode;
-	if (src->errFile.filename == NULL)
-		dest->errFile.filename = ft_strdup("");
-	else
-		dest->errFile.filename = ft_strdup(src->errFile.filename);
-	dest->errFile.fd = src->errFile.fd;
-	dest->errFile.mode = src->errFile.mode;
+	t_std_FDs	*new;
+
+	new = ft_calloc(1, sizeof(*new));
+	new->inFile.filename = ft_strdup(src->inFile.filename);
+	new->inFile.fd = src->inFile.fd;
+	new->inFile.mode = src->inFile.mode;
+	new->outFile.filename = ft_strdup(src->outFile.filename);
+	new->outFile.fd = src->outFile.fd;
+	new->outFile.mode = src->outFile.mode;
+	new->errFile.filename = ft_strdup(src->errFile.filename);
+	new->errFile.fd = src->errFile.fd;
+	new->errFile.mode = src->errFile.mode;
+	return (new);
 }
 
 /*
@@ -196,12 +189,40 @@ bool	isStrBuiltin(char *str)
 /*
 ** Executes the builtin function 'commandArgs'[0] with arguments.
 ** STD FDs are automatically redirected from pipex at the call of this function.
-** exit() the process at the end.
+** exit() the process at the end to exit from the child process.
 */
-void	executeBuiltin(t_minishell *mystruct, char **commandArgs)
+void	executeBuiltin(t_minishell *mystruct, char **commandArgs,
+bool shouldExit)
 {
 	(void)mystruct;
 	if (!ft_strcmp(commandArgs[0], "echo"))
 		builtin_echo(commandArgs);
-	exit(EXIT_SUCCESS);
+	if (!ft_strcmp(commandArgs[0], "exit"))
+		exit(EXIT_SUCCESS);
+	if (!ft_strcmp(commandArgs[0], "cd"))
+		builtin_cd(mystruct, commandArgs);
+	// if (!ft_strcmp(commandArgs[0], "export"))
+	// 	builtin_export();
+	if (shouldExit == true)
+		exit(EXIT_SUCCESS);
+}
+
+/*
+** Removes the last directory of the current *'path'
+** example: "/home/user" -> "/home"
+** Also returns *'path'
+*/
+char	*removeLastDirOfPath(char *path)
+{
+	char	*index;
+	char	*newPath;
+
+	if (path == NULL)
+		return (NULL);
+	index = ft_strrchr(path, '/');
+	if (index == NULL)
+		return (ft_strdup("/"));
+	newPath = ft_calloc(index - path + 1, sizeof(*newPath));
+	ft_strlcpy(newPath, path, index - path + 1);
+	return (newPath);
 }

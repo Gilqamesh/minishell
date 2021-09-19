@@ -26,12 +26,12 @@ $(LIBGNL): $(GNLDIR)/*.c $(GNLDIR)/*.h
 	rm -f $(LIBGNLNAME)
 	make clean
 .PHONY: all fclean fcleanall
-all: $(NAME)
+all: $(MYLIBNAME)
 clean:
 	rm -rf *.o __.SYMDEF __.SYMDEF\ SORTED
 fclean:
 	make clean
-	rm -rf $(NAME)
+	rm -rf $(MYLIBNAME)
 	rm -f $(LIBFT) $(LIBPRINTF) $(LIBGNL)
 fcleanall: fclean
 	$(MAKE) fcleanall --directory=$(LIBFTDIR)

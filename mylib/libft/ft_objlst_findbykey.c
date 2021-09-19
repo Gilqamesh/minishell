@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:32:55 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/10 17:40:36 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:17:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_obj_lst	*ft_objlst_findbykey(t_obj_lst *head, char *key)
 	cur = head;
 	while (cur)
 	{
-		if (!ft_strcmp(key, head->key))
+		if (!ft_strcmp(key, cur->key))
 			break ;
 		cur = cur->next;
 	}

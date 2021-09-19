@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 16:09:32 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:51:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,12 @@ int	executor(t_minishell *mystruct)
 	cur = mystruct->pipeLines;
 	while (cur)
 	{
-		ft_pipex(mystruct, (t_simpleCmd *)cur->content);
+		if (ft_simpleCmdsize(cur->content) == 1
+			&& isStrBuiltin(((t_simpleCmd *)cur->content)->arguments[0]))
+			executeBuiltin(mystruct, ((t_simpleCmd *)cur->content)->arguments,
+				false);
+		else
+			ft_pipex(mystruct, (t_simpleCmd *)cur->content);
 		cur = cur->next;
 	}
 	return (0);

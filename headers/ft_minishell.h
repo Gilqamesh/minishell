@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 15:27:00 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:38:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 // Defines
 //
+# define CMD_PROMPT "hello, please enter a command line: "
 // not supported currently: "&;()"
 # define METACHARACTERS " \t\n|<>"
 # define WHITESPACES " \t\n"
@@ -109,7 +110,7 @@ int			checkSyntax(t_minishell *mystruct);
 char		*isValidRedirection(char *str);
 char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
-void		copy_FD(t_std_FDs *dest, t_std_FDs *src);
+t_std_FDs	*copy_FD(t_std_FDs *src);
 char		*ft_strArrtoStr(char **strArr, char delimiter);
 void		ft_appendStrArr(char ***strArrPtr, char *str);
 void 		sighandler(int sig);
@@ -117,12 +118,13 @@ void 		sighandler(int sig);
 t_minishell	*getMystruct(t_minishell *mystruct);
 void		initFD(t_std_FDs *FD);
 bool		isStrBuiltin(char *str);
-void		executeBuiltin(t_minishell *mystruct, char **commandArgs);
+void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
+				bool shouldExit);
 // Builtins
 int			builtin_echo(char **commandArgs);
 int			builtin_export(t_minishell *mystruct, char *key, char *val);
 int			builtin_unset(t_minishell *mystruct, char *key);
-int			builtin_cd(t_minishell *mystruct, char *input);
+int			builtin_cd(t_minishell *mystruct, char **commandArgs);
 int			builtin_pwd(t_minishell *mystruct, int outstream);
 int			builtin_env(t_minishell *mystruct, int outstream);
 
@@ -163,6 +165,8 @@ void		ft_pipex(t_minishell *minishellStruct, t_simpleCmd *pipeLine);
 void		redirect_stdin(t_pipex *mystruct);
 int			terminate_pipex(t_pipex *mystruct, char *message);
 t_simpleCmd	*getSimpleCmdIndex(t_simpleCmd *lst, int index);
+void		closeFDs(t_pipex *mystruct);
+char		*removeLastDirOfPath(char *path);
 
 /*
 ** Error codes

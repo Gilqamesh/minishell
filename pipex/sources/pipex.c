@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 16:45:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:29:34 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int curPipeNum)
 	closePipe(mystruct, curPipeNum, 1);
 	cur = getSimpleCmdIndex(mystruct->first, curPipeNum);
 	if (cur->isBuiltin == true)
-		executeBuiltin(minishellStruct, cur->arguments);
+		executeBuiltin(minishellStruct, cur->arguments, true);
 	if (execve(cur->arguments[0], cur->arguments, mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
@@ -92,7 +92,7 @@ int	wait_childProcess(void)
 }
 
 /*
-** Usage currently: "./pipex" "infile" "cmd1" "cmd2" "..." "outfile"
+** Usage currently: pipeLine: simpleCmd1 -> simpleCmd2 -> ...
 */
 void	ft_pipex(t_minishell *minishellStruct, t_simpleCmd *pipeLine)
 {
@@ -119,5 +119,6 @@ void	ft_pipex(t_minishell *minishellStruct, t_simpleCmd *pipeLine)
 	statusCode = handle_lastCmd_outputFile(&mystruct);
 	if (statusCode != -1)
 		minishellStruct->fgExitStatus = statusCode;
+	closeFDs(&mystruct);
 	destroy_mystruct(&mystruct);
 }

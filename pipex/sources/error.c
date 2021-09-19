@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 19:06:46 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 17:41:19 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	error_handler(t_pipex *mystruct, int errcode, char *message)
 */
 int	terminate_pipex(t_pipex *mystruct, char *message)
 {
+	closeFDs(mystruct);
 	destroy_mystruct(mystruct);
 	ft_putstr_fd(message, STDERR_FILENO);
 	return (1);
@@ -34,13 +35,17 @@ int	terminate_pipex(t_pipex *mystruct, char *message)
 */
 void	destroy_mystruct(t_pipex *mystruct)
 {
-	if (mystruct->file[1] && mystruct->file[1] != -1
-		&& mystruct->file[1] != STDOUT_FILENO)
-		close(mystruct->file[1]);
-	if (mystruct->file[0] && mystruct->file[0] != -1
-		&& mystruct->file[0] != STDIN_FILENO)
-		close(mystruct->file[0]);
 	closePreviousPipes(mystruct, mystruct->nOfCmds);
 	ft_destroy_str_arr(&mystruct->envp);
 	ft_lstmallocfree(&mystruct->alloced_lst);
+}
+
+/*
+** Close file descriptors of in and outfile.
+*/
+void	closeFDs(t_pipex *mystruct)
+{
+	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
+		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
+		close(mystruct->last->FDs.outFile.fd);
 }

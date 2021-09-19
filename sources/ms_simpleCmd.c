@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 10:50:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 13:07:56 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:36:35 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,10 @@ t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs, bool isBuiltin)
 {
 	t_simpleCmd	*new;
 
-	new = malloc(sizeof(*new));
+	new = ft_calloc(1, sizeof(*new));
 	new->arguments = arguments;
 	new->FDs = *FDs;
 	new->isBuiltin = isBuiltin;
-	new->next = NULL;
 	return (new);
 }
 

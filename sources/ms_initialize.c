@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/18 15:18:34 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/19 21:47:02 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void sighandler(int sig)
 		rl_end = 0;
 		ft_putstr_fd("\n", STDOUT_FILENO);
 		rl_redisplay();
-		ft_putstr_fd("hello, please enter a command line: ", STDOUT_FILENO);
+		ft_putstr_fd(CMD_PROMPT, STDOUT_FILENO);
 	}
 }
 
@@ -37,6 +37,14 @@ static void	init_envp(t_minishell *mystruct)
 	if (path)
 		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup("PATH"),
 			ft_strdup(path)));
+	path = getenv("PWD");
+	if (path)
+	{
+		ft_objlstadd_front(&mystruct->envpLst,
+			ft_objlst_new(ft_strdup("PWD"), ft_strdup(path)));
+		ft_objlstadd_front(&mystruct->envpLst,
+			ft_objlst_new(ft_strdup("OLDPWD"), ft_strdup(path)));
+	}
 }
 
 /*
@@ -55,6 +63,8 @@ void	init_mystruct(t_minishell *mystruct)
 */
 void	clearStruct(t_minishell *mystruct)
 {
+	t_list		*cur;
+
 	if (mystruct->promptStr)
 	{
 		free(mystruct->promptStr);
@@ -62,8 +72,13 @@ void	clearStruct(t_minishell *mystruct)
 	}
 	ft_destroy_str_arr(&mystruct->tokens);
 	ft_simpleCmdclear(&mystruct->nodes, ft_simpleCmddel);
-	// ft_lstclear(&mystruct->pipeLines, ft_simpleCmddel);
-	mystruct->pipeLines = NULL;
+	cur = mystruct->pipeLines;
+	while (cur)
+	{
+		ft_simpleCmdclear((t_simpleCmd **)&cur->content, ft_simpleCmddel);
+		cur = cur->next;
+	}
+	ft_lstclear(&mystruct->pipeLines, ft_lstdel);
 	ft_lstclear(&mystruct->allocedPointers, ft_lstdel);
 	mystruct->lastPID = 0;
 }
