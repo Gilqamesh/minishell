@@ -6,12 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 14:18:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 19:29:00 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 15:58:54 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
 /*
 ** Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 21:41:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 16:14:01 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ char	*ft_strArrtoStr(char **strArr, char delimiter)
 	{
 		if (strArr[i + 1])
 			ft_nodbinadd_front(&lst, ft_nodbinnew(ft_strjoin_free(
-				ft_strdup(strArr[i]), ft_charToStr(delimiter))));
+						ft_strdup(strArr[i]), ft_charToStr(delimiter))));
 		else
 			ft_nodbinadd_front(&lst, ft_nodbinnew(ft_strjoin_free(
-				ft_strdup(strArr[i]), ft_charToStr('\0'))));
+						ft_strdup(strArr[i]), ft_charToStr('\0'))));
 	}
 	resStr = ft_nodbinstrjoin_from_back(lst);
 	ft_nodbinclear(&lst, ft_nodbindel, -1);
@@ -194,15 +194,17 @@ bool	isStrBuiltin(char *str)
 void	executeBuiltin(t_minishell *mystruct, char **commandArgs,
 bool shouldExit)
 {
-	(void)mystruct;
-	if (!ft_strcmp(commandArgs[0], "echo"))
-		builtin_echo(commandArgs);
-	if (!ft_strcmp(commandArgs[0], "exit"))
-		exit(EXIT_SUCCESS);
-	if (!ft_strcmp(commandArgs[0], "cd"))
-		builtin_cd(mystruct, commandArgs);
-	// if (!ft_strcmp(commandArgs[0], "export"))
-	// 	builtin_export();
+	static char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
+		"exit", NULL};
+	static	int	(*builtinFns[])(t_minishell *, char **) = {builtin_echo,
+		builtin_cd, builtin_pwd, builtin_export, builtin_unset, builtin_env,
+		builtin_exit};
+	int			i;
+
+	i = -1;
+	while (ft_strcmp(builtins[++i], commandArgs[0]))
+		;
+	(*builtinFns[i])(mystruct, commandArgs);
 	if (shouldExit == true)
 		exit(EXIT_SUCCESS);
 }

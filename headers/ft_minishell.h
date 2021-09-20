@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 15:24:22 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/20 16:02:51 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,13 @@ bool		isStrBuiltin(char *str);
 void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
 				bool shouldExit);
 // Builtins
-int			builtin_echo(char **commandArgs);
-int			builtin_export(t_minishell *mystruct, char *key, char *val);
-int			builtin_unset(t_minishell *mystruct, char *key);
+int			builtin_echo(t_minishell *mystruct, char **commandArgs);
+int			builtin_export(t_minishell *mystruct, char **commandArgs);
+int			builtin_unset(t_minishell *mystruct, char **commandArgs);
 int			builtin_cd(t_minishell *mystruct, char **commandArgs);
-int			builtin_pwd(t_minishell *mystruct, int outstream);
-int			builtin_env(t_minishell *mystruct, int outstream);
+int			builtin_pwd(t_minishell *mystruct, char **commandArgs);
+int			builtin_env(t_minishell *mystruct, char **commandArgs);
+int			builtin_exit(t_minishell *mystruct, char **commandArgs);
 
 typedef struct s_pipex
 {

@@ -6,14 +6,15 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/20 15:25:34 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 17:23:32 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-int	builtin_echo(char **commandArgs)
+int	builtin_echo(t_minishell *mystruct, char **commandArgs)
 {
+	(void)mystruct;
 	if (commandArgs == NULL || commandArgs[0] == NULL || commandArgs[1] == NULL)
 		return (1);
 	if (!ft_strcmp(commandArgs[1], "-n"))
@@ -23,32 +24,43 @@ int	builtin_echo(char **commandArgs)
 	return (0);
 }
 
-// int	builtin_export(t_minishell *mystruct, char *key, char *val)
-// {
-// 	t_obj_lst	*tmp;
+int	builtin_export(t_minishell *mystruct, char **commandArgs)
+{
+	char		*key;
+	char		*index;
+	t_obj_lst	*cur;
 
-// 	tmp = mygetenv(mystruct, key);
-// 	if (tmp == NULL)
-// 		ft_objlstadd_front(&(mystruct->envpLst), ft_objlst_new(key, val));
-// 	else
-// 	{
-// 		free(tmp->value);
-// 		tmp->value = val;
-// 	}
-// 	return (1);
-// }
+	if (commandArgs[1] == NULL)
+		return (1);
+	index = ft_strchr(commandArgs[1], '=');
+	if (index == NULL)
+		return (1);
+	key = ft_substr(commandArgs[1], 0, index - commandArgs[1]);
+	cur = ft_objlst_findbykey(mystruct->envpLst, key);
+	if (cur)
+	{
+		free(cur->value);
+		cur->value = ft_substr(index + 1, 0, ft_strlen(index + 1));
+	}
+	else
+		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(key,
+			ft_substr(index + 1, 0, ft_strlen(index + 1))));
+	return (0);
+}
 
-// int	builtin_unset(t_minishell *mystruct, char *key)
-// {
-// 	t_obj_lst	*tmp;
+int	builtin_unset(t_minishell *mystruct, char **commandArgs)
+{
+	t_obj_lst	*tmp;
 
-// 	tmp = mygetenv(mystruct, key);
-// 	if (tmp == NULL)
-// 		return (1);
-// 	else
-// 		ft_objlst_rem(&(mystruct->envpLst), tmp);
-// 	return (1);
-// }
+	if (commandArgs[1] == NULL)
+		return (1);
+	tmp = ft_objlst_findbykey(mystruct->envpLst, commandArgs[1]);
+	if (tmp == NULL)
+		return (1);
+	else
+		ft_objlst_rem(&mystruct->envpLst, tmp);
+	return (0);
+}
 
 int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 {
@@ -70,13 +82,21 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 			tmp = removeLastDirOfPath(curPwd->value);
 	}
 	else
-		tmp = ft_strdup(commandArgs[1]);
-	if (curPwd == NULL)
 	{
-		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
-			ft_strdup("PWD"), ft_strdup(tmp)));
-		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
-			ft_strdup("OLDPWD"), ft_strdup(tmp)));
+		if (curPwd == NULL || *commandArgs[1] == '/')
+			tmp = ft_strdup(commandArgs[1]);
+		else
+			tmp = ft_strjoin_free(ft_strjoin_free(ft_strdup(curPwd->value),
+				ft_strdup("/")), ft_strdup(commandArgs[1]));
+	}
+	if (curPwd == NULL || oldPwd == NULL)
+	{
+		if (curPwd == NULL)
+			ft_objlstadd_front(&mystruct->envpLst,
+				ft_objlst_new(ft_strdup("PWD"), ft_strdup(tmp)));
+		if (oldPwd == NULL)
+			ft_objlstadd_front(&mystruct->envpLst,
+				ft_objlst_new(ft_strdup("OLDPWD"), ft_strdup(tmp)));
 	}
 	else
 	{
@@ -89,26 +109,37 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 	return (0);
 }
 
-// int	builtin_pwd(t_minishell *mystruct, int outstream)
-// {
-// 	t_obj_lst	*tmp;
+int	builtin_pwd(t_minishell *mystruct, char **commandArgs)
+{
+	t_obj_lst	*tmp;
 
-// 	tmp = mygetenv(mystruct, "PWD");
-// 	ft_putstr_fd(tmp->value, outstream);
-// 	return (1);
-// }
+	(void)commandArgs;
+	tmp = ft_objlst_findbykey(mystruct->envpLst, "PWD");
+	if (tmp == NULL)
+		return (1);
+	ft_putendl_fd(tmp->value, STDOUT_FILENO);
+	return (0);
+}
 
-// int	builtin_env(t_minishell *mystruct, int outstream)
-// {
-// 	t_obj_lst	*tmp;
+int	builtin_env(t_minishell *mystruct, char **commandArgs)
+{
+	t_obj_lst	*tmp;
 
-// 	tmp = mystruct->envpLst;
-// 	while (tmp != NULL)
-// 	{
-// 		ft_putstr_fd(tmp->key, outstream);
-// 		ft_putstr_fd("=", outstream);
-// 		ft_putstr_fd(tmp->value, outstream);
-// 		tmp = tmp->next;
-// 	}
-// 	return (1);
-// }
+	(void)commandArgs;
+	tmp = mystruct->envpLst;
+	while (tmp != NULL)
+	{
+		ft_putstr_fd(tmp->key, STDOUT_FILENO);
+		ft_putstr_fd("=", STDOUT_FILENO);
+		ft_putendl_fd(tmp->value, STDOUT_FILENO);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int	builtin_exit(t_minishell *mystruct, char **commandArgs)
+{
+	(void)mystruct;
+	(void)commandArgs;
+	exit(EXIT_SUCCESS);
+}
