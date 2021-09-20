@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ms_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/19 16:39:49 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:16:52 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	main(void)
 		mystruct.promptStr = myreadline(CMD_PROMPT);
 		if (mystruct.promptStr == NULL)
 			break ;
-		if (parseCmdLine(&mystruct))
-			continue ;
+		parseCmdLine(&mystruct);
 	}
 	return (0);
 }

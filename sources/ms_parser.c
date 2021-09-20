@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:52:43 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:16:45 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 	if (mystruct->tokens[*i])
 		(*i)++;
 	ft_simpleCmdadd_back(&mystruct->nodes,
-		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), &FD, isBuiltin));
+		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), FD, isBuiltin));
 	ft_nodbinclear(&tmpLst, ft_nodbindel, -1);
 }
 

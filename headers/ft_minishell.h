@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:50:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:16:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
 void		ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *));
 void		ft_simpleCmddel(void *item);
 int			ft_simpleCmdsize(t_simpleCmd *list);
-t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs *FDs, bool isBuiltin);
+t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin);
 int			executor(t_minishell *mystruct);
 int			checkSyntax(t_minishell *mystruct);
 char		*isValidRedirection(char *str);
 char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
-t_std_FDs	*copy_FD(t_std_FDs *src);
+t_std_FDs	copy_FD(t_std_FDs *src);
 void		sighandler(int sig);
 int			isOperatorSyntaxErr(char *str);
 void		initFD(t_std_FDs *FD);

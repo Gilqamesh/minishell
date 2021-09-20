@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:57:03 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:15:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 /*
 ** Allocates and returns the copy of 'src'.
 */
-t_std_FDs	*copy_FD(t_std_FDs *src)
+t_std_FDs	copy_FD(t_std_FDs *src)
 {
-	t_std_FDs	*new;
+	t_std_FDs	new;
 
-	new = ft_calloc(1, sizeof(*new));
-	new->inFile.filename = ft_strdup(src->inFile.filename);
-	new->inFile.fd = src->inFile.fd;
-	new->inFile.mode = src->inFile.mode;
-	new->outFile.filename = ft_strdup(src->outFile.filename);
-	new->outFile.fd = src->outFile.fd;
-	new->outFile.mode = src->outFile.mode;
-	new->errFile.filename = ft_strdup(src->errFile.filename);
-	new->errFile.fd = src->errFile.fd;
-	new->errFile.mode = src->errFile.mode;
+	new.inFile.filename = ft_strdup(src->inFile.filename);
+	new.inFile.fd = src->inFile.fd;
+	new.inFile.mode = src->inFile.mode;
+	new.outFile.filename = ft_strdup(src->outFile.filename);
+	new.outFile.fd = src->outFile.fd;
+	new.outFile.mode = src->outFile.mode;
+	new.errFile.filename = ft_strdup(src->errFile.filename);
+	new.errFile.fd = src->errFile.fd;
+	new.errFile.mode = src->errFile.mode;
 	return (new);
 }
 
