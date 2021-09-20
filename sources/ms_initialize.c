@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 21:47:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 15:26:23 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void sighandler(int sig)
 {
+	struct termios termattr;
+
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
 		kill((getMystruct(NULL))->lastPID, sig);
@@ -27,6 +29,9 @@ void sighandler(int sig)
 		rl_redisplay();
 		ft_putstr_fd(CMD_PROMPT, STDOUT_FILENO);
 	}
+	tcgetattr(STDIN_FILENO, &termattr);
+	termattr.c_lflag &= ~ECHO;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termattr);
 }
 
 static void	init_envp(t_minishell *mystruct)
