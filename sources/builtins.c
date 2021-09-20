@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/20 18:12:37 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:20:22 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,41 +61,49 @@ int	builtin_unset(t_minishell *mystruct, char **commandArgs)
 	return (0);
 }
 
+static char	*setPath(char *arg, t_obj_lst *curPwd)
+{
+	char	*path;
+
+	if (ft_strcmp(arg, "..") == 0)
+	{
+		if (curPwd == NULL)
+			path = ft_strdup("/");
+		else
+			path = removeLastDirOfPath(curPwd->value);
+	}
+	else
+	{
+		if (curPwd == NULL || *arg == '/')
+			path = ft_strdup(arg);
+		else
+			path = ft_strjoin_free(ft_strjoin_free(ft_strdup(curPwd->value),
+				ft_strdup("/")), ft_strdup(arg));
+	}
+	return (path);
+}
+
 int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 {
-	char		*tmp;
+	char		*path;
 	t_obj_lst	*curPwd;
 	t_obj_lst	*oldPwd;
 
-	if (commandArgs[1] == NULL)
+	if (commandArgs[1] == NULL || ft_strcmp(commandArgs[1], ".") == 0)
 		return (1);
 	curPwd = ft_objlst_findbykey(mystruct->envpLst, "PWD");
 	oldPwd = ft_objlst_findbykey(mystruct->envpLst, "OLDPWD");
 	if (chdir(commandArgs[1]) == -1)
 		return (1);
-	if (ft_strcmp(commandArgs[1], "..") == 0)
-	{
-		if (curPwd == NULL)
-			tmp = ft_strdup("/");
-		else
-			tmp = removeLastDirOfPath(curPwd->value);
-	}
-	else
-	{
-		if (curPwd == NULL || *commandArgs[1] == '/')
-			tmp = ft_strdup(commandArgs[1]);
-		else
-			tmp = ft_strjoin_free(ft_strjoin_free(ft_strdup(curPwd->value),
-				ft_strdup("/")), ft_strdup(commandArgs[1]));
-	}
+	path = setPath(commandArgs[1], curPwd);
 	if (curPwd == NULL || oldPwd == NULL)
 	{
 		if (curPwd == NULL)
 			ft_objlstadd_front(&mystruct->envpLst,
-				ft_objlst_new(ft_strdup("PWD"), ft_strdup(tmp)));
+				ft_objlst_new(ft_strdup("PWD"), ft_strdup(path)));
 		if (oldPwd == NULL)
 			ft_objlstadd_front(&mystruct->envpLst,
-				ft_objlst_new(ft_strdup("OLDPWD"), ft_strdup(tmp)));
+				ft_objlst_new(ft_strdup("OLDPWD"), ft_strdup(path)));
 	}
 	else
 	{
@@ -103,9 +111,9 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 			free(oldPwd->value);
 		oldPwd->value = ft_strdup(curPwd->value);
 		free(curPwd->value);
-		curPwd->value = tmp;
+		curPwd->value = path;
 	}
-	chdir(tmp);
+	chdir(path);
 	return (0);
 }
 

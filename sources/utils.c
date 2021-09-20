@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:10:18 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:24:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ char	*removeLastDirOfPath(char *path)
 	if (path == NULL)
 		return (NULL);
 	index = ft_strrchr(path, '/');
-	if (index == NULL)
+	if (index == NULL || index - path < 1)
 		return (ft_strdup("/"));
 	newPath = ft_calloc(index - path + 1, sizeof(*newPath));
 	ft_strlcpy(newPath, path, index - path + 1);
