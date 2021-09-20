@@ -2,7 +2,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SDIR = sources
 ODIR = objects
-SRC = pipex.c fork.c error.c initialize.c here_doc.c myfuncs.c
+SRC = pipex_pipex.c pipex_fork.c pipex_error.c pipex_initialize.c \
+pipex_here_doc.c pipex_myfuncs.c
 NAME = pipex.a
 MYLIBDIR = ../mylib
 MYLIB = $(MYLIBDIR)/libmylib.a
