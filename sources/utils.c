@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 16:14:01 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:10:18 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,17 +194,20 @@ bool	isStrBuiltin(char *str)
 void	executeBuiltin(t_minishell *mystruct, char **commandArgs,
 bool shouldExit)
 {
-	static char	*builtins[] = {"echo", "cd", "pwd", "export", "unset", "env",
-		"exit", NULL};
-	static	int	(*builtinFns[])(t_minishell *, char **) = {builtin_echo,
-		builtin_cd, builtin_pwd, builtin_export, builtin_unset, builtin_env,
-		builtin_exit};
-	int			i;
-
-	i = -1;
-	while (ft_strcmp(builtins[++i], commandArgs[0]))
-		;
-	(*builtinFns[i])(mystruct, commandArgs);
+	if (ft_strcmp(commandArgs[0], "echo") == 0)
+		builtin_echo(commandArgs);
+	else if (ft_strcmp(commandArgs[0], "export") == 0)
+		builtin_export(mystruct, commandArgs);
+	else if (ft_strcmp(commandArgs[0], "unset") == 0)
+		builtin_unset(mystruct, commandArgs);
+	else if (ft_strcmp(commandArgs[0], "cd") == 0)
+		builtin_cd(mystruct, commandArgs);
+	else if (ft_strcmp(commandArgs[0], "pwd") == 0)
+		builtin_pwd(mystruct);
+	else if (ft_strcmp(commandArgs[0], "env") == 0)
+		builtin_env(mystruct);
+	else if (ft_strcmp(commandArgs[0], "exit") == 0)
+		exit(EXIT_SUCCESS);
 	if (shouldExit == true)
 		exit(EXIT_SUCCESS);
 }

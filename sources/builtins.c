@@ -6,15 +6,14 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/20 17:23:32 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:12:37 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-int	builtin_echo(t_minishell *mystruct, char **commandArgs)
+int	builtin_echo(char **commandArgs)
 {
-	(void)mystruct;
 	if (commandArgs == NULL || commandArgs[0] == NULL || commandArgs[1] == NULL)
 		return (1);
 	if (!ft_strcmp(commandArgs[1], "-n"))
@@ -106,14 +105,14 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 		free(curPwd->value);
 		curPwd->value = tmp;
 	}
+	chdir(tmp);
 	return (0);
 }
 
-int	builtin_pwd(t_minishell *mystruct, char **commandArgs)
+int	builtin_pwd(t_minishell *mystruct)
 {
 	t_obj_lst	*tmp;
 
-	(void)commandArgs;
 	tmp = ft_objlst_findbykey(mystruct->envpLst, "PWD");
 	if (tmp == NULL)
 		return (1);
@@ -121,11 +120,10 @@ int	builtin_pwd(t_minishell *mystruct, char **commandArgs)
 	return (0);
 }
 
-int	builtin_env(t_minishell *mystruct, char **commandArgs)
+int	builtin_env(t_minishell *mystruct)
 {
 	t_obj_lst	*tmp;
 
-	(void)commandArgs;
 	tmp = mystruct->envpLst;
 	while (tmp != NULL)
 	{
@@ -135,11 +133,4 @@ int	builtin_env(t_minishell *mystruct, char **commandArgs)
 		tmp = tmp->next;
 	}
 	return (0);
-}
-
-int	builtin_exit(t_minishell *mystruct, char **commandArgs)
-{
-	(void)mystruct;
-	(void)commandArgs;
-	exit(EXIT_SUCCESS);
 }
