@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   ms_executor.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:10:28 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:43:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int	executor(t_minishell *mystruct)
 	if (ft_simpleCmdsize(mystruct->nodes) == 1
 		&& isStrBuiltin(mystruct->nodes->arguments[0]))
 	{
-		executeBuiltin(mystruct, mystruct->nodes->arguments, false);
+		executeBuiltin(mystruct, mystruct->nodes->arguments, false,
+			(t_3_int){
+			((t_simpleCmd *)mystruct->pipeLines->content)->FDs.inFile.mode,
+			((t_simpleCmd *)mystruct->pipeLines->content)->FDs.inFile.fd,
+			((t_simpleCmd *)mystruct->pipeLines->content)->FDs.outFile.fd});
 		return (0);
 	}
 	cur = mystruct->pipeLines;

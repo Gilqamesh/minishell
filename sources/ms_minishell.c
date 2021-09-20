@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/20 20:16:52 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:17:46 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(void)
 		if (mystruct.promptStr == NULL)
 			break ;
 		parseCmdLine(&mystruct);
+		system("leaks minishell");
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:15:58 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:18:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:40:37 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,21 @@ int	builtin_unset(t_minishell *mystruct, char **commandArgs)
 	return (0);
 }
 
-int	builtin_env(t_minishell *mystruct)
+int	builtin_env(t_minishell *mystruct, t_3_int in_out_streams)
 {
 	t_obj_lst	*tmp;
 
+	if (in_out_streams.a == REDIR_IN && in_out_streams.b == -1)
+	{
+		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
+		return (1);
+	}
 	tmp = mystruct->envpLst;
 	while (tmp != NULL)
 	{
-		ft_putstr_fd(tmp->key, STDOUT_FILENO);
-		ft_putstr_fd("=", STDOUT_FILENO);
-		ft_putendl_fd(tmp->value, STDOUT_FILENO);
+		ft_putstr_fd(tmp->key, in_out_streams.c);
+		ft_putstr_fd("=", in_out_streams.c);
+		ft_putendl_fd(tmp->value, in_out_streams.c);
 		tmp = tmp->next;
 	}
 	return (0);

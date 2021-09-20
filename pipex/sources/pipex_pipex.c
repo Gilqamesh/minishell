@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:10:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:30:09 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int curPipeNum)
 	closePipe(mystruct, curPipeNum, 1);
 	cur = getSimpleCmdIndex(mystruct->first, curPipeNum);
 	if (cur->isBuiltin == true)
-		executeBuiltin(minishellStruct, cur->arguments, true);
+		executeBuiltin(minishellStruct, cur->arguments, true,
+			(t_3_int){REDIR_IN, STDIN_FILENO, STDOUT_FILENO});
 	if (execve(cur->arguments[0], cur->arguments, mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:15:10 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 20:40:57 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ t_minishell	*getMystruct(t_minishell *mystruct)
 ** exit() the process at the end to exit from the child process.
 */
 void	executeBuiltin(t_minishell *mystruct, char **commandArgs,
-bool shouldExit)
+bool shouldExit, t_3_int in_out_streams)
 {
 	mystruct->fgExitStatus = 0;
 	if (ft_strcmp(commandArgs[0], "echo") == 0)
-		builtin_echo(commandArgs);
+		builtin_echo(commandArgs, in_out_streams);
 	else if (ft_strcmp(commandArgs[0], "export") == 0)
 		builtin_export(mystruct, commandArgs);
 	else if (ft_strcmp(commandArgs[0], "unset") == 0)
@@ -82,9 +82,9 @@ bool shouldExit)
 	else if (ft_strcmp(commandArgs[0], "cd") == 0)
 		builtin_cd(mystruct, commandArgs);
 	else if (ft_strcmp(commandArgs[0], "pwd") == 0)
-		builtin_pwd(mystruct);
+		builtin_pwd(mystruct, in_out_streams);
 	else if (ft_strcmp(commandArgs[0], "env") == 0)
-		builtin_env(mystruct);
+		builtin_env(mystruct, in_out_streams);
 	else if (ft_strcmp(commandArgs[0], "exit") == 0)
 		exit(EXIT_SUCCESS);
 	if (shouldExit == true)
