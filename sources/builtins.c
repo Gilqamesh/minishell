@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/19 21:53:43 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 15:25:34 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,58 +53,38 @@ int	builtin_echo(char **commandArgs)
 int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 {
 	char		*tmp;
-	int			flag;
 	t_obj_lst	*curPwd;
 	t_obj_lst	*oldPwd;
 
 	if (commandArgs[1] == NULL)
-		return (0);
+		return (1);
 	curPwd = ft_objlst_findbykey(mystruct->envpLst, "PWD");
 	oldPwd = ft_objlst_findbykey(mystruct->envpLst, "OLDPWD");
+	if (chdir(commandArgs[1]) == -1)
+		return (1);
+	if (ft_strcmp(commandArgs[1], "..") == 0)
+	{
+		if (curPwd == NULL)
+			tmp = ft_strdup("/");
+		else
+			tmp = removeLastDirOfPath(curPwd->value);
+	}
+	else
+		tmp = ft_strdup(commandArgs[1]);
 	if (curPwd == NULL)
 	{
-		if (commandArgs[1])
-		{
-			flag = chdir(commandArgs[1]);
-			if (flag == 0)
-			{
-				ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
-					ft_strdup("PWD"), ft_strdup(commandArgs[1])));
-				ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
-					ft_strdup("OLDPWD"), ft_strdup(commandArgs[1])));
-			}
-			else
-				return (1);
-		}
-		else
-			return (1);
+		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
+			ft_strdup("PWD"), ft_strdup(tmp)));
+		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(
+			ft_strdup("OLDPWD"), ft_strdup(tmp)));
 	}
 	else
 	{
-		if (ft_strcmp(commandArgs[1], "..") == 0)
-		{
-			tmp = removeLastDirOfPath(curPwd->value);
-			if (chdir(tmp) == -1)
-			{
-				free(tmp);
-				return (1);
-			}
-			if (oldPwd->value)
-				free(oldPwd->value);
-			oldPwd->value = ft_strdup(curPwd->value);
-			free(curPwd->value);
-			curPwd->value = tmp;
-		}
-		else
-		{
-			if (chdir(commandArgs[1]) == -1)
-				return (1);
-			if (oldPwd->value)
-				free(oldPwd->value);
-			oldPwd->value = ft_strdup(curPwd->value);
-			free(curPwd->value);
-			curPwd->value = ft_strdup(commandArgs[1]);
-		}
+		if (oldPwd->value)
+			free(oldPwd->value);
+		oldPwd->value = ft_strdup(curPwd->value);
+		free(curPwd->value);
+		curPwd->value = tmp;
 	}
 	return (0);
 }
