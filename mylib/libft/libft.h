@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 20:06:35 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:49:27 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,7 +352,8 @@ void			ft_objlst_clear(t_obj_lst **lst, void (*del)(void *));
 void			ft_objlst_delone(t_obj_lst *lst, void (*del)(void *));
 // Frees node->content and node, where node is of type *t_obj_lst
 void			ft_objlst_del(void *node);
-// Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list intact.
+// Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list
+// intact.
 void			ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
 
 # ifndef T_FILELST

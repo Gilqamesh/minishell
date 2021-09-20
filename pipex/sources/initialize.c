@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 21:49:22 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:47:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ t_simpleCmd *pipeLine)
 
 	ft_bzero(mystruct, sizeof(*mystruct));
 	tmp = ft_strjoin_free(ft_strdup("PATH="),
-		ft_strdup(ft_objlst_findbykey(minishellStruct->envpLst,
-		"PATH")->value));
+			ft_strdup(ft_objlst_findbykey(minishellStruct->envpLst,
+					"PATH")->value));
 	mystruct->envp = ft_strToStrArr(tmp);
 	free(tmp);
 	mystruct->envpLst = minishellStruct->envpLst;
@@ -67,19 +67,13 @@ t_simpleCmd *pipeLine)
 	mystruct->nOfCmds = ft_simpleCmdsize(pipeLine);
 	if (!mystruct->nOfCmds)
 		return (terminate_pipex(mystruct,
-			"Usage: [simpleCmd1] [simpleCmd2] ...\n"));
+				"Usage: [simpleCmd1] [simpleCmd2] ...\n"));
 	if (pipeLine->FDs.inFile.mode == REDIR_HEREDOC
 		&& init_hereDoc(mystruct))
 		return (1);
 	if (initialize_Cmds(mystruct, pipeLine))
 		return (1);
-	mystruct->pipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
-			mystruct->nOfCmds * sizeof(*mystruct->pipes), false);
-	if (mystruct->pipes == NULL)
-		return (terminate_pipex(mystruct, "Malloc failed\n"));
-	mystruct->openPipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
-			mystruct->nOfCmds * sizeof(*mystruct->openPipes), true);
-	if (mystruct->openPipes == NULL)
+	if (pipex_init_pipes())
 		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	return (0);
 }
@@ -118,7 +112,6 @@ void	cmd_path(char **cmd, t_obj_lst *envp)
 	t_obj_lst	*keyPtr;
 
 	keyPtr = ft_objlst_findbykey(envp, "PATH");
-	// ft_printf("envp: %s %s\n", envp->key, envp->value);
 	if (keyPtr == NULL)
 		return ;
 	paths = ft_split(keyPtr->value, ':');

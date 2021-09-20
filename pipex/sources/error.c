@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 17:41:19 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:47:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,17 @@ void	closeFDs(t_pipex *mystruct)
 	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
 		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
 		close(mystruct->last->FDs.outFile.fd);
+}
+
+int	pipex_init_pipes(t_pipex *mystruct)
+{
+	mystruct->pipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
+			mystruct->nOfCmds * sizeof(*mystruct->pipes), false);
+	if (mystruct->pipes == NULL)
+		return (1);
+	mystruct->openPipes = ft_lstmallocwrapper(&mystruct->alloced_lst,
+			mystruct->nOfCmds * sizeof(*mystruct->openPipes), true);
+	if (mystruct->openPipes == NULL)
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:49:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:48:53 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ t_pipex *mystruct)
 		read_until_delimiter(mystruct);
 	if (mystruct->first->isBuiltin == true)
 		executeBuiltin(minishellStruct, mystruct->first->arguments, true);
-	if (execve(mystruct->first->arguments[0], mystruct->first->arguments, 
-		mystruct->envp) == -1)
+	if (execve(mystruct->first->arguments[0], mystruct->first->arguments,
+			mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }
 
@@ -53,11 +53,10 @@ static int	transfer_data(t_pipex *mystruct)
 	int		ret;
 	int		fd;
 
+	fd = STDOUT_FILENO;
 	if (mystruct->last->FDs.outFile.mode == REDIR_OUT
 		|| mystruct->last->FDs.outFile.mode == REDIR_APPEND)
 		fd = mystruct->last->FDs.outFile.fd;
-	else
-		fd = STDOUT_FILENO;
 	while (1)
 	{
 		ret = get_next_line(mystruct->pipes[mystruct->nOfCmds - 1][0], &line);

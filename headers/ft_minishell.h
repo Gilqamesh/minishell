@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:23:12 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:50:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,14 @@ char		*isValidRedirection(char *str);
 char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
 t_std_FDs	*copy_FD(t_std_FDs *src);
-void 		sighandler(int sig);
+void		sighandler(int sig);
 int			isOperatorSyntaxErr(char *str);
 void		initFD(t_std_FDs *FD);
 bool		isStrBuiltin(char *str);
 void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
 				bool shouldExit);
 t_minishell	*getMystruct(t_minishell *mystruct);
+void		replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
 // Builtins
 int			builtin_echo(char **commandArgs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);
@@ -148,6 +149,7 @@ int			terminate_pipex(t_pipex *mystruct, char *message);
 t_simpleCmd	*getSimpleCmdIndex(t_simpleCmd *lst, int index);
 void		closeFDs(t_pipex *mystruct);
 char		*removeLastDirOfPath(char *path);
+int			pipex_init_pipes(t_pipex *mystruct);
 
 /*
 ** Error codes
