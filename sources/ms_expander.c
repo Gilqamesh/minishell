@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/13 11:21:41 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:35:15 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char *index)
 	start = ft_substr(*curTokenPtr, 0, index - *curTokenPtr);
 	end = ft_strdup(index + ft_strlen(param) + 1);
 	if (!ft_strcmp(param, "?"))
-		start = ft_strjoin_free(start, ft_itoa(mystruct->fgExitStatus));
+		start = ft_strjoin_free(start, ft_itoa((int)mystruct->fgExitStatus));
 	else
 	{
 		ptr = ft_objlst_findbykey(mystruct->envpLst, param);

@@ -7,9 +7,9 @@ NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
 RLLIB = -lreadline
-SRC = readline.c minishell.c stack_operations.c lexer.c \
-parser.c utils.c isValid.c ms_initialize.c ms_simpleCmd.c \
-debug_funcs.c expander.c executor.c syntax.c builtins.c
+SRC = ms_readline.c ms_minishell.c ms_lexer.c ms_parser.c ms_utils.c \
+ms_is_valid.c ms_initialize.c ms_simpleCmd.c ms_expander.c ms_executor.c \
+ms_syntax.c ms_builtins.c ms_str_utils.c
 
 $(NAME): $(MYLIB) $(foreach file,$(SRC:.c=.o),$(ODIR)/$(file)) $(PIPEXLIB)
 	$(CC) -o $@ $(foreach src,$(SRC:.c=.o),$(ODIR)/$(src)) $(MYLIB) $(RLLIB) $(PIPEXLIB)

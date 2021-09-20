@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:10:58 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:49:42 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	redirectInputFromFile(t_pipex *mystruct)
 {
-	mydup2(mystruct, mystruct->file[0], STDIN_FILENO);
-	close(mystruct->file[0]);
+	mydup2(mystruct, mystruct->first->FDs.inFile.fd, STDIN_FILENO);
+	close(mystruct->first->FDs.inFile.fd);
 }
 
 /*

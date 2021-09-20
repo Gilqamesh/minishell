@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:08:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 18:53:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <stdlib.h>
-#include <termios.h>
+# include <termios.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -33,21 +33,6 @@
 # define METACHARACTERS " \t\n|<>"
 # define WHITESPACES " \t\n"
 # define OPERATORS "|<>"
-// debugging
-# define PRINT_HERE() (ft_printf("line %d, file %s\n", __LINE__, __FILE__))
-
-// Binary Tree ADT to implement Abstract Syntax Tree
-// We don't need this for mandatory as we don't have any operator presedence
-# ifndef T_BIN_TREE
-#  define T_BIN_TREE
-typedef struct s_bin_tree
-{
-	int					type;
-	char				*token;
-	struct s_bin_tree	*left;
-	struct s_bin_tree	*right;
-}	t_bin_tree;
-# endif
 
 typedef struct s_FD
 {
@@ -72,8 +57,6 @@ typedef struct s_simpleCmd
 }	t_simpleCmd;
 
 // Main structure for the project
-// 'CommandTable' is a table, each row is an array of simple commands
-// A simple command is a NULL terminated str array, ex: "grep" "if" NULL
 // 'pipeLines' is a linked list, each content is a t_simpleCmd linked list
 // of a pipeline to be executed in order.
 typedef struct s_minishell
@@ -112,8 +95,6 @@ char		*isValidRedirection(char *str);
 char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
 t_std_FDs	*copy_FD(t_std_FDs *src);
-char		*ft_strArrtoStr(char **strArr, char delimiter);
-void		ft_appendStrArr(char ***strArrPtr, char *str);
 void 		sighandler(int sig);
 // Magic happens here.
 t_minishell	*getMystruct(t_minishell *mystruct);
@@ -133,7 +114,6 @@ typedef struct s_pipex
 {
 	int			nOfCmds;
 	int			tmpFd[2];
-	int			file[2];
 	int			(*pipes)[2];
 	bool		(*openPipes)[2];
 	int			hereDocPipe[2];
@@ -183,29 +163,5 @@ char		*removeLastDirOfPath(char *path);
 # define PIPEX_ESTATUS	10	/* Status code error */
 # define PIPEX_EEXIT	11	/* Process has not exited properly */
 # define PIPEX_ECMD		127	/* Command was not found */
-
-// DEBUG FUNCTIONS
-// Prints a NULL terminated strArr.
-void		printStrArr(char **strArr);
-void		printNodes(t_minishell *mystruct);
-
-// Stack operations
-//
-// I started to implement these for 'isProperlyNested' function, but I didn't
-// use Stack ADT there, so no idea if these will be useful later or not
-// Basic stack ADT, uses a linked list to store each element
-# ifndef T_STACK
-#  define T_STACK
-typedef struct s_stack
-{
-	t_list	*stack;
-	int		size;
-}	t_stack;
-# endif
-bool		isStackEmpty(t_stack *sp);
-void		pushStack(t_stack *sp, void *content);
-void		destroyStack(t_stack *sp);
-void		*popStack(t_stack *sp);
-t_stack		*createStack(void);
 
 #endif

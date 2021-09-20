@@ -10,6 +10,7 @@
 		"cerrno": "c",
 		"locale": "c",
 		"errno.h": "c",
-		"__node_handle": "c"
+		"__node_handle": "c",
+		"readline.h": "c"
 	}
 }
