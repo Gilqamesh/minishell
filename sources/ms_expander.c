@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expander.c                                         :+:      :+:    :+:   */
+/*   ms_expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:35:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:23:27 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,50 +102,6 @@ char *index)
 	start = ft_strjoin_free(start, end);
 	free(*curTokenPtr);
 	*curTokenPtr = start;
-}
-
-static int	isOperatorSyntaxErr(char *str)
-{
-	if (*str == '<')
-	{
-		str++;
-		if (*str == '\0')
-			return (0);
-		if (*str != '<')
-		{
-			ft_putstr_fd("parse error near `<'\n", STDERR_FILENO);
-			return (1);
-		}
-		str++;
-		if (*str != '\0')
-		{
-			ft_putstr_fd("parse error near `<<'\n", STDERR_FILENO);
-			return (1);
-		}
-	}
-	else if (*str == '>')
-	{
-		str++;
-		if (*str == '\0')
-			return (0);
-		if (*str != '>')
-		{
-			ft_putstr_fd("parse error near `>'\n", STDERR_FILENO);
-			return (1);
-		}
-		str++;
-		if (*str != '\0')
-		{
-			ft_putstr_fd("parse error near `>>'\n", STDERR_FILENO);
-			return (1);
-		}
-	}
-	else if (*str == '|' && *(str + 1) != '\0')
-	{
-		ft_putstr_fd("parse error near `|'\n", STDERR_FILENO);
-		return (1);
-	}
-	return (0);
 }
 
 /*

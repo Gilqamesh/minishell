@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   ms_parser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 21:45:14 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:14:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_OUT;
 		old->outFile.fd = open(old->outFile.filename, O_WRONLY | O_CREAT
-			| O_TRUNC, 0777);
+				| O_TRUNC, 0777);
 	}
 	else if (!ft_strcmp(redirOp, "<<"))
 	{
@@ -55,7 +55,7 @@ static void	replaceFD(t_std_FDs *old, char *redirOp, char *new)
 		replaceStr(&old->outFile.filename, new);
 		old->outFile.mode = REDIR_APPEND;
 		old->outFile.fd = open(old->outFile.filename, O_WRONLY | O_CREAT
-			| O_APPEND, 0777);
+				| O_APPEND, 0777);
 	}
 }
 
@@ -84,7 +84,7 @@ static void	readSimpleCommand(t_minishell *mystruct, int *i)
 			if (tmpLst == NULL && isStrBuiltin(mystruct->tokens[*i]))
 				isBuiltin = true;
 			ft_nodbinadd_front(&tmpLst, ft_nodbinnew(ft_strdup(
-				mystruct->tokens[*i])));
+						mystruct->tokens[*i])));
 		}
 		(*i)++;
 	}
@@ -115,7 +115,7 @@ static void	buildPipeline(t_minishell *mystruct)
 		while (cur)
 		{
 			new = ft_simpleCmdnew(ft_strArrDup(cur->arguments),
-				copy_FD(&cur->FDs), false);
+					copy_FD(&cur->FDs), false);
 			ft_simpleCmdadd_back(&tmp, new);
 			if (cur->FDs.outFile.filename)
 			{
@@ -150,13 +150,3 @@ int	parser(t_minishell *mystruct)
 	buildPipeline(mystruct);
 	return (0);
 }
-// cmd1 >file | cmd2
-// cmd2's input is EOF
-// cmd1 | cmd2
-// cmd1's input is EOF
-// cmd1 | cmd2 <file
-// Pipeline:
-// If next command has input redirection 		-> end pipeline with current command
-// If current command has output redirection 	-> end pipeline with current command
-//
-// If first command: 		if has no input redirection, input is EOF

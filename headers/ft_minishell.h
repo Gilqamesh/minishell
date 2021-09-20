@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 18:53:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:23:12 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ char		**ft_strArrDup(char **strArr);
 void		printPipelines(t_minishell *mystruct);
 t_std_FDs	*copy_FD(t_std_FDs *src);
 void 		sighandler(int sig);
-// Magic happens here.
-t_minishell	*getMystruct(t_minishell *mystruct);
+int			isOperatorSyntaxErr(char *str);
 void		initFD(t_std_FDs *FD);
 bool		isStrBuiltin(char *str);
 void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
 				bool shouldExit);
+t_minishell	*getMystruct(t_minishell *mystruct);
 // Builtins
 int			builtin_echo(char **commandArgs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);

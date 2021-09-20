@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 15:35:52 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/20 19:14:47 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-void sighandler(int sig)
+void	sighandler(int sig)
 {
-	struct termios termattr;
+	struct termios	termattr;
 
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
@@ -41,7 +41,7 @@ static void	init_envp(t_minishell *mystruct)
 	path = getenv("PATH");
 	if (path)
 		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup("PATH"),
-			ft_strdup(path)));
+				ft_strdup(path)));
 	path = getenv("PWD");
 	if (path)
 	{

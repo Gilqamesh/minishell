@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ms_lexer.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/12 14:12:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:31:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	appendLstWithChars(t_node_binary **charLst, char *s, size_t len)
 				return ;
 			}
 			ft_nodbinadd_front(charLst, ft_nodbinnew(ft_substr(prev, 0,
-				s - prev + 1)));
+						s - prev + 1)));
 			len -= s++ - prev;
 			continue ;
 		}
@@ -63,6 +63,25 @@ static char	*removeQuotes(char *s, size_t len)
 	return (newStr);
 }
 
+static int	addOperatorTokens(t_node_binary **tokenlst, char **str, char **prev)
+{
+	while (isCharPartOfSet(*str, METACHARACTERS))
+	{
+		*str += ft_trim_from_left_index(*str, WHITESPACES);
+		if (isCharPartOfSet(*str, OPERATORS))
+		{
+			*prev = *str;
+			*str += ft_trim_from_left_index(*str, OPERATORS);
+			ft_nodbinadd_front(tokenlst, ft_nodbinnew(ft_substr(*prev, 0,
+						*str - *prev)));
+		}
+		*str += ft_trim_from_left_index(*str, WHITESPACES);
+	}
+	if (!**str)
+		return (1);
+	return (0);
+}
+
 /*
 ** Breaks down 'str' into allocated tokens and appends 'tokenlst' with them.
 */
@@ -74,19 +93,7 @@ static int	appendLstWithTokens(t_minishell *mystruct, t_node_binary **tokenlst)
 	str = mystruct->promptStr;
 	while (*str)
 	{
-		while (isCharPartOfSet(*str, METACHARACTERS))
-		{
-			str += ft_trim_from_left_index(str, WHITESPACES);
-			if (isCharPartOfSet(*str, OPERATORS))
-			{
-				prev = str;
-				str += ft_trim_from_left_index(str, OPERATORS);
-				ft_nodbinadd_front(tokenlst, ft_nodbinnew(ft_substr(prev, 0,
-					str - prev)));
-			}
-			str += ft_trim_from_left_index(str, WHITESPACES);
-		}
-		if (!*str)
+		if (addOperatorTokens(tokenlst, &str, &prev))
 			break ;
 		prev = str;
 		while (*str && !isCharPartOfSet(*str, METACHARACTERS))
@@ -95,12 +102,11 @@ static int	appendLstWithTokens(t_minishell *mystruct, t_node_binary **tokenlst)
 				str = ft_strchr(str + 1, '\'');
 			else if (*str == '\"')
 				str = ft_strchr(str + 1, '\"');
-			if (str == NULL)
+			if (str++ == NULL)
 			{
 				clearStruct(mystruct);
 				return (1);
 			}
-			str++;
 		}
 		ft_nodbinadd_front(tokenlst,
 			ft_nodbinnew(removeQuotes(prev, str - prev)));

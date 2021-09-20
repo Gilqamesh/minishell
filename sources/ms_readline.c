@@ -13,16 +13,15 @@ char	*myreadline(const char *promptMsg)
 }
 
 /*
-** Checks if 'CmdLine' is properly nested or not
-** Converts 'CmdLine' into a NULL terminated array of strings (tokens)
-** Builds 'CommandTable' in 'mystruct' based on the tokens
+** Parses the cmd line then executes the pipeline if its syntactically correct.
+** Proper nesting:
+** Could just ignore the CmdLine and skip this case entirely (pdf)
+** Or give new prompt to the user waiting for the enclosing quotes (bash)
 */
 int	parseCmdLine(t_minishell *mystruct)
 {
 	if (isProperlyNested(mystruct->promptStr) == false)
 	{
-	// Could just ignore the CmdLine and skip this case entirely (pdf)
-	// Or give new prompt to the user waiting for the enclosing quotes (bash)
 		ft_putstr_fd("Not nested properly\n", STDERR_FILENO);
 		return (1);
 	}
