@@ -6,20 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:43:45 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:52:43 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
-
-static void	replaceStr(char **old, char *new)
-{
-	if (old == NULL)
-		return ;
-	if (*old)
-		free(*old);
-	*old = ft_strdup(new);
-}
 
 /*
 ** Initializes and adds to mystruct->nodes;

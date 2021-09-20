@@ -6,11 +6,20 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:33:07 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:39:04 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:52:47 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
+
+static void	replaceStr(char **old, char *new)
+{
+	if (old == NULL)
+		return ;
+	if (*old)
+		free(*old);
+	*old = ft_strdup(new);
+}
 
 static void	handleOutRedir(t_std_FDs *old, char *redirOp, char *new)
 {

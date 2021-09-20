@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 17:43:59 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:31:50 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:52:06 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ static char	*removeQuotes(char *s, size_t len)
 
 static int	addOperatorTokens(t_node_binary **tokenlst, char **str, char **prev)
 {
-	while (isCharPartOfSet(*str, METACHARACTERS))
+	while (isCharPartOfSet(**str, METACHARACTERS))
 	{
 		*str += ft_trim_from_left_index(*str, WHITESPACES);
-		if (isCharPartOfSet(*str, OPERATORS))
+		if (isCharPartOfSet(**str, OPERATORS))
 		{
 			*prev = *str;
 			*str += ft_trim_from_left_index(*str, OPERATORS);

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:47:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/20 19:53:12 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_simpleCmd *pipeLine)
 		return (1);
 	if (initialize_Cmds(mystruct, pipeLine))
 		return (1);
-	if (pipex_init_pipes())
+	if (pipex_init_pipes(mystruct))
 		return (terminate_pipex(mystruct, "Malloc failed\n"));
 	return (0);
 }
