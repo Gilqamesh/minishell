@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:42 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:30:09 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 13:00:20 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int curPipeNum)
 	cur = getSimpleCmdIndex(mystruct->first, curPipeNum);
 	if (cur->isBuiltin == true)
 		executeBuiltin(minishellStruct, cur->arguments, true,
-			(t_3_int){REDIR_IN, STDIN_FILENO, STDOUT_FILENO});
+			(t_std_FDs){(t_FD){NULL, STDIN_FILENO, REDIR_IN},
+			(t_FD){NULL, STDOUT_FILENO, REDIR_OUT},
+			(t_FD){NULL, STDERR_FILENO, REDIR_NONE}});
 	if (execve(cur->arguments[0], cur->arguments, mystruct->envp) == -1)
 		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
 }

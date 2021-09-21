@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:30:36 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 12:51:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,17 @@ int			isOperatorSyntaxErr(char *str);
 void		initFD(t_std_FDs *FD);
 bool		isStrBuiltin(char *str);
 void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
-				bool shouldExit, t_3_int in_out_streams);
+				bool shouldExit, t_std_FDs FDs);
 t_minishell	*getMystruct(t_minishell *mystruct);
 void		replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
+void		readTillDelim(char *delimiter);
 // Builtins
-int			builtin_echo(char **commandArgs, t_3_int in_out_streams);
+int			builtin_echo(char **commandArgs, t_std_FDs FDs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);
 int			builtin_unset(t_minishell *mystruct, char **commandArgs);
 int			builtin_cd(t_minishell *mystruct, char **commandArgs);
-int			builtin_pwd(t_minishell *mystruct, t_3_int in_out_streams);
-int			builtin_env(t_minishell *mystruct, t_3_int in_out_streams);
+int			builtin_pwd(t_minishell *mystruct, t_std_FDs FDs);
+int			builtin_env(t_minishell *mystruct, t_std_FDs FDs);
 
 typedef struct s_pipex
 {

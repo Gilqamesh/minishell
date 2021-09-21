@@ -6,25 +6,52 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/20 20:41:09 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 13:31:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-int	builtin_echo(char **commandArgs, t_3_int in_out_streams)
+static int	handleErrEcho(char **commandArgs, t_std_FDs FDs)
 {
-	if (in_out_streams.a == REDIR_IN && in_out_streams.b == -1)
+	if (FDs.inFile.mode == REDIR_HEREDOC)
+		readTillDelim(FDs.inFile.filename);
+	if (commandArgs == NULL || commandArgs[0] == NULL || (commandArgs[1]
+			&& ft_strcmp(commandArgs[1], "-n") == 0 && commandArgs[2] == NULL))
+		return (1);
+	if (FDs.inFile.fd == -1)
 	{
-		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
+		ft_putstr_fd(FDs.inFile.filename, FDs.errFile.fd);
+		ft_putstr_fd(": No such file or directory\n", FDs.errFile.fd);
 		return (1);
 	}
-	if (commandArgs == NULL || commandArgs[0] == NULL || commandArgs[1] == NULL)
+	return (0);
+}
+
+int	builtin_echo(char **commandArgs, t_std_FDs FDs)
+{
+	int	i;
+
+	if (handleErrEcho(commandArgs, FDs))
 		return (1);
+	if (commandArgs[1] == NULL)
+	{
+		ft_putchar_fd('\n', FDs.outFile.fd);
+		return (0);
+	}
 	if (!ft_strcmp(commandArgs[1], "-n"))
-		ft_putstr_fd(commandArgs[2], in_out_streams.c);
+		i = 1;
 	else
-		ft_putendl_fd(commandArgs[1], in_out_streams.c);
+		i = 0;
+	while (commandArgs[++i + 1])
+	{
+		ft_putstr_fd(commandArgs[i], FDs.outFile.fd);
+		ft_putchar_fd(' ', FDs.outFile.fd);
+	}
+	if (!ft_strcmp(commandArgs[1], "-n"))
+		ft_putstr_fd(commandArgs[i], FDs.outFile.fd);
+	else
+		ft_putendl_fd(commandArgs[i], FDs.outFile.fd);
 	return (0);
 }
 
@@ -85,21 +112,5 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 		curPwd->value = path;
 	}
 	chdir(path);
-	return (0);
-}
-
-int	builtin_pwd(t_minishell *mystruct, t_3_int in_out_streams)
-{
-	t_obj_lst	*tmp;
-
-	if (in_out_streams.a == REDIR_IN && in_out_streams.b == -1)
-	{
-		ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
-		return (1);
-	}
-	tmp = ft_objlst_findbykey(mystruct->envpLst, "PWD");
-	if (tmp == NULL)
-		return (1);
-	ft_putendl_fd(tmp->value, in_out_streams.c);
 	return (0);
 }

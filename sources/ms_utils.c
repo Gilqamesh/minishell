@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:40:57 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 13:19:36 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ t_minishell	*getMystruct(t_minishell *mystruct)
 ** exit() the process at the end to exit from the child process.
 */
 void	executeBuiltin(t_minishell *mystruct, char **commandArgs,
-bool shouldExit, t_3_int in_out_streams)
+bool shouldExit, t_std_FDs FDs)
 {
 	mystruct->fgExitStatus = 0;
 	if (ft_strcmp(commandArgs[0], "echo") == 0)
-		builtin_echo(commandArgs, in_out_streams);
+		builtin_echo(commandArgs, FDs);
 	else if (ft_strcmp(commandArgs[0], "export") == 0)
 		builtin_export(mystruct, commandArgs);
 	else if (ft_strcmp(commandArgs[0], "unset") == 0)
@@ -82,11 +82,43 @@ bool shouldExit, t_3_int in_out_streams)
 	else if (ft_strcmp(commandArgs[0], "cd") == 0)
 		builtin_cd(mystruct, commandArgs);
 	else if (ft_strcmp(commandArgs[0], "pwd") == 0)
-		builtin_pwd(mystruct, in_out_streams);
+		builtin_pwd(mystruct, FDs);
 	else if (ft_strcmp(commandArgs[0], "env") == 0)
-		builtin_env(mystruct, in_out_streams);
+		builtin_env(mystruct, FDs);
 	else if (ft_strcmp(commandArgs[0], "exit") == 0)
 		exit(EXIT_SUCCESS);
 	if (shouldExit == true)
 		exit(EXIT_SUCCESS);
+}
+
+/*
+** Reads from STDIN until 'delimiter' has been reached.
+*/
+void	readTillDelim(char *delimiter)
+{
+	char	*line;
+	int		ret;
+	int		pipeTmp[2];
+
+	pipe(pipeTmp);
+	while (1)
+	{
+		ret = get_next_line(STDIN_FILENO, &line);
+		if (!ft_strcmp(line, delimiter))
+			ret = 0;
+		write(pipeTmp[1], line, ft_strlen(line));
+		free(line);
+		if (ret)
+			write(pipeTmp[1], "\n", 1);
+		if (ret == 0)
+			break ;
+	}
+	close(pipeTmp[1]);
+	ret = dup(STDIN_FILENO);
+	dup2(pipeTmp[0], STDIN_FILENO);
+	close(pipeTmp[0]);
+	dup2(ret, STDIN_FILENO);
+	close(ret);
+	dup2(ret, STDIN_FILENO);
+	close(ret);
 }
