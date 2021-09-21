@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 13:54:20 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 19:10:44 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 19:59:08 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	readSimpleCommand(t_minishell *mystruct, int *i)
 			ignoreSimpleCmd = true;
 			break ;
 		}
-		else
+		else if (!isValidRedirection(mystruct->tokens[*i]))
 			addTokenToLst(&tmpLst, mystruct->tokens[*i], &isBuiltin);
 		(*i)++;
 	}
