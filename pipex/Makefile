@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I$$HOME/.brew/opt/readline/include
 SDIR = sources
 ODIR = objects
 SRC = pipex_pipex.c pipex_fork.c pipex_error.c pipex_initialize.c \
