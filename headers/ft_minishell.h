@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 12:51:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 13:54:46 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ bool		isStrBuiltin(char *str);
 void		executeBuiltin(t_minishell *mystruct, char **commandArgs,
 				bool shouldExit, t_std_FDs FDs);
 t_minishell	*getMystruct(t_minishell *mystruct);
-void		replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
+int			replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
 void		readTillDelim(char *delimiter);
+void		readSimpleCommand(t_minishell *mystruct, int *i);
 // Builtins
 int			builtin_echo(char **commandArgs, t_std_FDs FDs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);

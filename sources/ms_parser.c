@@ -6,44 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:16:45 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 13:55:05 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
-
-/*
-** Initializes and adds to mystruct->nodes;
-** Multiple here_doc is not supported like in bash.
-*/
-static void	readSimpleCommand(t_minishell *mystruct, int *i)
-{
-	t_std_FDs		FD;
-	t_node_binary	*tmpLst;
-	bool			isBuiltin;
-
-	initFD(&FD);
-	tmpLst = NULL;
-	isBuiltin = false;
-	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
-	{
-		if (isValidRedirection(mystruct->tokens[*i]))
-			replaceFD(&FD, mystruct->tokens[*i], mystruct->tokens[*i + 1], i);
-		else
-		{
-			if (tmpLst == NULL && isStrBuiltin(mystruct->tokens[*i]))
-				isBuiltin = true;
-			ft_nodbinadd_front(&tmpLst, ft_nodbinnew(ft_strdup(
-						mystruct->tokens[*i])));
-		}
-		(*i)++;
-	}
-	if (mystruct->tokens[*i])
-		(*i)++;
-	ft_simpleCmdadd_back(&mystruct->nodes,
-		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), FD, isBuiltin));
-	ft_nodbinclear(&tmpLst, ft_nodbindel, -1);
-}
 
 static int	dealWithNextCmd(t_simpleCmd **cur)
 {

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:33:07 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:52:47 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 14:08:22 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,15 @@ static void	handleOutRedir(t_std_FDs *old, char *redirOp, char *new)
 	}
 }
 
-void	replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i)
+static int	failedSimpleCmd(t_std_FDs *old, int *i)
+{
+	ft_putstr_fd(old->inFile.filename, STDERR_FILENO);
+	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	(*i)++;
+	return (1);
+}
+
+int	replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i)
 {
 	if (!ft_strcmp(redirOp, "<"))
 	{
@@ -52,6 +60,8 @@ void	replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i)
 		replaceStr(&old->inFile.filename, new);
 		old->inFile.mode = REDIR_IN;
 		old->inFile.fd = open(old->inFile.filename, O_RDONLY);
+		if (old->inFile.fd == -1)
+			return (failedSimpleCmd(old, i));
 	}
 	else if (!ft_strcmp(redirOp, "<<"))
 	{
@@ -64,4 +74,5 @@ void	replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i)
 	else if (!ft_strcmp(redirOp, ">") || !ft_strcmp(redirOp, ">>"))
 		handleOutRedir(old, redirOp, new);
 	(*i)++;
+	return (0);
 }
