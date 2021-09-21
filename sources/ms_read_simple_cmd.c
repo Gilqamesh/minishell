@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 13:54:20 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 19:59:08 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 20:01:09 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,15 @@ void	readSimpleCommand(t_minishell *mystruct, int *i)
 	initSimpleCmdVars(&FD, &tmpLst, &isBuiltin);
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
 	{
-		if (isValidRedirection(mystruct->tokens[*i])
-			&& checkFD(&tmpLst, &FD, mystruct->tokens, i))
+		if (isValidRedirection(mystruct->tokens[*i]))
 		{
-			ignoreSimpleCmd = true;
-			break ;
+			if (checkFD(&tmpLst, &FD, mystruct->tokens, i))
+			{
+				ignoreSimpleCmd = true;
+				break ;
+			}
 		}
-		else if (!isValidRedirection(mystruct->tokens[*i]))
+		else
 			addTokenToLst(&tmpLst, mystruct->tokens[*i], &isBuiltin);
 		(*i)++;
 	}
