@@ -1,12 +1,12 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -I$$HOME/.brew/opt/readline/include
 SDIR = sources
 ODIR = objects
 HDIR = headers
 NAME = minishell
 MYLIB = mylib/libmylib.a
 PIPEXLIB = pipex/pipex.a
-RLLIB = -lreadline
+RLLIB = -L$$HOME/.brew/opt/readline/lib -lreadline
 SRC = ms_readline.c ms_minishell.c ms_lexer.c ms_parser.c ms_utils.c \
 ms_is_valid.c ms_initialize.c ms_simpleCmd.c ms_expander.c ms_executor.c \
 ms_syntax.c ms_builtins.c ms_str_utils.c ms_simpleCmd2.c ms_builtins2.c \

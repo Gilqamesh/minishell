@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:14:47 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 15:28:35 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sighandler(int sig)
 {
-	struct termios	termattr;
+	struct termios termattr;
 
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
@@ -22,12 +22,10 @@ void	sighandler(int sig)
 	}
 	else if (sig == SIGINT)
 	{
-		*rl_line_buffer = '\0';
-		rl_point = 0;
-		rl_end = 0;
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		write(STDIN_FILENO, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
-		ft_putstr_fd(CMD_PROMPT, STDOUT_FILENO);
 	}
 	tcgetattr(STDIN_FILENO, &termattr);
 	termattr.c_lflag &= ~ECHOCTL;
