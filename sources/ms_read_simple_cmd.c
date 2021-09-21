@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 13:54:20 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 20:01:09 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 20:08:26 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ static void	clearFD(t_std_FDs *FD)
 }
 
 static void	initSimpleCmdVars(t_std_FDs *FD, t_node_binary **tmpLst,
-bool *isBuiltin)
+bool *isBuiltin, bool *ignoreSimpleCmd)
 {
 	initFD(FD);
 	*tmpLst = NULL;
 	*isBuiltin = false;
+	*ignoreSimpleCmd = false;
 }
 
 static int	checkFD(t_node_binary **tmpLst, t_std_FDs *old, char **tokenArr,
@@ -68,17 +69,16 @@ void	readSimpleCommand(t_minishell *mystruct, int *i)
 	t_std_FDs		FD;
 	t_node_binary	*tmpLst;
 	bool			isBuiltin;
-	bool			ignoreSimpleCmd;
+	bool			ignore;
 
-	ignoreSimpleCmd = false;
-	initSimpleCmdVars(&FD, &tmpLst, &isBuiltin);
+	initSimpleCmdVars(&FD, &tmpLst, &isBuiltin, &ignore);
 	while (mystruct->tokens[*i] && ft_strcmp(mystruct->tokens[*i], "|"))
 	{
 		if (isValidRedirection(mystruct->tokens[*i]))
 		{
 			if (checkFD(&tmpLst, &FD, mystruct->tokens, i))
 			{
-				ignoreSimpleCmd = true;
+				ignore = true;
 				break ;
 			}
 		}
@@ -89,7 +89,6 @@ void	readSimpleCommand(t_minishell *mystruct, int *i)
 	if (mystruct->tokens[*i])
 		(*i)++;
 	ft_simpleCmdadd_back(&mystruct->nodes,
-		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), FD, isBuiltin,
-			ignoreSimpleCmd));
+		ft_simpleCmdnew(ft_nodbinstr_to_strarr(tmpLst), FD, isBuiltin, ignore));
 	ft_nodbinclear(&tmpLst, ft_nodbindel, -1);
 }
