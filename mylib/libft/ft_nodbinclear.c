@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/26 10:46:48 by edavid            #+#    #+#             */
-/*   Updated: 2021/07/26 16:27:34 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 16:20:11 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	ft_nodbinclear(t_node_binary **lst, void (*del)(void *), int n)
 {
 	t_node_binary	*tmp;
+	t_node_binary	**original;
 
 	if (!lst)
 		return ;
+	original = lst;
 	while (*lst && n)
 	{
 		tmp = (*lst)->next;
@@ -27,4 +29,5 @@ void	ft_nodbinclear(t_node_binary **lst, void (*del)(void *), int n)
 		if (n > 0 && !--n)
 			break ;
 	}
+	*original = NULL;
 }

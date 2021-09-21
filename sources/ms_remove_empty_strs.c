@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_executor.c                                      :+:      :+:    :+:   */
+/*   ms_remove_empty_strs.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/11 18:17:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 16:05:58 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/21 15:39:47 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/21 16:02:07 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-/*
-** Executes the pipeline with ft_pipex() in 'mystruct'->pipeLines
-*/
-int	executor(t_minishell *mystruct)
+int	removeEmptyStrTokens(t_minishell *mystruct)
 {
-	t_list		*cur;
+	t_node_binary	*tokens;
+	int				i;
 
-	if (ft_simpleCmdsize(mystruct->nodes) == 1
-		&& isStrBuiltin(mystruct->nodes->arguments[0]))
+	tokens = NULL;
+	i = -1;
+	while (mystruct->tokens[++i])
 	{
-		executeBuiltin(mystruct, mystruct->nodes->arguments, false,
-			((t_simpleCmd *)mystruct->pipeLines->content)->FDs);
-		return (0);
+		if (ft_strcmp(mystruct->tokens[i], "") == 0)
+			continue ;
+		ft_nodbinadd_front(&tokens, ft_nodbinnew(
+				ft_strdup(mystruct->tokens[i])));
 	}
-	cur = mystruct->pipeLines;
-	while (cur)
-	{
-		ft_pipex(mystruct, (t_simpleCmd *)cur->content);
-		cur = cur->next;
-	}
+	ft_destroy_str_arr(&mystruct->tokens);
+	mystruct->tokens = ft_nodbinstr_to_strarr(tokens);
+	ft_nodbinclear(&tokens, ft_nodbindel, -1);
 	return (0);
 }

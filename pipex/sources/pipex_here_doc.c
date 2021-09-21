@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   pipex_here_doc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/24 13:33:36 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/19 17:12:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 17:48:44 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,16 @@ void	read_until_delimiter(t_pipex *mystruct)
 			break ;
 	}
 	redirect_stdin(mystruct);
+}
+
+void	initialize_mystruct2(t_minishell *minishellStruct, t_pipex *mystruct,
+t_simpleCmd *pipeLine, t_node_binary **lst)
+{
+	mystruct->envp = ft_nodbinstr_to_strarr(*lst);
+	ft_nodbinclear(lst, ft_nodbindel, -1);
+	mystruct->envpLst = minishellStruct->envpLst;
+	mystruct->first = pipeLine;
+	mystruct->last = pipeLine;
+	while (mystruct->last->next)
+		mystruct->last = mystruct->last->next;
 }

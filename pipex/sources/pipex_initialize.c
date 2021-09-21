@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialize.c                                       :+:      :+:    :+:   */
+/*   pipex_initialize.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:53:12 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 17:51:06 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,19 +51,19 @@ static int	init_hereDoc(t_pipex *mystruct)
 int	initialize_mystruct(t_minishell *minishellStruct, t_pipex *mystruct,
 t_simpleCmd *pipeLine)
 {
-	char	*tmp;
+	t_node_binary	*lst;
+	t_obj_lst		*cur;
 
 	ft_bzero(mystruct, sizeof(*mystruct));
-	tmp = ft_strjoin_free(ft_strdup("PATH="),
-			ft_strdup(ft_objlst_findbykey(minishellStruct->envpLst,
-					"PATH")->value));
-	mystruct->envp = ft_strToStrArr(tmp);
-	free(tmp);
-	mystruct->envpLst = minishellStruct->envpLst;
-	mystruct->first = pipeLine;
-	mystruct->last = pipeLine;
-	while (mystruct->last->next)
-		mystruct->last = mystruct->last->next;
+	lst = NULL;
+	cur = minishellStruct->envpLst;
+	while (cur)
+	{
+		ft_nodbinadd_front(&lst, ft_nodbinnew(ft_strjoin(ft_strjoin_free(
+						ft_strdup(cur->key), ft_strdup("=")), cur->value)));
+		cur = cur->next;
+	}
+	initialize_mystruct2(minishellStruct, mystruct, pipeLine, &lst);
 	mystruct->nOfCmds = ft_simpleCmdsize(pipeLine);
 	if (!mystruct->nOfCmds)
 		return (terminate_pipex(mystruct,

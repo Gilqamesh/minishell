@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 13:54:20 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 14:08:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 16:42:46 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int *i)
 		ft_nodbinclear(tmpLst, ft_nodbindel, -1);
 		while (tokenArr[*i]
 			&& ft_strcmp(tokenArr[*i], "|"))
+			(*i)++;
+		if (tokenArr[*i])
 			(*i)++;
 		return (1);
 	}

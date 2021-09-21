@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/03 18:37:05 by edavid            #+#    #+#             */
-/*   Updated: 2021/08/23 19:48:29 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 16:24:58 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	ft_destroy_str_arr(char ***str)
 	while ((*str)[++i])
 		free((*str)[i]);
 	free(*str);
-	*str = (char **)0;
+	*str = NULL;
 }

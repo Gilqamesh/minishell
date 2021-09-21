@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 15:28:35 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/21 17:45:56 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	sighandler(int sig)
 {
-	struct termios termattr;
+	struct termios	termattr;
 
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
@@ -32,33 +32,36 @@ void	sighandler(int sig)
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termattr);
 }
 
-static void	init_envp(t_minishell *mystruct)
+static void	init_envp(t_minishell *mystruct, char **envp)
 {
-	char	*path;
+	char	*tmp;
+	char	*var;
+	int		i;
 
-	path = getenv("PATH");
-	if (path)
-		ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup("PATH"),
-				ft_strdup(path)));
-	path = getenv("PWD");
-	if (path)
+	i = -1;
+	while (envp[++i])
 	{
-		ft_objlstadd_front(&mystruct->envpLst,
-			ft_objlst_new(ft_strdup("PWD"), ft_strdup(path)));
-		ft_objlstadd_front(&mystruct->envpLst,
-			ft_objlst_new(ft_strdup("OLDPWD"), ft_strdup(path)));
+		tmp = ft_strchr(envp[i], '=');
+		if (tmp == NULL)
+			continue ;
+		var = ft_substr(envp[i], 0, tmp - envp[i]);
+		tmp = getenv(var);
+		if (tmp)
+			ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup(var),
+					ft_strdup(tmp)));
+		free(var);
 	}
 }
 
 /*
 ** Initialize 'mystruct'
 */
-void	init_mystruct(t_minishell *mystruct)
+void	init_mystruct(t_minishell *mystruct, char **envp)
 {
 	signal(SIGINT, &sighandler);
 	signal(SIGQUIT, &sighandler);
 	ft_bzero(mystruct, sizeof(*mystruct));
-	init_envp(mystruct);
+	init_envp(mystruct, envp);
 }
 
 /*

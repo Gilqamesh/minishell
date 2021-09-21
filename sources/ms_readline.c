@@ -27,28 +27,12 @@ int	parseCmdLine(t_minishell *mystruct)
 	}
 	if (lexer(mystruct))
 		return (1);
-	// ft_printf("AFTER LEXER:\n");
-	// ft_printf("Tokens START:\n");
-	// int i = -1;
-	// while (mystruct->tokens[++i])
-	// 	ft_printf("|%s|\n", mystruct->tokens[i]);
-	// ft_printf("END\n");
 	if (expander(mystruct))
 		return (1);
-	// ft_printf("AFTER EXPANDER:\n");
-	// ft_printf("Tokens START:\n");
-	// i = -1;
-	// while (mystruct->tokens[++i])
-	// 	ft_printf("|%s|\n", mystruct->tokens[i]);
-	// ft_printf("END\n");
 	if (quoteRemoval(mystruct))
 		return (1);
-	// ft_printf("AFTER QUOTE REMOVAL:\n");
-	// ft_printf("Tokens START:\n");
-	// i = -1;
-	// while (mystruct->tokens[++i])
-	// 	ft_printf("|%s|\n", mystruct->tokens[i]);
-	// ft_printf("END\n");
+	if (removeEmptyStrTokens(mystruct))
+		return (1);
 	if (checkSyntax(mystruct))
 		return (1);
 	if (parser(mystruct))

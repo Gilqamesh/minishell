@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:15:58 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 13:29:16 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 17:49:11 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,25 +69,45 @@ int	builtin_unset(t_minishell *mystruct, char **commandArgs)
 	return (0);
 }
 
-int	builtin_env(t_minishell *mystruct, t_std_FDs FDs)
+static int	handleErrEcho(char **commandArgs, t_std_FDs FDs)
 {
-	t_obj_lst	*tmp;
-
+	if (FDs.inFile.mode == REDIR_HEREDOC)
+		readTillDelim(FDs.inFile.filename);
+	if (commandArgs == NULL || commandArgs[0] == NULL || (commandArgs[1]
+			&& ft_strcmp(commandArgs[1], "-n") == 0 && commandArgs[2] == NULL))
+		return (1);
 	if (FDs.inFile.fd == -1)
 	{
 		ft_putstr_fd(FDs.inFile.filename, FDs.errFile.fd);
 		ft_putstr_fd(": No such file or directory\n", FDs.errFile.fd);
 		return (1);
 	}
-	if (FDs.inFile.mode == REDIR_HEREDOC)
-		readTillDelim(FDs.inFile.filename);
-	tmp = mystruct->envpLst;
-	while (tmp != NULL)
+	return (0);
+}
+
+int	builtin_echo(char **commandArgs, t_std_FDs FDs)
+{
+	int	i;
+
+	if (handleErrEcho(commandArgs, FDs))
+		return (1);
+	if (commandArgs[1] == NULL)
 	{
-		ft_putstr_fd(tmp->key, FDs.outFile.fd);
-		ft_putstr_fd("=", FDs.outFile.fd);
-		ft_putendl_fd(tmp->value, FDs.outFile.fd);
-		tmp = tmp->next;
+		ft_putchar_fd('\n', FDs.outFile.fd);
+		return (0);
 	}
+	if (!ft_strcmp(commandArgs[1], "-n"))
+		i = 1;
+	else
+		i = 0;
+	while (commandArgs[++i + 1])
+	{
+		ft_putstr_fd(commandArgs[i], FDs.outFile.fd);
+		ft_putchar_fd(' ', FDs.outFile.fd);
+	}
+	if (!ft_strcmp(commandArgs[1], "-n"))
+		ft_putstr_fd(commandArgs[i], FDs.outFile.fd);
+	else
+		ft_putendl_fd(commandArgs[i], FDs.outFile.fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 15:28:33 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 17:50:08 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char		isCharPartOfSet(char c, char *set);
 char		*isValidOperator(char *str);
 bool		isValidCommand(t_minishell *mystruct, char *str);
 bool		isValidFilename(char *str);
-void		init_mystruct(t_minishell *mystruct);
+void		init_mystruct(t_minishell *mystruct, char **envp);
 void		clearStruct(t_minishell *mystruct);
 void		ft_simpleCmdadd_back(t_simpleCmd **lst, t_simpleCmd *new);
 void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
@@ -106,6 +106,7 @@ int			replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
 void		readTillDelim(char *delimiter);
 void		readSimpleCommand(t_minishell *mystruct, int *i);
 int			quoteRemoval(t_minishell *mystruct);
+int			removeEmptyStrTokens(t_minishell *mystruct);
 // Builtins
 int			builtin_echo(char **commandArgs, t_std_FDs FDs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);
@@ -153,6 +154,8 @@ t_simpleCmd	*getSimpleCmdIndex(t_simpleCmd *lst, int index);
 void		closeFDs(t_pipex *mystruct);
 char		*removeLastDirOfPath(char *path);
 int			pipex_init_pipes(t_pipex *mystruct);
+void		initialize_mystruct2(t_minishell *minishellStruct,
+				t_pipex *mystruct, t_simpleCmd *pipeLine, t_node_binary **lst);
 
 /*
 ** Error codes
