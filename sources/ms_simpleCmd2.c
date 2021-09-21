@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:09:32 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 20:15:32 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 18:27:59 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	ft_simpleCmdsize(t_simpleCmd *list)
 /*
 ** Allocates, initializes with 'arguments and 'FDs' and returns 't_simpleCmd *'.
 */
-t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin)
+t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin,
+bool ignoreSimpleCmd)
 {
 	t_simpleCmd	*new;
 
@@ -61,5 +62,6 @@ t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin)
 	new->arguments = arguments;
 	new->FDs = FDs;
 	new->isBuiltin = isBuiltin;
+	new->ignoreSimpleCmd = ignoreSimpleCmd;
 	return (new);
 }

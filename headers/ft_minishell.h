@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 17:50:08 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 19:10:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_simpleCmd
 	char				**arguments;
 	t_std_FDs			FDs;
 	bool				isBuiltin;
+	bool				ignoreSimpleCmd;
 	struct s_simpleCmd	*next;
 }	t_simpleCmd;
 
@@ -88,7 +89,8 @@ void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
 void		ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *));
 void		ft_simpleCmddel(void *item);
 int			ft_simpleCmdsize(t_simpleCmd *list);
-t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin);
+t_simpleCmd	*ft_simpleCmdnew(char **arguments, t_std_FDs FDs, bool isBuiltin,
+				bool ignoreSimpleCmd);
 int			executor(t_minishell *mystruct);
 int			checkSyntax(t_minishell *mystruct);
 char		*isValidRedirection(char *str);

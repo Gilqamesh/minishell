@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 17:51:06 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/21 18:01:02 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,15 @@ t_simpleCmd *pipeLine)
 	cur = minishellStruct->envpLst;
 	while (cur)
 	{
-		ft_nodbinadd_front(&lst, ft_nodbinnew(ft_strjoin(ft_strjoin_free(
-						ft_strdup(cur->key), ft_strdup("=")), cur->value)));
+		ft_nodbinadd_front(&lst, ft_nodbinnew(ft_strjoin_free(ft_strjoin_free(
+						ft_strdup(cur->key), ft_strdup("=")),
+					ft_strdup(cur->value))));
 		cur = cur->next;
 	}
 	initialize_mystruct2(minishellStruct, mystruct, pipeLine, &lst);
 	mystruct->nOfCmds = ft_simpleCmdsize(pipeLine);
 	if (!mystruct->nOfCmds)
-		return (terminate_pipex(mystruct,
-				"Usage: [simpleCmd1] [simpleCmd2] ...\n"));
+		return (terminate_pipex(mystruct, "Usage: [simpleCmd1] ...\n"));
 	if (pipeLine->FDs.inFile.mode == REDIR_HEREDOC
 		&& init_hereDoc(mystruct))
 		return (1);
