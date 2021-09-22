@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 19:10:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 12:09:29 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ int			replaceFD(t_std_FDs *old, char *redirOp, char *new, int *i);
 void		readTillDelim(char *delimiter);
 void		readSimpleCommand(t_minishell *mystruct, int *i);
 int			quoteRemoval(t_minishell *mystruct);
-int			removeEmptyStrTokens(t_minishell *mystruct);
 // Builtins
 int			builtin_echo(char **commandArgs, t_std_FDs FDs);
 int			builtin_export(t_minishell *mystruct, char **commandArgs);

@@ -31,8 +31,6 @@ int	parseCmdLine(t_minishell *mystruct)
 		return (1);
 	if (quoteRemoval(mystruct))
 		return (1);
-	if (removeEmptyStrTokens(mystruct))
-		return (1);
 	if (checkSyntax(mystruct))
 		return (1);
 	if (parser(mystruct))
