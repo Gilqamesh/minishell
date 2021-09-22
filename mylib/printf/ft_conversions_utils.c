@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 14:34:46 by edavid            #+#    #+#             */
-/*   Updated: 2021/07/22 14:06:45 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 17:31:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 #include "ft_conversions.h"
 #include "../libft/libft.h"
 
-void	print_ultoh(unsigned long n, char check_casing)
+void	print_ultoh(unsigned long n, char check_casing, int outstream)
 {
 	static char	hexa[] = "0123456789abcdef";
 
 	if (n < 16)
 	{
 		if (check_casing >= 'a' && check_casing <= 'z')
-			write(1, &hexa[n % 16], 1);
+			write(outstream, &hexa[n % 16], 1);
 		else
-			write(1, &(char){ft_toupper(hexa[n % 16])}, 1);
+			write(outstream, &(char){ft_toupper(hexa[n % 16])}, 1);
 		return ;
 	}
-	print_ultoh(n / 16, check_casing);
+	print_ultoh(n / 16, check_casing, outstream);
 	if (check_casing >= 'a' && check_casing <= 'z')
-		write(1, &hexa[n % 16], 1);
+		write(outstream, &hexa[n % 16], 1);
 	else
-		write(1, &(char){ft_toupper(hexa[n % 16])}, 1);
+		write(outstream, &(char){ft_toupper(hexa[n % 16])}, 1);
 }
 
 int	digits_in_hexa(unsigned long n)

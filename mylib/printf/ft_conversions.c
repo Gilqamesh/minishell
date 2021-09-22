@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 14:31:19 by edavid            #+#    #+#             */
-/*   Updated: 2021/07/22 14:06:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 17:17:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,20 @@ int	print_conversion_c(unsigned char c, int *flags)
 	{
 		printed_bytes = 1;
 		write(1, &c, 1);
+	}
+	return (printed_bytes);
+}
+
+int	print_conversion_c_fd(unsigned char c, int *flags, int outstream)
+{
+	int	printed_bytes;
+
+	if (--flags[2] > 0)
+		positive_width(&printed_bytes, flags, c);
+	else
+	{
+		printed_bytes = 1;
+		write(outstream, &c, 1);
 	}
 	return (printed_bytes);
 }

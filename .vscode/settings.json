@@ -11,6 +11,14 @@
 		"locale": "c",
 		"errno.h": "c",
 		"__node_handle": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"utility": "c",
+		"ft_print_conversion_s_utilities.h": "c",
+		"ios": "c",
+		"ft_conversions.h": "c",
+		"ft_print_conversion_int_utils.h": "c",
+		"ft_print_conversion_uint_utils.h": "c",
+		"ft_print_conversion_hexa_utilities.h": "c",
+		"ft_printf.h": "c"
 	}
 }

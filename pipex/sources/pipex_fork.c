@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:50:28 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 18:59:51 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:38:17 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ t_pipex *mystruct)
 		read_until_delimiter(mystruct);
 	if (mystruct->first->isBuiltin == true)
 		executeBuiltin(minishellStruct, mystruct->first->arguments, true,
-			(t_std_FDs){(t_FD){NULL, STDIN_FILENO, REDIR_IN},
-			(t_FD){NULL, STDOUT_FILENO, REDIR_OUT},
+			(t_std_FDs){(t_FD){NULL, STDIN_FILENO,
+			mystruct->first->FDs.inFile.mode},
+			(t_FD){NULL, STDOUT_FILENO, REDIR_NONE},
 			(t_FD){NULL, STDERR_FILENO, REDIR_NONE}});
 	if (execve(mystruct->first->arguments[0], mystruct->first->arguments,
 			mystruct->envp) == -1)
-		error_handler(mystruct, PIPEX_ECMD, "command not found\n");
+		error_handler(mystruct, PIPEX_ECMD, "%s: command not found\n",
+			mystruct->first->arguments[0]);
 }
 
 /*

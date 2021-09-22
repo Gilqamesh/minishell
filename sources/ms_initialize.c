@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 17:45:56 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:56:56 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,28 @@ void	sighandler(int sig)
 
 static void	init_envp(t_minishell *mystruct, char **envp)
 {
-	char	*tmp;
-	char	*var;
+	char	*value;
+	char	*key;
 	int		i;
 
 	i = -1;
 	while (envp[++i])
 	{
-		tmp = ft_strchr(envp[i], '=');
-		if (tmp == NULL)
+		value = ft_strchr(envp[i], '=');
+		if (value == NULL)
 			continue ;
-		var = ft_substr(envp[i], 0, tmp - envp[i]);
-		tmp = getenv(var);
-		if (tmp)
-			ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup(var),
-					ft_strdup(tmp)));
-		free(var);
+		key = ft_substr(envp[i], 0, value - envp[i]);
+		value = getenv(key);
+		if (value)
+		{
+			ft_objlstadd_front(&mystruct->envpLst, ft_objlst_new(ft_strdup(key),
+					ft_strdup(value)));
+			ft_objlstinsert(&mystruct->exportedVars,
+				ft_objlst_new(ft_strjoin_free(ft_strdup("declare -x "),
+						ft_strdup(key)), ft_strjoin_free(ft_strdup("\""),
+						ft_strjoin_free(ft_strdup(value), ft_strdup("\"")))));
+		}
+		free(key);
 	}
 }
 
@@ -66,8 +72,9 @@ void	init_mystruct(t_minishell *mystruct, char **envp)
 
 /*
 ** Clears variables in 'mystruct' and prepares for next command line.
+** Returns 1
 */
-void	clearStruct(t_minishell *mystruct)
+int	clearStruct(t_minishell *mystruct)
 {
 	t_list		*cur;
 
@@ -77,6 +84,7 @@ void	clearStruct(t_minishell *mystruct)
 		mystruct->promptStr = NULL;
 	}
 	ft_destroy_str_arr(&mystruct->tokens);
+	ft_nodbinclear(&mystruct->tokensLst, ft_nodbindel, -1);
 	ft_simpleCmdclear(&mystruct->nodes, ft_simpleCmddel);
 	cur = mystruct->pipeLines;
 	while (cur)
@@ -87,4 +95,5 @@ void	clearStruct(t_minishell *mystruct)
 	ft_lstclear(&mystruct->pipeLines, ft_lstdel);
 	ft_lstclear(&mystruct->allocedPointers, ft_lstdel);
 	mystruct->lastPID = 0;
+	return (1);
 }

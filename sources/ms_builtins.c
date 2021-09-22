@@ -6,34 +6,11 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/21 17:49:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:54:05 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
-
-int	builtin_env(t_minishell *mystruct, t_std_FDs FDs)
-{
-	t_obj_lst	*tmp;
-
-	if (FDs.inFile.fd == -1)
-	{
-		ft_putstr_fd(FDs.inFile.filename, FDs.errFile.fd);
-		ft_putstr_fd(": No such file or directory\n", FDs.errFile.fd);
-		return (1);
-	}
-	if (FDs.inFile.mode == REDIR_HEREDOC)
-		readTillDelim(FDs.inFile.filename);
-	tmp = mystruct->envpLst;
-	while (tmp != NULL)
-	{
-		ft_putstr_fd(tmp->key, FDs.outFile.fd);
-		ft_putstr_fd("=", FDs.outFile.fd);
-		ft_putendl_fd(tmp->value, FDs.outFile.fd);
-		tmp = tmp->next;
-	}
-	return (0);
-}
 
 static char	*setPath(char *arg, t_obj_lst *curPwd)
 {
@@ -83,6 +60,14 @@ static int	handleHome(t_minishell *mystruct, char **commandArgs, char **str)
 	return (0);
 }
 
+static int	printNoSuchFile(char *tmpStr)
+{
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	ft_putstr_fd(tmpStr, STDERR_FILENO);
+	ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+	return (1);
+}
+
 int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 {
 	char		*path;
@@ -96,7 +81,7 @@ int	builtin_cd(t_minishell *mystruct, char **commandArgs)
 	curPwd = ft_objlst_findbykey(mystruct->envpLst, "PWD");
 	oldPwd = ft_objlst_findbykey(mystruct->envpLst, "OLDPWD");
 	if (chdir(tmpStr) == -1)
-		return (1);
+		return (printNoSuchFile(tmpStr));
 	path = setPath(tmpStr, curPwd);
 	if (curPwd == NULL || oldPwd == NULL)
 		setPwd(curPwd, oldPwd, mystruct, path);

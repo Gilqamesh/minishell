@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/21 13:54:20 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 20:08:26 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 13:56:53 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int *i)
 
 static void	addTokenToLst(t_node_binary **tmpLst, char *token, bool *isBuiltin)
 {
-	if (*tmpLst == NULL && isStrBuiltin(token))
+	if (*tmpLst == NULL && isStrBuiltin(token) == true)
 		*isBuiltin = true;
 	ft_nodbinadd_front(tmpLst, ft_nodbinnew(ft_strdup(token)));
 }

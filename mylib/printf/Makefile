@@ -6,7 +6,7 @@
 #    By: edavid <edavid@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/25 20:47:25 by edavid            #+#    #+#              #
-#    Updated: 2021/09/19 16:21:58 by edavid           ###   ########.fr        #
+#    Updated: 2021/09/22 18:52:47 by edavid           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ ft_conversions_utils.c ft_conversions_utils2.c ft_printf_utils.c \
 ft_set_flags.c ft_print_conversion_hexa.c ft_print_conversion_hexa_utilities.c \
 ft_print_conversion_s_utilities.c ft_print_conversion_s.c ft_print_conversion_p.c \
 ft_print_conversion_int.c ft_print_conversion_int_utils.c ft_print_conversion_uint.c \
-ft_print_conversion_uint_utils.c
+ft_print_conversion_uint_utils.c ft_printf_utils2.c ft_print_conversion_s_utilities2.c \
+ft_print_conversion_int_utils2.c
 
 Dependencies: $(LIBFT)
 	$(MAKE) $(NAME)

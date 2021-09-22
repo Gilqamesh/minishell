@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:23:27 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 13:09:15 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,13 @@ char *index)
 	*curTokenPtr = start;
 }
 
+static void	replaceTokens(t_minishell *mystruct)
+{
+	ft_destroy_str_arr(&mystruct->tokens);
+	mystruct->tokens = ft_nodbinstr_to_strarr(mystruct->tokensLst);
+	ft_nodbinclear(&mystruct->tokensLst, ft_nodbindel, -1);
+}
+
 /*
 ** Performs the various shell expansions, breaking the expanded tokens into
 ** lists of filenames and commands and arguments.
@@ -128,11 +135,12 @@ int	expander(t_minishell *mystruct)
 			free(parameter);
 			tmp = expandIndex(mystruct->tokens[i]);
 		}
+		if (ft_strcmp(mystruct->tokens[i], ""))
+			ft_nodbinadd_front(&mystruct->tokensLst,
+				ft_nodbinnew(ft_strdup(mystruct->tokens[i])));
 		if (isOperatorSyntaxErr(mystruct->tokens[i]))
-		{
-			clearStruct(mystruct);
-			return (1);
-		}
+			return (clearStruct(mystruct));
 	}
+	replaceTokens(mystruct);
 	return (0);
 }

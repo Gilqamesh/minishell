@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 12:55:24 by edavid            #+#    #+#             */
-/*   Updated: 2021/07/22 14:06:42 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:11:02 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,32 @@ int	print_conversion_uint(unsigned int n, int *flags)
 	else
 	{
 		ft_putstr_fd(conv_str, 1);
+		printed_bytes = conv_s_len;
+	}
+	return (printed_bytes);
+}
+
+int	print_conversion_uint_fd(unsigned int n, int *flags, int outstream)
+{
+	char	*conv_str;
+	int		conv_s_len;
+	int		prec;
+	int		printed_bytes;
+
+	set_prec(flags, &prec);
+	conv_str = ft_utoa(n);
+	if (flags[3] == -2 && !n)
+		shift_str(&conv_str);
+	conv_s_len = ft_strlen(conv_str);
+	if (prec > conv_s_len)
+		return (handle_prec_g_str_u_fd(flags, (t_2_int){prec, conv_s_len},
+			conv_str, outstream));
+	if (flags[2] > conv_s_len)
+		return (handle_flags_g_str_u_fd(flags, (t_2_int){prec, conv_s_len},
+			conv_str, outstream));
+	else
+	{
+		ft_putstr_fd(conv_str, outstream);
 		printed_bytes = conv_s_len;
 	}
 	return (printed_bytes);

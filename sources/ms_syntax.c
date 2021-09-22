@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 13:49:24 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:08:21 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:46:24 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,15 @@ static int	parse_simpleCmd(t_minishell *mystruct, int index)
 		if (isValidOperator(mystruct->tokens[index])
 			&& parse_filename(mystruct->tokens[++index]))
 		{
-			ft_printf("parse error near `%s'\n", mystruct->tokens[index]);
+			ft_putstr_fd("syntax error near unexpected token `",
+				STDERR_FILENO);
+			if (mystruct->tokens[index] == NULL)
+				ft_putendl_fd("newline'", STDERR_FILENO);
+			else
+			{
+				ft_putstr_fd(mystruct->tokens[index], STDERR_FILENO);
+				ft_putendl_fd("'", STDERR_FILENO);
+			}
 			return (1);
 		}
 		index++;
@@ -52,7 +60,8 @@ static int	parse_job(t_minishell *mystruct, int start)
 {
 	int	end;
 
-	if (mystruct->tokens[start] == NULL)
+	if (mystruct->tokens[start] == NULL
+		|| !ft_strcmp(mystruct->tokens[start], "|"))
 	{
 		ft_printf("no <command> after pipe\n");
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 12:09:29 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 18:44:55 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,16 @@ typedef struct s_simpleCmd
 
 // Main structure for the project
 // 'pipeLines' is a linked list, each content is a t_simpleCmd linked list
-// of a pipeline to be executed in order.
+// of a pipeline of simple commands to be executed in order.
 typedef struct s_minishell
 {
 	char			*promptStr;
 	char			**tokens;
+	t_node_binary	*tokensLst;
 	t_simpleCmd		*nodes;
 	t_list			*pipeLines;
 	t_obj_lst		*envpLst;
+	t_obj_lst		*exportedVars;
 	unsigned char	fgExitStatus;
 	t_list			*allocedPointers;
 	pid_t			lastPID;
@@ -83,7 +85,7 @@ char		*isValidOperator(char *str);
 bool		isValidCommand(t_minishell *mystruct, char *str);
 bool		isValidFilename(char *str);
 void		init_mystruct(t_minishell *mystruct, char **envp);
-void		clearStruct(t_minishell *mystruct);
+int			clearStruct(t_minishell *mystruct);
 void		ft_simpleCmdadd_back(t_simpleCmd **lst, t_simpleCmd *new);
 void		ft_simpleCmdclear(t_simpleCmd **lst, void (*del)(void *));
 void		ft_simpleCmddelone(t_simpleCmd *item, void (*del)(void *));
@@ -110,11 +112,13 @@ void		readSimpleCommand(t_minishell *mystruct, int *i);
 int			quoteRemoval(t_minishell *mystruct);
 // Builtins
 int			builtin_echo(char **commandArgs, t_std_FDs FDs);
-int			builtin_export(t_minishell *mystruct, char **commandArgs);
+int			builtin_export(t_minishell *mystruct, char **commandArgs,
+				t_std_FDs FDs);
 int			builtin_unset(t_minishell *mystruct, char **commandArgs);
 int			builtin_cd(t_minishell *mystruct, char **commandArgs);
 int			builtin_pwd(t_minishell *mystruct, t_std_FDs FDs);
 int			builtin_env(t_minishell *mystruct, t_std_FDs FDs);
+int			builtin_exit(t_minishell *mystruct, char **commandArgs);
 
 typedef struct s_pipex
 {
@@ -132,7 +136,7 @@ typedef struct s_pipex
 }	t_pipex;
 
 // PIPEX FUNCTIONS
-void		error_handler(t_pipex *mystruct, int errcode, char *message);
+void		error_handler(t_pipex *mystruct, int errcode, char *message, ...);
 void		handle_inputFile_firstCmd(t_minishell *minishellStruct,
 				t_pipex *mystruct);
 int			handle_lastCmd_outputFile(t_pipex *mystruct);

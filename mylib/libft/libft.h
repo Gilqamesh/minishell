@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 10:05:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/20 19:49:27 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:59:48 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,6 +355,8 @@ void			ft_objlst_del(void *node);
 // Find 'node' in t_obj_lst 'lst' and deletes it keeping the rest of the list
 // intact.
 void			ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
+// Inserts the element 'new' to 'lst' by the alphabetical ordering of new->key.
+void			ft_objlstinsert(t_obj_lst **lst, t_obj_lst *new);
 
 # ifndef T_FILELST
 #  define T_FILELST
@@ -392,5 +394,9 @@ void			ft_objlst_rem(t_obj_lst **lst, t_obj_lst *node);
 // Allocates and returns a NULL terminated str array that has 'str' as its
 // first element.
 char			**ft_strToStrArr(char *str);
+// Returns true if 'str' is a valid number.
+// ex of valid strings: "-234", "+3432"
+// ex of not valid strings: "--32", "234a"
+bool			ft_isStrNumber(char *str);
 
 #endif

@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_destroy_str_arr.c                               :+:      :+:    :+:   */
+/*   ft_isStrNumber.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/03 18:37:05 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 16:27:26 by edavid           ###   ########.fr       */
+/*   Created: 2021/09/22 16:56:49 by edavid            #+#    #+#             */
+/*   Updated: 2021/09/22 16:58:41 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
-#include <stdio.h>
 
-void	ft_destroy_str_arr(char ***str)
+/*
+** Returns true if 'str' is a valid number.
+** ex of valid strings: "-234", "+3432"
+** ex of not valid strings: "--32", "234a"
+*/
+bool	ft_isStrNumber(char *str)
 {
-	int	i;
-
-	if (str == NULL || *str == NULL)
-		return ;
-	i = -1;
-	while ((*str)[++i])
-		free((*str)[i]);
-	free(*str);
-	*str = NULL;
+	if (str == NULL)
+		return (false);
+	if (*str == '+' || *str == '-')
+		str++;
+	while (*str)
+		if (ft_isdigit(*str++) == false)
+			return (false);
+	return (true);
 }

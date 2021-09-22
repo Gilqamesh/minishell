@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 15:50:33 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 18:01:02 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:26:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,15 @@ void	cmd_path(char **cmd, t_obj_lst *envp)
 	char		*cur_path;
 	t_obj_lst	*keyPtr;
 
+	if (isStrBuiltin(*cmd) == true)
+		return ;
 	keyPtr = ft_objlst_findbykey(envp, "PATH");
 	if (keyPtr == NULL)
 		return ;
 	paths = ft_split(keyPtr->value, ':');
 	cur_path = get_cur_path(paths, cmd);
 	ft_destroy_str_arr(&paths);
-	if (cur_path == NULL && !access(*cmd, F_OK | X_OK))
+	if (cur_path == NULL || !access(*cmd, F_OK | X_OK))
 		return ;
 	free(*cmd);
 	*cmd = cur_path;

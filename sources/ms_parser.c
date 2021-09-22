@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/07 18:23:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 19:07:35 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 13:57:35 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ t_simpleCmd *new)
 		if ((*cur)->ignoreSimpleCmd == true && new)
 			new->FDs.outFile.mode = REDIR_VOID;
 		new = ft_simpleCmdnew(ft_strArrDup((*cur)->arguments),
-				copy_FD(&(*cur)->FDs), false, (*cur)->ignoreSimpleCmd);
+				copy_FD(&(*cur)->FDs), (*cur)->isBuiltin,
+				(*cur)->ignoreSimpleCmd);
 		if ((*cur)->ignoreSimpleCmd == false)
 			ft_simpleCmdadd_back(tmp, new);
 		else

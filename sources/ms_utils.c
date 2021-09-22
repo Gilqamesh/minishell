@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 15:58:09 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/21 16:21:52 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/22 16:52:00 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ bool shouldExit, t_std_FDs FDs)
 	if (ft_strcmp(commandArgs[0], "echo") == 0)
 		builtin_echo(commandArgs, FDs);
 	else if (ft_strcmp(commandArgs[0], "export") == 0)
-		builtin_export(mystruct, commandArgs);
+		builtin_export(mystruct, commandArgs, FDs);
 	else if (ft_strcmp(commandArgs[0], "unset") == 0)
 		builtin_unset(mystruct, commandArgs);
 	else if (ft_strcmp(commandArgs[0], "cd") == 0)
@@ -86,7 +86,7 @@ bool shouldExit, t_std_FDs FDs)
 	else if (ft_strcmp(commandArgs[0], "env") == 0)
 		builtin_env(mystruct, FDs);
 	else if (ft_strcmp(commandArgs[0], "exit") == 0)
-		exit(EXIT_SUCCESS);
+		builtin_exit(mystruct, commandArgs);
 	if (shouldExit == true)
 		exit(EXIT_SUCCESS);
 }
