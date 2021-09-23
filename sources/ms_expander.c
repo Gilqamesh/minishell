@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 12:30:04 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 13:09:15 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 12:45:50 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,9 @@ static char	*expandIndex(char *str)
 		}
 		else if (*str == '\"')
 		{
-			while (!*str && *str != '\"')
-			{
-				str++;
+			while (*++str && *str != '\"')
 				if (*str == '$')
 					return (str);
-			}
 			if (!*str)
 				return (NULL);
 		}

@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 19:15:58 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 18:56:11 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 12:31:34 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,20 @@ static int	printExportedVars(t_minishell *mystruct, t_std_FDs FDs)
 	return (0);
 }
 
-static int	printNotValidIdentifier(char *str, int errStream, char *key)
+static int	notValidIdentifier(char *str, int errStream, char *key)
 {
 	ft_putstr_fd("export: `", errStream);
 	ft_putstr_fd(str, errStream);
 	ft_putendl_fd("': not a valid identifier", errStream);
-	free(key);
+	if (key)
+		free(key);
+	return (1);
+}
+
+static int	checkIfValidIdentifier(char *str, int errStream)
+{
+	if (ft_isValidBashIdentifier(str) == false)
+		return (notValidIdentifier(str, errStream, NULL));
 	return (1);
 }
 
@@ -54,10 +62,10 @@ int	builtin_export(t_minishell *mystruct, char **commandArgs, t_std_FDs FDs)
 		return (printExportedVars(mystruct, FDs));
 	index = ft_strchr(commandArgs[1], '=');
 	if (index == NULL)
-		return (1);
+		return (checkIfValidIdentifier(commandArgs[1], FDs.errFile.fd));
 	key = ft_substr(commandArgs[1], 0, index - commandArgs[1]);
 	if (ft_isValidBashIdentifier(key) == false)
-		return (printNotValidIdentifier(commandArgs[1], FDs.errFile.fd, key));
+		return (notValidIdentifier(commandArgs[1], FDs.errFile.fd, key));
 	cur = ft_objlst_findbykey(mystruct->envpLst, key);
 	if (cur)
 	{

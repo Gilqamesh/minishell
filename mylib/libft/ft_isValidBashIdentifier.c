@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 16:53:29 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/08 16:53:59 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 12:18:11 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	ft_isValidBashIdentifier(char *str)
 		return (false);
 	if (ft_isalpha(*str) || *str == '_')
 		str++;
+	else
+		return (false);
 	while (*str)
 	{
 		if (!ft_isalnum(*str) && *str != '_')
