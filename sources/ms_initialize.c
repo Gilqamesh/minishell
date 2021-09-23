@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/23 15:05:46 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:23:39 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	ft_ctlsigchars(t_minishell *mystruct, int flag)
 {
 	struct termios	termattr;
 
-	//printf("Setting %d file descriptor attribute to %s sigchars.\n", STDIN_FILENO, flag ? "show":"don't show");
 	termattr = mystruct->oattr;
 	if (flag == 0)
 		termattr.c_lflag &= ~ECHOCTL;
@@ -25,11 +24,17 @@ void	ft_ctlsigchars(t_minishell *mystruct, int flag)
 
 void	sighandler(int sig)
 {
+	char	*tmp;
+
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
 		kill((getMystruct(NULL))->lastPID, sig);
-		if (sig == SIGINT)
-			write(STDOUT_FILENO, "\n", 1);
+		if (sig == SIGQUIT)
+		{
+			tmp = "Quit: 3";
+			write(STDOUT_FILENO, tmp, ft_strlen(tmp));
+		}
+		write(STDOUT_FILENO, "\n", 1);
 	}
 	else if (sig == SIGINT)
 	{
