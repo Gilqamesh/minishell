@@ -6,7 +6,7 @@
 /*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/23 14:54:36 by gsiddiqu         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:05:46 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	sighandler(int sig)
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
 		kill((getMystruct(NULL))->lastPID, sig);
+		if (sig == SIGINT)
+			write(STDOUT_FILENO, "\n", 1);
 	}
 	else if (sig == SIGINT)
 	{
