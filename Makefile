@@ -26,7 +26,7 @@ $(PIPEXLIB): pipex/sources/*.c $(HDIR)/*.h
 all:
 	make $(NAME)
 clean:
-	rm -f objects/*.o
+	rm -f $(ODIR)/*.o
 fclean:
 	make clean
 	rm -f $(NAME)

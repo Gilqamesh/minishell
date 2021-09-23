@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 17:34:16 by gohar             #+#    #+#             */
-/*   Updated: 2021/09/22 18:54:05 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 13:43:33 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static int	handleHome(t_minishell *mystruct, char **commandArgs, char **str)
 
 static int	printNoSuchFile(char *tmpStr)
 {
+	
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	ft_putstr_fd(tmpStr, STDERR_FILENO);
 	ft_putendl_fd(": No such file or directory", STDERR_FILENO);

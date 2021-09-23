@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 18:56:56 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 13:25:23 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,15 @@ void	sighandler(int sig)
 		kill((getMystruct(NULL))->lastPID, sig);
 	}
 	else if (sig == SIGINT)
-	{
+	{  
 		write(STDIN_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+	{
+		rl_on_new_line();
 		rl_redisplay();
 	}
 	tcgetattr(STDIN_FILENO, &termattr);
