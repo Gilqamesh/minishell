@@ -6,7 +6,7 @@
 /*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/23 14:42:39 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 18:50:03 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 13:55:10 by edavid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	error_handler(t_pipex *mystruct, int errcode, char *message, ...)
 	va_list	ap;
 
 	va_start(ap, message);
-	ft_dprintf(STDERR_FILENO, message, ap);
+	ft_vdprintf(STDERR_FILENO, message, ap);
 	va_end(ap);
 	destroy_mystruct(mystruct);
 	exit(errcode);
