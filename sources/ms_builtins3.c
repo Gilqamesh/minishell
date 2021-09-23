@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtins3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 14:15:13 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 18:54:51 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 14:59:08 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	builtin_exit(t_minishell *mystruct, char **commandArgs)
 		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 		return (0);
 	}
+	ft_ctlsigchars(mystruct, 1);
 	if (ft_isStrNumber(commandArgs[1]) == true)
 		exit((unsigned char)ft_atoi(commandArgs[1]));
 	else

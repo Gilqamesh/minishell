@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_minishell.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 13:22:57 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/22 18:44:55 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 14:55:10 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_minishell
 	unsigned char	fgExitStatus;
 	t_list			*allocedPointers;
 	pid_t			lastPID;
+	struct termios	oattr;
 }	t_minishell;
 
 char		*myreadline(const char *promptMsg);
@@ -119,6 +120,7 @@ int			builtin_cd(t_minishell *mystruct, char **commandArgs);
 int			builtin_pwd(t_minishell *mystruct, t_std_FDs FDs);
 int			builtin_env(t_minishell *mystruct, t_std_FDs FDs);
 int			builtin_exit(t_minishell *mystruct, char **commandArgs);
+void		ft_ctlsigchars(t_minishell *mystruct, int flag);
 
 typedef struct s_pipex
 {

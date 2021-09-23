@@ -3,25 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ms_initialize.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 18:42:34 by edavid            #+#    #+#             */
-/*   Updated: 2021/09/23 13:25:23 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 14:54:36 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_minishell.h"
 
-void	sighandler(int sig)
+void	ft_ctlsigchars(t_minishell *mystruct, int flag)
 {
 	struct termios	termattr;
 
+	//printf("Setting %d file descriptor attribute to %s sigchars.\n", STDIN_FILENO, flag ? "show":"don't show");
+	termattr = mystruct->oattr;
+	if (flag == 0)
+		termattr.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termattr);
+}
+
+void	sighandler(int sig)
+{
 	if ((getMystruct(NULL))->lastPID != 0)
 	{
 		kill((getMystruct(NULL))->lastPID, sig);
 	}
 	else if (sig == SIGINT)
-	{  
+	{
 		write(STDIN_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
@@ -32,9 +41,6 @@ void	sighandler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	tcgetattr(STDIN_FILENO, &termattr);
-	termattr.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &termattr);
 }
 
 static void	init_envp(t_minishell *mystruct, char **envp)
@@ -72,6 +78,7 @@ void	init_mystruct(t_minishell *mystruct, char **envp)
 	signal(SIGINT, &sighandler);
 	signal(SIGQUIT, &sighandler);
 	ft_bzero(mystruct, sizeof(*mystruct));
+	tcgetattr(STDIN_FILENO, &(mystruct->oattr));
 	init_envp(mystruct, envp);
 }
 

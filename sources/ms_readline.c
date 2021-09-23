@@ -35,6 +35,7 @@ int	parseCmdLine(t_minishell *mystruct)
 		return (1);
 	if (parser(mystruct))
 		return (1);
+	ft_ctlsigchars(mystruct, 1);
 	if (executor(mystruct))
 		return (1);
 	clearStruct(mystruct);

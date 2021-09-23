@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_minishell.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edavid <edavid@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gsiddiqu <gsiddiqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2021/09/22 18:58:26 by edavid           ###   ########.fr       */
+/*   Updated: 2021/09/23 14:56:23 by gsiddiqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ int	main(int argc, char **argv, char **envp)
 	init_mystruct(&mystruct, envp);
 	while (1)
 	{
+		ft_ctlsigchars(&mystruct, 0);
 		mystruct.promptStr = myreadline(CMD_PROMPT);
 		if (mystruct.promptStr == NULL)
 			break ;
 		parseCmdLine(&mystruct);
 	}
+	ft_ctlsigchars(&mystruct, 1);
 	ms_destroy_mystruct(&mystruct);
 	return (0);
 }
