@@ -1,0 +1,4 @@
+1. < sources/ms_initialize.c
+	free error
+2. "exit" is not displayed after exiting the shell with exit cmd
+	or CTRL+D
